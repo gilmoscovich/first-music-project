@@ -1,0 +1,128 @@
+.review-loading {
+  text-align: center;
+  padding-top: 80px;
+  color: var(--text-muted);
+}
+
+.review-not-found {
+  text-align: center;
+  padding-top: 80px;
+}
+
+.review-not-found-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.review-not-found-desc {
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.track-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  gap: 16px;
+}
+
+.track-header-info {
+}
+
+.track-header-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.track-header-meta {
+  font-size: 13px;
+  color: var(--text-muted);
+  display: flex;
+  gap: 16px;
+}
+
+.share-btn {
+  padding: 8px 16px;
+  border-radius: var(--radius);
+  background: var(--bg-raised);
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 13px;
+  border: 1px solid var(--border);
+  transition: all 0.15s;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.share-btn--copied {
+  background: rgba(61, 214, 140, 0.15);
+  color: var(--accent-green);
+  border-color: rgba(61, 214, 140, 0.3);
+}
+
+.reviewer-hint {
+  margin-top: 16px;
+  padding: 12px 16px;
+  background: rgba(124, 106, 247, 0.08);
+  border: 1px solid rgba(124, 106, 247, 0.2);
+  border-radius: var(--radius);
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.reviewer-hint-strong {
+  color: var(--accent-violet);
+}
+
+.feedback-section {
+  margin-top: 40px;
+}
+
+.feedback-heading {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: var(--text-primary);
+}
+
+.feedback-count-badge {
+  margin-left: 10px;
+  background: rgba(124, 106, 247, 0.15);
+  color: var(--accent-violet);
+  padding: 2px 10px;
+  border-radius: 99px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.feedback-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.empty-feedback {
+  margin-top: 40px;
+  text-align: center;
+  padding: 48px 20px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.submit-error {
+  margin-top: 16px;
+  padding: 12px 16px;
+  background: rgba(255, 80, 80, 0.08);
+  border: 1px solid rgba(255, 80, 80, 0.3);
+  border-radius: var(--radius);
+  font-size: 13px;
+  color: #ff5050;
+}

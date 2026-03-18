@@ -1,0 +1,25 @@
+.star-rating {
+  display: flex;
+  gap: 4px;
+}
+
+.star-btn {
+  background: none;
+  padding: 2px;
+  font-size: 20px;
+  line-height: 1;
+  transition: color 0.1s;
+  color: var(--border-bright);
+}
+
+.star-btn--filled {
+  color: var(--accent-amber);
+}
+
+.star-btn--interactive {
+  cursor: pointer;
+}
+
+.star-btn--readonly {
+  cursor: default;
+}

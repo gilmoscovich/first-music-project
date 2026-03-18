@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import type { FeedbackEntry } from '../../types';
 import { useWavesurfer } from '../../hooks/useWavesurfer';
 import { formatTime } from '../../utils/formatTime';
+import './WaveformPlayer.css';
 
 interface WaveformPlayerProps {
   audioUrl: string;
@@ -38,7 +39,6 @@ export const WaveformPlayer = ({
     },
   });
 
-  // Update current time
   const handlePlayPause = () => {
     const ws = wsRef.current;
     if (!ws) return;
@@ -61,14 +61,9 @@ export const WaveformPlayer = ({
   };
 
   return (
-    <div style={{
-      background: 'var(--bg-surface)',
-      border: '1px solid var(--border)',
-      borderRadius: 'var(--radius-lg)',
-      padding: '20px',
-    }}>
+    <div className="waveform-player">
       {interactable && (
-        <div style={{ marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-muted)', fontSize: '12px' }}>
+        <div className="waveform-hint">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <circle cx="12" cy="12" r="10" />
             <line x1="12" y1="8" x2="12" y2="12" />
@@ -78,33 +73,19 @@ export const WaveformPlayer = ({
         </div>
       )}
 
-      <div style={{ position: 'relative' }}>
+      <div className="waveform-container">
         {!isReady && (
-          <div style={{
-            position: 'absolute', inset: 0, zIndex: 1,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            background: 'var(--bg-surface)',
-            color: 'var(--text-muted)', fontSize: '13px',
-          }}>
-            Loading waveform...
-          </div>
+          <div className="waveform-loading">Loading waveform...</div>
         )}
         <div ref={containerRef} />
-        <div ref={timelineRef} style={{ marginTop: '4px' }} />
+        <div ref={timelineRef} className="waveform-timeline" />
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginTop: '16px' }}>
+      <div className="waveform-controls">
         <button
           onClick={handlePlayPause}
           disabled={!isReady}
-          style={{
-            width: '40px', height: '40px',
-            borderRadius: '50%',
-            background: isReady ? 'var(--accent-violet)' : 'var(--bg-raised)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            flexShrink: 0,
-            transition: 'background 0.15s',
-          }}
+          className={`play-btn${isReady ? ' play-btn--ready' : ''}`}
         >
           {isPlaying ? (
             <svg width="14" height="14" viewBox="0 0 24 24" fill="white">
@@ -118,20 +99,12 @@ export const WaveformPlayer = ({
           )}
         </button>
 
-        <span style={{ color: 'var(--text-muted)', fontSize: '12px', fontFamily: 'monospace', minWidth: '90px' }}>
+        <span className="waveform-time">
           {formatTime(currentTime)} / {formatTime(duration)}
         </span>
 
         {feedback.length > 0 && (
-          <span style={{
-            marginLeft: 'auto',
-            background: 'rgba(124, 106, 247, 0.15)',
-            color: 'var(--accent-violet)',
-            padding: '3px 10px',
-            borderRadius: '99px',
-            fontSize: '12px',
-            fontWeight: 600,
-          }}>
+          <span className="waveform-markers-badge">
             {feedback.length} marker{feedback.length !== 1 ? 's' : ''}
           </span>
         )}

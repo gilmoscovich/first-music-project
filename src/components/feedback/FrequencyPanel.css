@@ -1,0 +1,103 @@
+.freq-panel {
+}
+
+.freq-panel-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 10px;
+}
+
+.freq-bands {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.freq-band {
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+}
+
+.freq-band-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.freq-band-row--with-notes {
+  margin-bottom: 8px;
+}
+
+.band-info {
+  min-width: 80px;
+}
+
+.band-name {
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--text-primary);
+}
+
+.band-range {
+  font-size: 10px;
+  color: var(--text-muted);
+  font-family: monospace;
+}
+
+.verdict-group {
+  display: flex;
+  gap: 4px;
+  flex: 1;
+}
+
+.verdict-btn {
+  flex: 1;
+  padding: 4px 6px;
+  border-radius: var(--radius);
+  font-size: 11px;
+  font-weight: 600;
+  background: var(--bg-primary);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.verdict-btn--interactive {
+  cursor: pointer;
+}
+
+.verdict-btn--readonly {
+  cursor: default;
+}
+
+.verdict-btn--active.verdict-btn--too_much {
+  background: var(--accent-red);
+  color: #fff;
+  border-color: var(--accent-red);
+}
+
+.verdict-btn--active.verdict-btn--just_right {
+  background: var(--accent-green);
+  color: #fff;
+  border-color: var(--accent-green);
+}
+
+.verdict-btn--active.verdict-btn--too_little {
+  background: var(--accent-amber);
+  color: #fff;
+  border-color: var(--accent-amber);
+}
+
+.band-notes {
+  width: 100%;
+  font-size: 12px;
+  padding: 5px 8px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+}

@@ -6,6 +6,7 @@ import { deleteAudio } from '../firebase/storage';
 import type { Track } from '../types';
 import { generateShareUrl } from '../utils/shareLink';
 import { formatTime } from '../utils/formatTime';
+import './DashboardPage.css';
 
 export const DashboardPage = () => {
   const { user } = useAuth();
@@ -54,89 +55,44 @@ export const DashboardPage = () => {
   };
 
   if (loading) {
-    return <div style={{ color: 'var(--text-muted)', textAlign: 'center', paddingTop: '60px' }}>Loading...</div>;
+    return <div className="dashboard-loading">Loading...</div>;
   }
 
   return (
     <div>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '32px' }}>
+      <div className="dashboard-header">
         <div>
-          <h1 style={{ fontSize: '22px', fontWeight: 700, marginBottom: '4px' }}>Your Tracks</h1>
-          <p style={{ color: 'var(--text-muted)', fontSize: '14px' }}>{tracks.length} track{tracks.length !== 1 ? 's' : ''} uploaded</p>
+          <h1 className="dashboard-title">Your Tracks</h1>
+          <p className="dashboard-subtitle">{tracks.length} track{tracks.length !== 1 ? 's' : ''} uploaded</p>
         </div>
-        <Link
-          to="/upload"
-          style={{
-            background: 'var(--accent-violet)',
-            color: '#fff',
-            padding: '10px 20px',
-            borderRadius: 'var(--radius)',
-            fontWeight: 700,
-            fontSize: '14px',
-            textDecoration: 'none',
-          }}
-        >
+        <Link to="/upload" className="dashboard-upload-link">
           + Upload Track
         </Link>
       </div>
 
       {tracks.length === 0 ? (
-        <div style={{
-          textAlign: 'center',
-          padding: '80px 20px',
-          background: 'var(--bg-surface)',
-          borderRadius: 'var(--radius-lg)',
-          border: '1px solid var(--border)',
-        }}>
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" strokeWidth="1" style={{ margin: '0 auto 20px', display: 'block' }}>
+        <div className="empty-state">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" strokeWidth="1" className="empty-state-icon">
             <path d="M9 18V5l12-2v13" />
             <circle cx="6" cy="18" r="3" />
             <circle cx="18" cy="16" r="3" />
           </svg>
-          <div style={{ fontWeight: 600, marginBottom: '8px' }}>No tracks yet</div>
-          <div style={{ color: 'var(--text-muted)', fontSize: '14px', marginBottom: '24px' }}>
+          <div className="empty-state-title">No tracks yet</div>
+          <div className="empty-state-desc">
             Upload your first track to start collecting feedback
           </div>
-          <Link
-            to="/upload"
-            style={{
-              background: 'var(--accent-violet)',
-              color: '#fff',
-              padding: '10px 20px',
-              borderRadius: 'var(--radius)',
-              fontWeight: 600,
-              fontSize: '14px',
-              textDecoration: 'none',
-              display: 'inline-block',
-            }}
-          >
+          <Link to="/upload" className="empty-state-link">
             Upload a Track
           </Link>
         </div>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        <div className="tracks-list">
           {tracks.map((track) => (
             <div
               key={track.id}
-              style={{
-                background: 'var(--bg-surface)',
-                border: '1px solid var(--border)',
-                borderRadius: 'var(--radius-lg)',
-                padding: '16px 20px',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '16px',
-                opacity: deletingId === track.id ? 0.5 : 1,
-                transition: 'opacity 0.2s',
-              }}
+              className={`track-item${deletingId === track.id ? ' track-item--deleting' : ''}`}
             >
-              <div style={{
-                width: '40px', height: '40px',
-                background: 'rgba(124, 106, 247, 0.1)',
-                borderRadius: '8px',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                flexShrink: 0,
-              }}>
+              <div className="track-icon">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent-violet)" strokeWidth="2">
                   <path d="M9 18V5l12-2v13" />
                   <circle cx="6" cy="18" r="3" />
@@ -144,9 +100,9 @@ export const DashboardPage = () => {
                 </svg>
               </div>
 
-              <div style={{ flex: 1, minWidth: 0 }}>
+              <div className="track-info">
                 {editingId === track.id ? (
-                  <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                  <div className="track-edit-row">
                     <input
                       autoFocus
                       value={editTitle}
@@ -155,94 +111,49 @@ export const DashboardPage = () => {
                         if (e.key === 'Enter') saveEdit(track.id);
                         if (e.key === 'Escape') setEditingId(null);
                       }}
-                      style={{ flex: 1, fontSize: '14px', padding: '4px 8px' }}
+                      className="track-edit-input"
                     />
-                    <button
-                      onClick={() => saveEdit(track.id)}
-                      style={{ fontSize: '12px', padding: '4px 10px', background: 'var(--accent-violet)', color: '#fff', borderRadius: 'var(--radius)', fontWeight: 600 }}
-                    >
+                    <button onClick={() => saveEdit(track.id)} className="track-edit-save">
                       Save
                     </button>
-                    <button
-                      onClick={() => setEditingId(null)}
-                      style={{ fontSize: '12px', padding: '4px 10px', background: 'var(--bg-raised)', color: 'var(--text-muted)', borderRadius: 'var(--radius)' }}
-                    >
+                    <button onClick={() => setEditingId(null)} className="track-edit-cancel">
                       Cancel
                     </button>
                   </div>
                 ) : (
                   <div
-                    style={{ fontWeight: 600, marginBottom: '2px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', cursor: 'pointer' }}
+                    className="track-name"
                     onDoubleClick={() => startEdit(track)}
                     title="Double-click to rename"
                   >
                     {track.title}
                   </div>
                 )}
-                <div style={{ fontSize: '12px', color: 'var(--text-muted)', display: 'flex', gap: '12px' }}>
+                <div className="track-meta">
                   <span>{track.createdAt?.toDate().toLocaleDateString()}</span>
                   {track.duration && <span>{formatTime(track.duration)}</span>}
                 </div>
               </div>
 
-              <div style={{
-                background: track.feedbackCount > 0 ? 'rgba(124, 106, 247, 0.15)' : 'var(--bg-raised)',
-                color: track.feedbackCount > 0 ? 'var(--accent-violet)' : 'var(--text-muted)',
-                padding: '4px 12px',
-                borderRadius: '99px',
-                fontSize: '12px',
-                fontWeight: 700,
-                flexShrink: 0,
-              }}>
+              <div className={`feedback-badge${track.feedbackCount > 0 ? ' feedback-badge--active' : ''}`}>
                 {track.feedbackCount} comment{track.feedbackCount !== 1 ? 's' : ''}
               </div>
 
               <button
                 onClick={() => copyLink(track.id)}
-                style={{
-                  padding: '6px 12px',
-                  borderRadius: 'var(--radius)',
-                  background: copied === track.id ? 'rgba(61, 214, 140, 0.15)' : 'var(--bg-raised)',
-                  color: copied === track.id ? 'var(--accent-green)' : 'var(--text-muted)',
-                  fontSize: '12px',
-                  fontWeight: 600,
-                  border: `1px solid ${copied === track.id ? 'rgba(61, 214, 140, 0.3)' : 'var(--border)'}`,
-                  transition: 'all 0.15s',
-                  flexShrink: 0,
-                }}
+                className={`track-copy-btn${copied === track.id ? ' track-copy-btn--copied' : ''}`}
               >
                 {copied === track.id ? '✓ Copied' : 'Copy Link'}
               </button>
 
-              <Link
-                to={`/review/${track.id}`}
-                style={{
-                  padding: '6px 14px',
-                  borderRadius: 'var(--radius)',
-                  background: 'var(--bg-raised)',
-                  color: 'var(--text-primary)',
-                  fontSize: '12px',
-                  fontWeight: 600,
-                  border: '1px solid var(--border)',
-                  textDecoration: 'none',
-                  flexShrink: 0,
-                }}
-              >
+              <Link to={`/review/${track.id}`} className="track-view-link">
                 View →
               </Link>
 
               <button
                 onClick={() => startEdit(track)}
                 title="Rename"
-                style={{
-                  padding: '6px 8px',
-                  borderRadius: 'var(--radius)',
-                  background: 'var(--bg-raised)',
-                  color: 'var(--text-muted)',
-                  border: '1px solid var(--border)',
-                  flexShrink: 0,
-                  fontSize: '13px',
-                }}
+                className="track-rename-btn"
               >
                 ✏️
               </button>
@@ -251,15 +162,7 @@ export const DashboardPage = () => {
                 onClick={() => handleDelete(track)}
                 disabled={deletingId === track.id}
                 title="Delete track"
-                style={{
-                  padding: '6px 8px',
-                  borderRadius: 'var(--radius)',
-                  background: 'rgba(247, 106, 106, 0.1)',
-                  color: 'var(--accent-red)',
-                  border: '1px solid rgba(247, 106, 106, 0.2)',
-                  flexShrink: 0,
-                  fontSize: '13px',
-                }}
+                className="track-delete-btn"
               >
                 🗑
               </button>

@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import './AudioDropZone.css';
 
 interface AudioDropZoneProps {
   onFile: (file: File) => void;
@@ -40,43 +41,32 @@ export const AudioDropZone = ({ onFile }: AudioDropZoneProps) => {
           const file = e.dataTransfer.files[0];
           if (file) handleFile(file);
         }}
-        style={{
-          border: `2px dashed ${dragging ? 'var(--accent-violet)' : 'var(--border-bright)'}`,
-          borderRadius: 'var(--radius-lg)',
-          padding: '48px 24px',
-          textAlign: 'center',
-          cursor: 'pointer',
-          background: dragging ? 'rgba(124, 106, 247, 0.05)' : 'var(--bg-surface)',
-          transition: 'all 0.15s',
-        }}
+        className={`dropzone${dragging ? ' dropzone--dragging' : ''}`}
       >
         <svg
-          width="40" height="40" viewBox="0 0 24 24" fill="none"
-          stroke={dragging ? 'var(--accent-violet)' : 'var(--text-muted)'}
+          width="40"
+          height="40"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
           strokeWidth="1.5"
-          style={{ margin: '0 auto 16px', display: 'block' }}
+          className="dropzone-icon"
         >
           <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
           <polyline points="17 8 12 3 7 8" />
           <line x1="12" y1="3" x2="12" y2="15" />
         </svg>
-        <div style={{ fontWeight: 600, marginBottom: '6px' }}>
-          Drop your audio file here
-        </div>
-        <div style={{ color: 'var(--text-muted)', fontSize: '13px' }}>
-          or click to browse &mdash; MP3, WAV up to 200 MB
-        </div>
+        <div className="dropzone-title">Drop your audio file here</div>
+        <div className="dropzone-hint">or click to browse &mdash; MP3, WAV up to 200 MB</div>
       </div>
 
-      {error && (
-        <div style={{ color: 'var(--accent-red)', fontSize: '13px', marginTop: '8px' }}>{error}</div>
-      )}
+      {error && <div className="dropzone-error">{error}</div>}
 
       <input
         ref={inputRef}
         type="file"
         accept=".mp3,.wav,audio/mpeg,audio/wav"
-        style={{ display: 'none' }}
+        className="dropzone-input"
         onChange={(e) => {
           const file = e.target.files?.[0];
           if (file) handleFile(file);

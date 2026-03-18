@@ -1,0 +1,75 @@
+.waveform-player {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+}
+
+.waveform-hint {
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.waveform-container {
+  position: relative;
+}
+
+.waveform-loading {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-surface);
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.waveform-timeline {
+  margin-top: 4px;
+}
+
+.waveform-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.play-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--bg-raised);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+
+.play-btn--ready {
+  background: var(--accent-violet);
+}
+
+.waveform-time {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-family: monospace;
+  min-width: 90px;
+}
+
+.waveform-markers-badge {
+  margin-left: auto;
+  background: rgba(124, 106, 247, 0.15);
+  color: var(--accent-violet);
+  padding: 3px 10px;
+  border-radius: 99px;
+  font-size: 12px;
+  font-weight: 600;
+}

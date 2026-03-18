@@ -1,0 +1,215 @@
+.dashboard-loading {
+  color: var(--text-muted);
+  text-align: center;
+  padding-top: 60px;
+}
+
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+}
+
+.dashboard-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.dashboard-subtitle {
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.dashboard-upload-link {
+  background: var(--accent-violet);
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: var(--radius);
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+  background: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+}
+
+.empty-state-icon {
+  margin: 0 auto 20px;
+  display: block;
+}
+
+.empty-state-title {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.empty-state-desc {
+  color: var(--text-muted);
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+.empty-state-link {
+  background: var(--accent-violet);
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: var(--radius);
+  font-weight: 600;
+  font-size: 14px;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.tracks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.track-item {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: opacity 0.2s;
+}
+
+.track-item--deleting {
+  opacity: 0.5;
+}
+
+.track-icon {
+  width: 40px;
+  height: 40px;
+  background: rgba(124, 106, 247, 0.1);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.track-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.track-edit-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.track-edit-input {
+  flex: 1;
+  font-size: 14px;
+  padding: 4px 8px;
+}
+
+.track-edit-save {
+  font-size: 12px;
+  padding: 4px 10px;
+  background: var(--accent-violet);
+  color: #fff;
+  border-radius: var(--radius);
+  font-weight: 600;
+}
+
+.track-edit-cancel {
+  font-size: 12px;
+  padding: 4px 10px;
+  background: var(--bg-raised);
+  color: var(--text-muted);
+  border-radius: var(--radius);
+}
+
+.track-name {
+  font-weight: 600;
+  margin-bottom: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.track-meta {
+  font-size: 12px;
+  color: var(--text-muted);
+  display: flex;
+  gap: 12px;
+}
+
+.feedback-badge {
+  background: var(--bg-raised);
+  color: var(--text-muted);
+  padding: 4px 12px;
+  border-radius: 99px;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.feedback-badge--active {
+  background: rgba(124, 106, 247, 0.15);
+  color: var(--accent-violet);
+}
+
+.track-copy-btn {
+  padding: 6px 12px;
+  border-radius: var(--radius);
+  background: var(--bg-raised);
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid var(--border);
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+
+.track-copy-btn--copied {
+  background: rgba(61, 214, 140, 0.15);
+  color: var(--accent-green);
+  border-color: rgba(61, 214, 140, 0.3);
+}
+
+.track-view-link {
+  padding: 6px 14px;
+  border-radius: var(--radius);
+  background: var(--bg-raised);
+  color: var(--text-primary);
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid var(--border);
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.track-rename-btn {
+  padding: 6px 8px;
+  border-radius: var(--radius);
+  background: var(--bg-raised);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+  font-size: 13px;
+}
+
+.track-delete-btn {
+  padding: 6px 8px;
+  border-radius: var(--radius);
+  background: rgba(247, 106, 106, 0.1);
+  color: var(--accent-red);
+  border: 1px solid rgba(247, 106, 106, 0.2);
+  flex-shrink: 0;
+  font-size: 13px;
+}
