@@ -140,6 +140,13 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   cursor: pointer;
+  color: var(--text-primary);
+  text-decoration: none;
+  display: block;
+}
+
+.track-name:hover {
+  color: var(--accent-violet);
 }
 
 .track-meta {

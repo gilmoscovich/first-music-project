@@ -34,7 +34,7 @@ export const useWavesurfer = ({
     regionsRef.current.addRegion({
       id: entry.id,
       start: entry.timestamp,
-      end: entry.timestamp + 0.01,
+      end: entry.timestamp + 0.5,
       color: 'rgba(245, 197, 24, 0.9)',
       drag: false,
       resize: false,

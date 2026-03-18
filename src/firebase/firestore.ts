@@ -55,11 +55,11 @@ export const getTrack = async (trackId: string): Promise<Track | null> => {
 export const getUserTracks = async (uid: string): Promise<Track[]> => {
   const q = query(
     collection(db, 'tracks'),
-    where('ownerId', '==', uid),
-    orderBy('createdAt', 'desc')
+    where('ownerId', '==', uid)
   );
   const snap = await getDocs(q);
-  return snap.docs.map((d) => ({ id: d.id, ...d.data() } as Track));
+  const tracks = snap.docs.map((d) => ({ id: d.id, ...d.data() } as Track));
+  return tracks.sort((a, b) => b.createdAt?.seconds - a.createdAt?.seconds);
 };
 
 export const addFeedback = async (
@@ -79,6 +79,14 @@ export const addFeedback = async (
 
   await batch.commit();
   return feedbackRef.id;
+};
+
+export const markFeedbackRead = async (
+  trackId: string,
+  feedbackId: string,
+  read: boolean
+): Promise<void> => {
+  await updateDoc(doc(db, 'tracks', trackId, 'feedback', feedbackId), { read });
 };
 
 export const subscribeFeedback = (

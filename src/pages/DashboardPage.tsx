@@ -121,13 +121,14 @@ export const DashboardPage = () => {
                     </button>
                   </div>
                 ) : (
-                  <div
+                  <Link
+                    to={`/review/${track.id}`}
                     className="track-name"
-                    onDoubleClick={() => startEdit(track)}
-                    title="Double-click to rename"
+                    onDoubleClick={(e) => { e.preventDefault(); startEdit(track); }}
+                    title="Click to open · Double-click to rename"
                   >
                     {track.title}
-                  </div>
+                  </Link>
                 )}
                 <div className="track-meta">
                   <span>{track.createdAt?.toDate().toLocaleDateString()}</span>

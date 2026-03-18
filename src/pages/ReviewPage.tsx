@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { useTrack } from '../hooks/useTrack';
 import { useFeedback } from '../hooks/useFeedback';
 import { useAuth } from '../hooks/useAuth';
-import { addFeedback } from '../firebase/firestore';
+import { addFeedback, markFeedbackRead } from '../firebase/firestore';
 import { WaveformPlayer } from '../components/waveform/WaveformPlayer';
+import type { WaveformPlayerHandle } from '../components/waveform/WaveformPlayer';
 import { FeedbackPopup } from '../components/feedback/FeedbackPopup';
 import { FeedbackCard } from '../components/feedback/FeedbackCard';
 import { generateShareUrl } from '../utils/shareLink';
@@ -20,6 +21,7 @@ export const ReviewPage = () => {
 
   const [pendingTimestamp, setPendingTimestamp] = useState<number | null>(null);
   const [copied, setCopied] = useState(false);
+  const playerRef = useRef<WaveformPlayerHandle>(null);
 
   const isOwner = user && track && user.uid === track.ownerId;
 
@@ -39,6 +41,11 @@ export const ReviewPage = () => {
       logError(err, 'handleFeedbackSubmit');
       setSubmitError('Failed to save feedback. Please try again.');
     }
+  };
+
+  const handleMarkRead = (feedbackId: string, read: boolean) => {
+    if (!trackId) return;
+    markFeedbackRead(trackId, feedbackId, read);
   };
 
   const copyShareLink = async () => {
@@ -89,6 +96,7 @@ export const ReviewPage = () => {
 
       {/* Waveform */}
       <WaveformPlayer
+        ref={playerRef}
         audioUrl={track.downloadURL}
         feedback={feedback}
         trackId={track.id}
@@ -113,7 +121,13 @@ export const ReviewPage = () => {
           </h2>
           <div className="feedback-list">
             {feedback.map((entry, i) => (
-              <FeedbackCard key={entry.id} entry={entry} index={i} />
+              <FeedbackCard
+                key={entry.id}
+                entry={entry}
+                index={i}
+                onMarkRead={isOwner ? handleMarkRead : undefined}
+                onTimestampClick={(s) => playerRef.current?.seekTo(s)}
+              />
             ))}
           </div>
         </div>

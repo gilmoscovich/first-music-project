@@ -29,6 +29,7 @@ export interface FeedbackEntry {
   volumeDb: number;
   bands: FrequencyBand[];
   createdAt?: Timestamp;
+  read?: boolean;
 }
 
 export interface Track {
