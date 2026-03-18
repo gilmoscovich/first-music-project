@@ -1,0 +1,102 @@
+import {
+  collection,
+  doc,
+  setDoc,
+  getDoc,
+  getDocs,
+  onSnapshot,
+  query,
+  where,
+  orderBy,
+  writeBatch,
+  increment,
+  serverTimestamp,
+  updateDoc,
+} from 'firebase/firestore';
+import type { Unsubscribe } from 'firebase/firestore';
+import { db } from './config';
+import type { Track, FeedbackEntry } from '../types';
+import { logError } from '../utils/errorHandler';
+
+export const createTrack = async (
+  trackId: string,
+  data: Omit<Track, 'id' | 'feedbackCount' | 'createdAt'>
+): Promise<void> => {
+  await setDoc(doc(db, 'tracks', trackId), {
+    ...data,
+    feedbackCount: 0,
+    createdAt: serverTimestamp(),
+  });
+};
+
+export const updateTrackDuration = async (trackId: string, duration: number): Promise<void> => {
+  await updateDoc(doc(db, 'tracks', trackId), { duration });
+};
+
+export const updateTrackTitle = async (trackId: string, title: string): Promise<void> => {
+  await updateDoc(doc(db, 'tracks', trackId), { title });
+};
+
+export const deleteTrack = async (trackId: string): Promise<void> => {
+  // Delete all feedback subcollection docs first
+  const feedbackSnap = await getDocs(collection(db, 'tracks', trackId, 'feedback'));
+  const batch = writeBatch(db);
+  feedbackSnap.docs.forEach((d) => batch.delete(d.ref));
+  batch.delete(doc(db, 'tracks', trackId));
+  await batch.commit();
+};
+
+export const getTrack = async (trackId: string): Promise<Track | null> => {
+  const snap = await getDoc(doc(db, 'tracks', trackId));
+  if (!snap.exists()) return null;
+  return { id: snap.id, ...snap.data() } as Track;
+};
+
+export const getUserTracks = async (uid: string): Promise<Track[]> => {
+  const q = query(
+    collection(db, 'tracks'),
+    where('ownerId', '==', uid),
+    orderBy('createdAt', 'desc')
+  );
+  const snap = await getDocs(q);
+  return snap.docs.map((d) => ({ id: d.id, ...d.data() } as Track));
+};
+
+export const addFeedback = async (
+  trackId: string,
+  feedback: Omit<FeedbackEntry, 'id' | 'createdAt'>
+): Promise<string> => {
+  const batch = writeBatch(db);
+
+  const feedbackRef = doc(collection(db, 'tracks', trackId, 'feedback'));
+  batch.set(feedbackRef, {
+    ...feedback,
+    createdAt: serverTimestamp(),
+  });
+
+  const trackRef = doc(db, 'tracks', trackId);
+  batch.update(trackRef, { feedbackCount: increment(1) });
+
+  await batch.commit();
+  return feedbackRef.id;
+};
+
+export const subscribeFeedback = (
+  trackId: string,
+  callback: (entries: FeedbackEntry[]) => void
+): Unsubscribe => {
+  const q = query(
+    collection(db, 'tracks', trackId, 'feedback'),
+    orderBy('timestamp', 'asc')
+  );
+  return onSnapshot(q, (snap) => {
+    const entries = snap.docs.map((d) => ({
+      id: d.id,
+      ...d.data(),
+    } as FeedbackEntry));
+    callback(entries);
+  }, (error) => {
+    logError(error, 'subscribeFeedback');
+    callback([]);
+  });
+};
