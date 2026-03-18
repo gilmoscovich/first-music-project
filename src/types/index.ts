@@ -30,6 +30,10 @@ export interface FeedbackEntry {
   bands: FrequencyBand[];
   createdAt?: Timestamp;
   read?: boolean;
+  readSections?: {
+    volume?: boolean;
+    frequencies?: boolean;
+  };
 }
 
 export interface Track {
@@ -41,5 +45,6 @@ export interface Track {
   downloadURL: string;
   duration?: number;
   feedbackCount: number;
+  unreadCount?: number;
   createdAt: Timestamp;
 }

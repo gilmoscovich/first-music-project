@@ -72,6 +72,11 @@
   opacity: 0.85;
 }
 
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 .profile-dropdown {
   position: absolute;
   top: calc(100% + 8px);
@@ -80,7 +85,7 @@
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 8px;
-  min-width: 200px;
+  min-width: 220px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
   z-index: 100;
   animation: fadeIn 0.15s ease;
@@ -99,6 +104,22 @@
   margin: 4px 0;
 }
 
+.profile-menu-link {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  border-radius: var(--radius);
+  font-size: 13px;
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: background 0.15s;
+}
+
+.profile-menu-link:hover {
+  background: var(--bg-raised);
+  text-decoration: none;
+}
+
 .profile-signout {
   width: 100%;
   text-align: left;
@@ -114,6 +135,57 @@
 
 .profile-signout:hover {
   background: var(--bg-raised);
+}
+
+/* Theme toggle */
+.theme-row {
+  padding: 6px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.theme-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.theme-toggle {
+  display: flex;
+  gap: 2px;
+  background: var(--bg-raised);
+  border-radius: var(--radius);
+  padding: 2px;
+}
+
+.theme-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: calc(var(--radius) - 2px);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+
+.theme-btn:hover {
+  color: var(--text-primary);
+}
+
+.theme-btn--active {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.theme-btn-icon {
+  font-size: 12px;
+  line-height: 1;
 }
 
 .app-main {

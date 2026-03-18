@@ -16,6 +16,17 @@
 
 .waveform-container {
   position: relative;
+  border-radius: var(--radius);
+  transition: box-shadow 0.3s ease;
+}
+
+@keyframes waveformPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(124, 106, 247, 0.4); }
+  50%       { box-shadow: 0 0 0 8px rgba(124, 106, 247, 0); }
+}
+
+.waveform-container--pulse {
+  animation: waveformPulse 1.8s ease-in-out infinite;
 }
 
 .waveform-loading {

@@ -1,11 +1,20 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
+import { useTheme } from '../../hooks/useTheme';
+import type { ThemeMode } from '../../hooks/useTheme';
 import { signOut } from '../../firebase/auth';
 import './AppShell.css';
 
+const THEME_OPTIONS: { mode: ThemeMode; label: string; icon: string }[] = [
+  { mode: 'light', label: 'Light', icon: '☀' },
+  { mode: 'dark',  label: 'Dark',  icon: '☾' },
+  { mode: 'system', label: 'System', icon: '⊙' },
+];
+
 export const AppShell = ({ children }: { children: React.ReactNode }) => {
   const { user } = useAuth();
+  const { mode, setTheme } = useTheme();
   const navigate = useNavigate();
   const [profileOpen, setProfileOpen] = useState(false);
   const profileRef = useRef<HTMLDivElement>(null);
@@ -46,6 +55,33 @@ export const AppShell = ({ children }: { children: React.ReactNode }) => {
                 {profileOpen && (
                   <div className="profile-dropdown">
                     <div className="profile-email">{user.email}</div>
+                    <div className="profile-divider" />
+                    <Link
+                      to="/"
+                      className="profile-menu-link"
+                      onClick={() => setProfileOpen(false)}
+                    >
+                      My Tracks
+                    </Link>
+                    <div className="profile-divider" />
+
+                    <div className="theme-row">
+                      <span className="theme-label">Theme</span>
+                      <div className="theme-toggle">
+                        {THEME_OPTIONS.map(({ mode: m, label, icon }) => (
+                          <button
+                            key={m}
+                            className={`theme-btn${mode === m ? ' theme-btn--active' : ''}`}
+                            onClick={() => setTheme(m)}
+                            title={label}
+                          >
+                            <span className="theme-btn-icon">{icon}</span>
+                            <span className="theme-btn-label">{label}</span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
                     <div className="profile-divider" />
                     <button onClick={handleSignOut} className="profile-signout">
                       Sign out

@@ -75,10 +75,28 @@ export const addFeedback = async (
   });
 
   const trackRef = doc(db, 'tracks', trackId);
-  batch.update(trackRef, { feedbackCount: increment(1) });
+  batch.update(trackRef, { feedbackCount: increment(1), unreadCount: increment(1) });
 
   await batch.commit();
   return feedbackRef.id;
+};
+
+export const deleteFeedback = async (trackId: string, feedbackId: string): Promise<void> => {
+  const batch = writeBatch(db);
+  batch.delete(doc(db, 'tracks', trackId, 'feedback', feedbackId));
+  batch.update(doc(db, 'tracks', trackId), { feedbackCount: increment(-1) });
+  await batch.commit();
+};
+
+export const markFeedbackSectionRead = async (
+  trackId: string,
+  feedbackId: string,
+  section: 'volume' | 'frequencies',
+  read: boolean
+): Promise<void> => {
+  await updateDoc(doc(db, 'tracks', trackId, 'feedback', feedbackId), {
+    [`readSections.${section}`]: read,
+  });
 };
 
 export const markFeedbackRead = async (
@@ -86,7 +104,10 @@ export const markFeedbackRead = async (
   feedbackId: string,
   read: boolean
 ): Promise<void> => {
-  await updateDoc(doc(db, 'tracks', trackId, 'feedback', feedbackId), { read });
+  const batch = writeBatch(db);
+  batch.update(doc(db, 'tracks', trackId, 'feedback', feedbackId), { read });
+  batch.update(doc(db, 'tracks', trackId), { unreadCount: increment(read ? -1 : 1) });
+  await batch.commit();
 };
 
 export const subscribeFeedback = (

@@ -5,7 +5,7 @@ service cloud.firestore {
       allow read: if true;
       allow create: if request.auth != null;
       allow update: if (request.auth != null && request.auth.uid == resource.data.ownerId)
-        || request.resource.data.diff(resource.data).affectedKeys().hasOnly(['feedbackCount']);
+        || request.resource.data.diff(resource.data).affectedKeys().hasOnly(['feedbackCount', 'unreadCount']);
       allow delete: if request.auth != null && request.auth.uid == resource.data.ownerId;
 
       match /feedback/{feedbackId} {
@@ -13,7 +13,7 @@ service cloud.firestore {
         allow create: if true;
         allow update: if request.auth != null
           && request.auth.uid == get(/databases/$(database)/documents/tracks/$(trackId)).data.ownerId
-          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['read']);
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['read', 'readSections']);
         allow delete: if request.auth != null
           && request.auth.uid == get(/databases/$(database)/documents/tracks/$(trackId)).data.ownerId;
       }

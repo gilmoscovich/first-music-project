@@ -16,6 +16,17 @@
   --radius-lg: 10px;
 }
 
+[data-theme="light"] {
+  --bg-primary: #f0f0f5;
+  --bg-surface: #ffffff;
+  --bg-raised: #e8e8f0;
+  --bg-hover: #dcdce8;
+  --text-primary: #1a1a2e;
+  --text-muted: #70708a;
+  --border: #d4d4e2;
+  --border-bright: #c0c0d4;
+}
+
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;

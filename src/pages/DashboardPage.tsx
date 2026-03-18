@@ -140,6 +140,10 @@ export const DashboardPage = () => {
                 {track.feedbackCount} comment{track.feedbackCount !== 1 ? 's' : ''}
               </div>
 
+              {(track.unreadCount ?? 0) > 0 && (
+                <span className="unread-badge">{track.unreadCount} new</span>
+              )}
+
               <button
                 onClick={() => copyLink(track.id)}
                 className={`track-copy-btn${copied === track.id ? ' track-copy-btn--copied' : ''}`}

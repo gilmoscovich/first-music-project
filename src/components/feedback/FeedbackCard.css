@@ -186,11 +186,45 @@
   border-left: 3px solid var(--accent-violet);
 }
 
+/* Active (playback-synced) highlight */
+.feedback-card--active {
+  border-left-color: var(--accent-amber);
+  box-shadow: 0 0 0 2px rgba(245, 197, 24, 0.25);
+}
+
+/* Delete button */
+.delete-feedback-btn {
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  border-radius: var(--radius);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  transition: background 0.15s, color 0.15s;
+}
+
+.delete-feedback-btn:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--accent-red);
+}
+
 /* ── Sub-section accordion ── */
 .card-section {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   overflow: hidden;
+}
+
+.card-section--checked {
+  opacity: 0.55;
+}
+
+.card-section--checked .section-title {
+  text-decoration: line-through;
 }
 
 .section-header {
@@ -216,6 +250,30 @@
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.05em;
+}
+
+.section-header-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.section-check {
+  font-size: 13px;
+  color: var(--text-muted);
+  padding: 2px 4px;
+  border-radius: var(--radius);
+  transition: color 0.15s, background 0.15s;
+  line-height: 1;
+}
+
+.section-check:hover {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.section-check--done {
+  color: var(--accent-green);
 }
 
 .section-chevron {

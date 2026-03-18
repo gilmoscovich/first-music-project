@@ -9,15 +9,18 @@ interface WaveformPlayerProps {
   feedback: FeedbackEntry[];
   trackId?: string;
   onTimestampClick: (seconds: number) => void;
+  onTimeUpdate?: (seconds: number) => void;
   interactable?: boolean;
+  showPulse?: boolean;
 }
 
 export interface WaveformPlayerHandle {
   seekTo: (seconds: number) => void;
+  playPause: () => void;
 }
 
 export const WaveformPlayer = forwardRef<WaveformPlayerHandle, WaveformPlayerProps>(
-  ({ audioUrl, feedback, trackId, onTimestampClick, interactable = true }, ref) => {
+  ({ audioUrl, feedback, trackId, onTimestampClick, onTimeUpdate, interactable = true, showPulse = false }, ref) => {
     const containerRef = useRef<HTMLDivElement | null>(null);
     const timelineRef = useRef<HTMLDivElement | null>(null);
     const [isPlaying, setIsPlaying] = useState(false);
@@ -38,39 +41,38 @@ export const WaveformPlayer = forwardRef<WaveformPlayerHandle, WaveformPlayerPro
       },
     });
 
+    const startTimeTracking = () => {
+      const interval = setInterval(() => {
+        if (!wsRef.current) { clearInterval(interval); return; }
+        const t = wsRef.current.getCurrentTime();
+        setCurrentTime(t);
+        onTimeUpdate?.(t);
+        if (!wsRef.current.isPlaying()) {
+          setIsPlaying(false);
+          clearInterval(interval);
+        }
+      }, 100);
+    };
+
     useImperativeHandle(ref, () => ({
       seekTo: (seconds: number) => {
         seekTo(seconds);
         if (wsRef.current && !wsRef.current.isPlaying()) {
           wsRef.current.play();
           setIsPlaying(true);
-          const interval = setInterval(() => {
-            if (!wsRef.current) { clearInterval(interval); return; }
-            setCurrentTime(wsRef.current.getCurrentTime());
-            if (!wsRef.current.isPlaying()) {
-              setIsPlaying(false);
-              clearInterval(interval);
-            }
-          }, 100);
+          startTimeTracking();
         }
       },
+      playPause: handlePlayPause,
     }));
 
     const handlePlayPause = () => {
       const ws = wsRef.current;
       if (!ws) return;
-
       if (!isPlaying) {
         ws.play();
         setIsPlaying(true);
-        const interval = setInterval(() => {
-          if (!wsRef.current) { clearInterval(interval); return; }
-          setCurrentTime(wsRef.current.getCurrentTime());
-          if (!wsRef.current.isPlaying()) {
-            setIsPlaying(false);
-            clearInterval(interval);
-          }
-        }, 100);
+        startTimeTracking();
       } else {
         ws.pause();
         setIsPlaying(false);
@@ -90,7 +92,7 @@ export const WaveformPlayer = forwardRef<WaveformPlayerHandle, WaveformPlayerPro
           </div>
         )}
 
-        <div className="waveform-container">
+        <div className={`waveform-container${showPulse ? ' waveform-container--pulse' : ''}`}>
           {!isReady && (
             <div className="waveform-loading">Loading waveform...</div>
           )}
