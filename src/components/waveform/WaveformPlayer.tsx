@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback, forwardRef, useImperativeHandle } from 'react';
+import { useRef, useState, useCallback, useEffect, forwardRef, useImperativeHandle } from 'react';
 import type { FeedbackEntry } from '../../types';
 import { useWavesurfer } from '../../hooks/useWavesurfer';
 import { formatTime } from '../../utils/formatTime';
@@ -30,6 +30,7 @@ export const WaveformPlayer = forwardRef<WaveformPlayerHandle, WaveformPlayerPro
     const containerRef = useRef<HTMLDivElement | null>(null);
     const timelineRef = useRef<HTMLDivElement | null>(null);
     const playerRef = useRef<HTMLDivElement | null>(null);
+    const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
@@ -73,17 +74,22 @@ export const WaveformPlayer = forwardRef<WaveformPlayerHandle, WaveformPlayerPro
     });
 
     const startTimeTracking = () => {
-      const interval = setInterval(() => {
-        if (!wsRef.current) { clearInterval(interval); return; }
+      if (intervalRef.current) clearInterval(intervalRef.current);
+      intervalRef.current = setInterval(() => {
+        if (!wsRef.current) { clearInterval(intervalRef.current!); intervalRef.current = null; return; }
         const t = wsRef.current.getCurrentTime();
         setCurrentTime(t);
         onTimeUpdate?.(t);
         if (!wsRef.current.isPlaying()) {
           setIsPlaying(false);
-          clearInterval(interval);
+          clearInterval(intervalRef.current!);
+          intervalRef.current = null;
         }
       }, 100);
     };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    useEffect(() => () => { if (intervalRef.current) clearInterval(intervalRef.current); }, []);
 
     useImperativeHandle(ref, () => ({
       seekTo: (seconds: number) => {

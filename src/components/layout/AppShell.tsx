@@ -55,6 +55,10 @@ export const AppShell = ({ children }: { children: React.ReactNode }) => {
     };
   }, [helpModeOn]);
 
+  useEffect(() => {
+    return () => { if (helpTipTimer.current) clearTimeout(helpTipTimer.current); };
+  }, []);
+
   const initial = user?.email?.[0]?.toUpperCase() ?? '?';
 
   return (

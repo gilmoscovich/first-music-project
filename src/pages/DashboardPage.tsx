@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { getUserTracks, deleteTrack, updateTrackTitle, getUserStorageUsed, updateTrackFileSize } from '../firebase/firestore';
@@ -18,6 +18,11 @@ export const DashboardPage = () => {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editTitle, setEditTitle] = useState('');
   const [storageUsed, setStorageUsed] = useState(0);
+  const copyTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => { if (copyTimerRef.current) clearTimeout(copyTimerRef.current); };
+  }, []);
 
   useEffect(() => {
     if (!user) return;
@@ -54,7 +59,8 @@ export const DashboardPage = () => {
   const copyLink = async (trackId: string) => {
     await navigator.clipboard.writeText(generateShareUrl(trackId));
     setCopied(trackId);
-    setTimeout(() => setCopied(null), 2000);
+    if (copyTimerRef.current) clearTimeout(copyTimerRef.current);
+    copyTimerRef.current = setTimeout(() => setCopied(null), 2000);
   };
 
   const handleDelete = async (track: Track) => {
