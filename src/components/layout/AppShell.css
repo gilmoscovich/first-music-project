@@ -7,8 +7,8 @@
 .app-header {
   background: var(--bg-surface);
   border-bottom: 1px solid var(--border);
-  padding: 0 24px;
-  height: 56px;
+  padding: 0 32px;
+  height: 64px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -27,7 +27,7 @@
 .header-upload-link {
   background: var(--accent-violet);
   color: #fff;
-  padding: 6px 14px;
+  padding: 8px 18px;
   border-radius: var(--radius);
   font-size: 13px;
   font-weight: 600;
@@ -45,7 +45,7 @@
 
 .app-logo-text {
   font-weight: 700;
-  font-size: 15px;
+  font-size: 16px;
   letter-spacing: 0.02em;
 }
 
@@ -55,12 +55,12 @@
 }
 
 .profile-avatar {
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   background: var(--accent-violet);
   color: #fff;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   border: none;
   cursor: pointer;
@@ -95,7 +95,7 @@
 }
 
 .profile-email {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-muted);
   padding: 4px 8px 8px;
   word-break: break-all;
@@ -110,9 +110,9 @@
 .profile-menu-link {
   display: block;
   width: 100%;
-  padding: 8px;
+  padding: 9px 10px;
   border-radius: var(--radius);
-  font-size: 13px;
+  font-size: 14px;
   color: var(--text-primary);
   text-decoration: none;
   transition: background 0.15s;
@@ -126,11 +126,11 @@
 .profile-signout {
   width: 100%;
   text-align: left;
-  padding: 8px;
+  padding: 9px 10px;
   border: none;
   background: transparent;
   color: var(--text-primary);
-  font-size: 13px;
+  font-size: 14px;
   border-radius: var(--radius);
   cursor: pointer;
   transition: background 0.15s;
@@ -204,11 +204,13 @@
 .help-mode-btn {
   display: flex;
   align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
+  gap: 5px;
+  padding: 0 10px;
+  height: 34px;
   border-radius: var(--radius);
   color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 600;
   transition: color 0.15s, background 0.15s;
 }
 
@@ -287,8 +289,8 @@
 
 .app-main {
   flex: 1;
-  padding: 32px 24px;
-  max-width: 1100px;
+  padding: 40px 32px;
+  max-width: 1200px;
   width: 100%;
   margin: 0 auto;
 }

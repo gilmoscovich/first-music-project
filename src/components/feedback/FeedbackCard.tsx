@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import type { FeedbackEntry } from '../../types';
-import { StarRating } from './StarRating';
 import { VolumeFader } from './VolumeFader';
+import { StarRating } from './StarRating';
 import { formatTime } from '../../utils/formatTime';
 import './FeedbackCard.css';
 
@@ -22,7 +22,7 @@ const VERDICT_LABEL: Record<string, string> = {
 };
 
 interface CardSectionProps {
-  title: string;
+  title?: string;
   checked?: boolean;
   onCheck?: (checked: boolean) => void;
   children: React.ReactNode;
@@ -48,7 +48,7 @@ const CardSection = ({ title, checked, onCheck, children }: CardSectionProps) =>
         className={`section-header${open ? '' : ' section-header--closed'}`}
         onClick={() => setOpen(o => !o)}
       >
-        <span className="section-title">{title}</span>
+        {title && <span className="section-title">{title}</span>}
         <div className="section-header-right">
           {onCheck && (
             <span
@@ -79,20 +79,22 @@ export const FeedbackCard = ({
   entry, index, isActive,
   onMarkRead, onSectionRead, onDelete, onTimestampClick,
 }: FeedbackCardProps) => {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
   const [isRead, setIsRead] = useState(!!entry.read);
   const activeBands = entry.bands?.filter(b => b.verdict) ?? [];
 
   useEffect(() => { setIsRead(!!entry.read); }, [entry.read]);
 
-  const handleMarkRead = () => {
+  const handleMarkRead = (e: React.MouseEvent) => {
+    e.stopPropagation();
     if (!onMarkRead || !entry.id) return;
     const next = !isRead;
     setIsRead(next);
     onMarkRead(entry.id, next);
   };
 
-  const handleDelete = () => {
+  const handleDelete = (e: React.MouseEvent) => {
+    e.stopPropagation();
     if (!onDelete || !entry.id) return;
     if (!confirm('Remove this feedback?')) return;
     onDelete(entry.id);
@@ -107,7 +109,7 @@ export const FeedbackCard = ({
 
   return (
     <div className={cardClass}>
-      <div className="card-header">
+      <div className="card-header" onClick={() => setCollapsed(c => !c)}>
         <div className="card-index">{index + 1}</div>
 
         <div className="card-reviewer">
@@ -122,7 +124,7 @@ export const FeedbackCard = ({
 
         <button
           className={`card-timestamp${onTimestampClick ? ' card-timestamp--clickable' : ''}`}
-          onClick={() => onTimestampClick?.(entry.timestamp)}
+          onClick={(e) => { e.stopPropagation(); onTimestampClick?.(entry.timestamp); }}
           title={onTimestampClick ? 'Play from this timestamp' : undefined}
           disabled={!onTimestampClick}
           data-help="Seek to this feedback's timestamp and play from there"
@@ -139,7 +141,7 @@ export const FeedbackCard = ({
           {onMarkRead && entry.id && (
             <button
               className={`mark-read-btn${isRead ? ' mark-read-btn--read' : ''}`}
-              onClick={handleMarkRead}
+              onClick={(e) => handleMarkRead(e)}
               title={isRead ? 'Mark as unread' : 'Mark as read'}
               data-help="Toggle read/unread status for this feedback"
             >
@@ -147,7 +149,7 @@ export const FeedbackCard = ({
             </button>
           )}
           {onDelete && entry.id && (
-            <button className="delete-feedback-btn" onClick={handleDelete} title="Delete this feedback" data-help="Permanently delete this feedback entry">
+            <button className="delete-feedback-btn" onClick={(e) => handleDelete(e)} title="Delete this feedback" data-help="Permanently delete this feedback entry">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <polyline points="3 6 5 6 21 6" />
                 <path d="M19 6l-1 14H6L5 6" />
@@ -158,7 +160,7 @@ export const FeedbackCard = ({
           )}
           <button
             className={`collapse-btn${collapsed ? ' collapse-btn--collapsed' : ''}`}
-            onClick={() => setCollapsed(c => !c)}
+            onClick={(e) => { e.stopPropagation(); setCollapsed(c => !c); }}
             title={collapsed ? 'Expand' : 'Collapse'}
             data-help="Collapse or expand the full feedback details"
           >

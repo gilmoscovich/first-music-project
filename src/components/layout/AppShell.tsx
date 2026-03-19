@@ -127,11 +127,11 @@ export const AppShell = ({ children }: { children: React.ReactNode }) => {
             title="Help & Reference"
             data-help="Open the Help & Reference guide — a quick overview of all features"
           >
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="12" cy="12" r="10" />
-              <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3" />
-              <line x1="12" y1="17" x2="12.01" y2="17" strokeWidth="2.5" strokeLinecap="round" />
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" />
             </svg>
+            Help
           </button>
           <button
             className={`help-mode-btn${helpModeOn ? ' help-mode-btn--active' : ''}`}
@@ -149,11 +149,11 @@ export const AppShell = ({ children }: { children: React.ReactNode }) => {
             title={helpModeOn ? 'Disable hover hints' : 'Enable hover hints'}
             data-help="Toggle hover hints — hover any control to see what it does"
           >
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="12" cy="12" r="1" />
-              <circle cx="12" cy="12" r="5" />
-              <circle cx="12" cy="12" r="10" strokeDasharray="2 3" />
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M9 21h6" />
+              <path d="M12 3a6 6 0 016 6c0 2.5-1.5 4.5-3 6H9c-1.5-1.5-3-3.5-3-6a6 6 0 016-6z" />
             </svg>
+            Hints
           </button>
           {showHelpTip && (
             <div className="help-mode-tip">

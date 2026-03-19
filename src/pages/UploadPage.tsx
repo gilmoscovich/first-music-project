@@ -43,6 +43,7 @@ export const UploadPage = () => {
         fileName: file.name,
         storagePath,
         downloadURL,
+        fileSize: file.size,
       });
 
       navigate(`/review/${trackId}`);

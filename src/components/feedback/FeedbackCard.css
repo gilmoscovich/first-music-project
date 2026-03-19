@@ -30,10 +30,10 @@
 }
 
 .card-body-content {
-  padding: 16px;
+  padding: 14px 16px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
 }
 
 /* Header */
@@ -42,18 +42,21 @@
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
 }
 
+
 .card-index {
-  width: 28px;
-  height: 28px;
+  width: 26px;
+  height: 26px;
   background: rgba(255, 140, 0, 0.15);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   color: var(--accent-violet);
   flex-shrink: 0;
@@ -132,8 +135,8 @@
 
 .mark-read-btn,
 .collapse-btn {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   border: none;
   background: transparent;
   border-radius: var(--radius);
@@ -195,8 +198,8 @@
 
 /* Delete button */
 .delete-feedback-btn {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   border: none;
   background: transparent;
   border-radius: var(--radius);
@@ -211,6 +214,11 @@
 .delete-feedback-btn:hover {
   background: rgba(239, 68, 68, 0.1);
   color: var(--accent-red);
+}
+
+/* Hide VolumeFader's own header when rendered inside a card section (CardSection provides the title) */
+.card-section .volume-header {
+  display: none;
 }
 
 /* ── Sub-section accordion ── */
@@ -233,7 +241,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 12px;
+  padding: 10px 14px;
   background: var(--bg-raised);
   border: none;
   cursor: pointer;

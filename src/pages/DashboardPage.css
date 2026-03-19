@@ -12,7 +12,7 @@
 }
 
 .dashboard-title {
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 700;
   margin-bottom: 4px;
 }
@@ -70,17 +70,17 @@
 .tracks-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
 }
 
 .track-item {
   background: var(--bg-surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  padding: 16px 20px;
+  padding: 20px 24px;
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 20px;
   transition: opacity 0.2s;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
@@ -157,10 +157,14 @@
   gap: 12px;
 }
 
+.track-filesize {
+  color: var(--border-bright);
+}
+
 .feedback-badge {
   background: var(--bg-raised);
   color: var(--text-muted);
-  padding: 4px 12px;
+  padding: 5px 14px;
   border-radius: 99px;
   font-size: 12px;
   font-weight: 700;
@@ -173,7 +177,7 @@
 }
 
 .track-copy-btn {
-  padding: 6px 12px;
+  padding: 7px 14px;
   border-radius: var(--radius);
   background: var(--bg-raised);
   color: var(--text-muted);
@@ -191,7 +195,7 @@
 }
 
 .track-view-link {
-  padding: 6px 14px;
+  padding: 7px 16px;
   border-radius: var(--radius);
   background: var(--bg-raised);
   color: var(--text-primary);
@@ -218,7 +222,7 @@
 .unread-badge {
   background: rgba(245, 197, 24, 0.15);
   color: var(--accent-amber);
-  padding: 3px 9px;
+  padding: 4px 10px;
   border-radius: 99px;
   font-size: 11px;
   font-weight: 700;

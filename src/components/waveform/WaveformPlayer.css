@@ -2,7 +2,7 @@
   background: var(--bg-surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  padding: 20px;
+  padding: 24px;
   position: relative;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
 }
@@ -50,13 +50,13 @@
 .waveform-controls {
   display: flex;
   align-items: center;
-  gap: 16px;
-  margin-top: 16px;
+  gap: 20px;
+  margin-top: 18px;
 }
 
 .play-btn {
-  width: 40px;
-  height: 40px;
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
   background: var(--bg-raised);
   display: flex;
@@ -72,9 +72,9 @@
 
 .waveform-time {
   color: var(--text-muted);
-  font-size: 12px;
+  font-size: 13px;
   font-family: monospace;
-  min-width: 90px;
+  min-width: 96px;
 }
 
 .waveform-markers-badge {

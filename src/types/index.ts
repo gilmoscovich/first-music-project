@@ -44,7 +44,12 @@ export interface Track {
   storagePath: string;
   downloadURL: string;
   duration?: number;
+  fileSize?: number;
   feedbackCount: number;
   unreadCount?: number;
   createdAt: Timestamp;
+}
+
+export interface UserDoc {
+  storageUsed: number;
 }

@@ -1,7 +1,6 @@
 import {
   collection,
   doc,
-  setDoc,
   getDoc,
   getDocs,
   onSnapshot,
@@ -22,11 +21,20 @@ export const createTrack = async (
   trackId: string,
   data: Omit<Track, 'id' | 'feedbackCount' | 'createdAt'>
 ): Promise<void> => {
-  await setDoc(doc(db, 'tracks', trackId), {
+  const batch = writeBatch(db);
+  batch.set(doc(db, 'tracks', trackId), {
     ...data,
     feedbackCount: 0,
     createdAt: serverTimestamp(),
   });
+  if (data.fileSize && data.ownerId) {
+    batch.set(
+      doc(db, 'users', data.ownerId),
+      { storageUsed: increment(data.fileSize) },
+      { merge: true }
+    );
+  }
+  await batch.commit();
 };
 
 export const updateTrackDuration = async (trackId: string, duration: number): Promise<void> => {
@@ -37,12 +45,35 @@ export const updateTrackTitle = async (trackId: string, title: string): Promise<
   await updateDoc(doc(db, 'tracks', trackId), { title });
 };
 
-export const deleteTrack = async (trackId: string): Promise<void> => {
-  // Delete all feedback subcollection docs first
+export const deleteTrack = async (trackId: string, ownerId?: string, fileSize?: number): Promise<void> => {
   const feedbackSnap = await getDocs(collection(db, 'tracks', trackId, 'feedback'));
   const batch = writeBatch(db);
   feedbackSnap.docs.forEach((d) => batch.delete(d.ref));
   batch.delete(doc(db, 'tracks', trackId));
+  if (ownerId && fileSize) {
+    batch.set(
+      doc(db, 'users', ownerId),
+      { storageUsed: increment(-fileSize) },
+      { merge: true }
+    );
+  }
+  await batch.commit();
+};
+
+export const getUserStorageUsed = async (uid: string): Promise<number> => {
+  const snap = await getDoc(doc(db, 'users', uid));
+  if (!snap.exists()) return 0;
+  return (snap.data().storageUsed as number) ?? 0;
+};
+
+export const updateTrackFileSize = async (
+  trackId: string,
+  uid: string,
+  fileSize: number
+): Promise<void> => {
+  const batch = writeBatch(db);
+  batch.update(doc(db, 'tracks', trackId), { fileSize });
+  batch.set(doc(db, 'users', uid), { storageUsed: increment(fileSize) }, { merge: true });
   await batch.commit();
 };
 

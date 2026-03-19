@@ -1,4 +1,4 @@
-import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from 'firebase/storage';
+import { ref, uploadBytesResumable, getDownloadURL, deleteObject, getMetadata } from 'firebase/storage';
 import { storage } from './config';
 
 export const uploadAudio = (
@@ -36,4 +36,9 @@ export const deleteAudio = async (storagePath: string): Promise<void> => {
   } catch {
     // File may already be deleted — ignore
   }
+};
+
+export const getFileMetadata = async (storagePath: string): Promise<number> => {
+  const metadata = await getMetadata(ref(storage, storagePath));
+  return metadata.size;
 };

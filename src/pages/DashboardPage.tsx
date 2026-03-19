@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import { getUserTracks, deleteTrack, updateTrackTitle } from '../firebase/firestore';
-import { deleteAudio } from '../firebase/storage';
+import { getUserTracks, deleteTrack, updateTrackTitle, getUserStorageUsed, updateTrackFileSize } from '../firebase/firestore';
+import { deleteAudio, getFileMetadata } from '../firebase/storage';
+import { StorageBar } from '../components/dashboard/StorageBar';
 import type { Track } from '../types';
 import { generateShareUrl } from '../utils/shareLink';
 import { formatTime } from '../utils/formatTime';
@@ -16,12 +17,38 @@ export const DashboardPage = () => {
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editTitle, setEditTitle] = useState('');
+  const [storageUsed, setStorageUsed] = useState(0);
 
   useEffect(() => {
     if (!user) return;
-    getUserTracks(user.uid)
-      .then(setTracks)
-      .finally(() => setLoading(false));
+    Promise.all([
+      getUserTracks(user.uid),
+      getUserStorageUsed(user.uid).catch(() => 0),
+    ]).then(
+      async ([loadedTracks, usedBytes]) => {
+        setTracks(loadedTracks);
+        setStorageUsed(usedBytes);
+        setLoading(false);
+
+        // Backfill file sizes for tracks uploaded before this feature
+        const missing = loadedTracks.filter((t) => !t.fileSize);
+        if (missing.length === 0) return;
+        let gained = 0;
+        await Promise.all(
+          missing.map(async (t) => {
+            try {
+              const size = await getFileMetadata(t.storagePath);
+              await updateTrackFileSize(t.id, user.uid, size);
+              gained += size;
+              setTracks((prev) => prev.map((p) => p.id === t.id ? { ...p, fileSize: size } : p));
+            } catch {
+              // Storage file may be inaccessible — skip silently
+            }
+          })
+        );
+        if (gained > 0) setStorageUsed((prev) => prev + gained);
+      }
+    ).catch(() => setLoading(false));
   }, [user]);
 
   const copyLink = async (trackId: string) => {
@@ -35,8 +62,9 @@ export const DashboardPage = () => {
     setDeletingId(track.id);
     try {
       await deleteAudio(track.storagePath);
-      await deleteTrack(track.id);
+      await deleteTrack(track.id, user?.uid, track.fileSize);
       setTracks((prev) => prev.filter((t) => t.id !== track.id));
+      if (track.fileSize) setStorageUsed((prev) => Math.max(0, prev - track.fileSize!));
     } finally {
       setDeletingId(null);
     }
@@ -69,6 +97,8 @@ export const DashboardPage = () => {
           + Upload Track
         </Link>
       </div>
+
+      <StorageBar usedBytes={storageUsed} />
 
       {tracks.length === 0 ? (
         <div className="empty-state">
@@ -133,6 +163,11 @@ export const DashboardPage = () => {
                 <div className="track-meta">
                   <span>{track.createdAt?.toDate().toLocaleDateString()}</span>
                   {track.duration && <span>{formatTime(track.duration)}</span>}
+                  {track.fileSize && (
+                    <span className="track-filesize">
+                      {(track.fileSize / 1024 / 1024).toFixed(1)} MB
+                    </span>
+                  )}
                 </div>
               </div>
 
