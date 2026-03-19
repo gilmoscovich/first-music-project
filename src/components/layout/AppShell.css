@@ -7,8 +7,8 @@
 .app-header {
   background: var(--bg-surface);
   border-bottom: 1px solid var(--border);
-  padding: 0 32px;
-  height: 64px;
+  padding: 0 40px;
+  height: 72px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -27,11 +27,16 @@
 .header-upload-link {
   background: var(--accent-violet);
   color: #fff;
-  padding: 8px 18px;
+  padding: 9px 20px;
   border-radius: var(--radius);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   text-decoration: none;
+  transition: opacity 0.15s;
+}
+
+.header-upload-link:hover {
+  opacity: 0.88;
 }
 
 /* RIGHT side — brand */
@@ -45,7 +50,7 @@
 
 .app-logo-text {
   font-weight: 700;
-  font-size: 16px;
+  font-size: 18px;
   letter-spacing: 0.02em;
 }
 
@@ -55,12 +60,12 @@
 }
 
 .profile-avatar {
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   background: var(--accent-violet);
   color: #fff;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 700;
   border: none;
   cursor: pointer;
@@ -205,11 +210,11 @@
   display: flex;
   align-items: center;
   gap: 5px;
-  padding: 0 10px;
-  height: 34px;
+  padding: 0 12px;
+  height: 38px;
   border-radius: var(--radius);
   color: var(--text-muted);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   transition: color 0.15s, background 0.15s;
 }
@@ -289,8 +294,8 @@
 
 .app-main {
   flex: 1;
-  padding: 40px 32px;
-  max-width: 1200px;
+  padding: 48px 40px;
+  max-width: 1400px;
   width: 100%;
   margin: 0 auto;
 }

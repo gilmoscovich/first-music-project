@@ -129,7 +129,7 @@ export const DashboardPage = () => {
               className={`track-item${deletingId === track.id ? ' track-item--deleting' : ''}`}
             >
               <div className="track-icon">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent-violet)" strokeWidth="2">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--accent-violet)" strokeWidth="2">
                   <path d="M9 18V5l12-2v13" />
                   <circle cx="6" cy="18" r="3" />
                   <circle cx="18" cy="16" r="3" />

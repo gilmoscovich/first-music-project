@@ -2,7 +2,7 @@
   background: var(--bg-surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  padding: 24px;
+  padding: 28px;
   position: relative;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
 }
@@ -55,8 +55,8 @@
 }
 
 .play-btn {
-  width: 46px;
-  height: 46px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
   background: var(--bg-raised);
   display: flex;
@@ -68,6 +68,12 @@
 
 .play-btn--ready {
   background: var(--accent-violet);
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.play-btn--ready:hover {
+  opacity: 0.88;
 }
 
 .waveform-time {
@@ -85,6 +91,12 @@
   border-radius: 99px;
   font-size: 12px;
   font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.waveform-markers-badge:hover {
+  background: rgba(255, 140, 0, 0.3);
 }
 
 /* Marker hover tooltip */

@@ -3,7 +3,6 @@ import { DEFAULT_BANDS } from '../../types';
 import type { FrequencyBand, FeedbackEntry } from '../../types';
 import { VolumeFader } from './VolumeFader';
 import { FrequencyPanel } from './FrequencyPanel';
-import { StarRating } from './StarRating';
 import { formatTime } from '../../utils/formatTime';
 import './FeedbackPopup.css';
 
@@ -16,7 +15,6 @@ interface FeedbackPopupProps {
 export const FeedbackPopup = ({ timestamp, onSubmit, onCancel }: FeedbackPopupProps) => {
   const [reviewerName, setReviewerName] = useState('');
   const [comment, setComment] = useState('');
-  const [rating, setRating] = useState(0);
   const [volumeDb, setVolumeDb] = useState(0);
   const [bands, setBands] = useState<FrequencyBand[]>(DEFAULT_BANDS.map(b => ({ ...b })));
   const [submitting, setSubmitting] = useState(false);
@@ -25,13 +23,13 @@ export const FeedbackPopup = ({ timestamp, onSubmit, onCancel }: FeedbackPopupPr
     if (rating === 0) return;
     setSubmitting(true);
     try {
-      await onSubmit({ timestamp, reviewerName: reviewerName || 'Anonymous', comment, rating, volumeDb, bands });
+      await onSubmit({ timestamp, reviewerName: reviewerName || 'Anonymous', comment, rating: 0, volumeDb, bands });
     } finally {
       setSubmitting(false);
     }
   };
 
-  const isDisabled = rating === 0 || submitting;
+  const isDisabled = submitting;
 
   return (
     <div className="popup-overlay">
@@ -54,13 +52,6 @@ export const FeedbackPopup = ({ timestamp, onSubmit, onCancel }: FeedbackPopupPr
               onChange={(e) => setReviewerName(e.target.value)}
               style={{ width: '100%' }}
             />
-          </div>
-
-          <div>
-            <div className="popup-label">
-              Overall feel at this moment <span className="popup-label-required">*</span>
-            </div>
-            <StarRating value={rating} onChange={setRating} />
           </div>
 
           <VolumeFader value={volumeDb} onChange={setVolumeDb} />

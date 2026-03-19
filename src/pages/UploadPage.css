@@ -17,7 +17,7 @@
 }
 
 .upload-title {
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 700;
   margin-bottom: 6px;
 }
@@ -41,6 +41,11 @@
   background: var(--bg-surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
+  transition: border-color 0.15s;
+}
+
+.file-selected:hover {
+  border-color: var(--border-bright);
 }
 
 .file-name {
@@ -73,6 +78,15 @@
   font-weight: 700;
   font-size: 14px;
   width: 100%;
+  transition: opacity 0.15s, transform 0.1s;
+}
+
+.upload-btn:hover {
+  opacity: 0.88;
+}
+
+.upload-btn:active {
+  transform: scale(0.99);
 }
 
 .uploading-state {

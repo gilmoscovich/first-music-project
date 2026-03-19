@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { FeedbackEntry } from '../../types';
 import { VolumeFader } from './VolumeFader';
-import { StarRating } from './StarRating';
 import { formatTime } from '../../utils/formatTime';
 import './FeedbackCard.css';
 
@@ -59,7 +58,7 @@ const CardSection = ({ title, checked, onCheck, children }: CardSectionProps) =>
               {localChecked ? '✓' : '○'}
             </span>
           )}
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="section-chevron">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="section-chevron">
             <polyline points="6 9 12 15 18 9" />
           </svg>
         </div>
@@ -130,7 +129,7 @@ export const FeedbackCard = ({
           data-help="Seek to this feedback's timestamp and play from there"
         >
           {onTimestampClick && (
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" className="timestamp-play-icon">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" className="timestamp-play-icon">
               <polygon points="5,3 19,12 5,21" />
             </svg>
           )}
@@ -150,7 +149,7 @@ export const FeedbackCard = ({
           )}
           {onDelete && entry.id && (
             <button className="delete-feedback-btn" onClick={(e) => handleDelete(e)} title="Delete this feedback" data-help="Permanently delete this feedback entry">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <polyline points="3 6 5 6 21 6" />
                 <path d="M19 6l-1 14H6L5 6" />
                 <path d="M10 11v6M14 11v6" />
@@ -164,7 +163,7 @@ export const FeedbackCard = ({
             title={collapsed ? 'Expand' : 'Collapse'}
             data-help="Collapse or expand the full feedback details"
           >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
               <polyline points="6 9 12 15 18 9" />
             </svg>
           </button>
@@ -174,11 +173,6 @@ export const FeedbackCard = ({
       <div className="card-body-wrapper">
         <div className="card-body">
           <div className="card-body-content">
-            <div className="card-rating-row">
-              <StarRating value={entry.rating} readonly />
-              <span className="card-rating-value">{entry.rating}/5</span>
-            </div>
-
             {entry.comment && (
               <div className="card-comment">{entry.comment}</div>
             )}

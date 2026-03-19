@@ -8,6 +8,11 @@
   transition: all 0.15s;
 }
 
+.dropzone:hover:not(.dropzone--dragging) {
+  border-color: var(--accent-violet);
+  background: rgba(255, 140, 0, 0.04);
+}
+
 .dropzone--dragging {
   border-color: var(--accent-violet);
   background: rgba(255, 140, 0, 0.08);

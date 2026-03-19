@@ -12,9 +12,10 @@
   max-width: 400px;
   background: var(--bg-surface);
   border: 1px solid var(--border);
+  border-top: 2px solid var(--accent-violet);
   border-radius: var(--radius-lg);
   padding: 36px 32px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
 .login-header {
@@ -29,7 +30,7 @@
 }
 
 .login-title {
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 700;
   margin-bottom: 6px;
 }
@@ -76,9 +77,18 @@
   width: 100%;
 }
 
+.login-submit-btn:hover:not(.login-submit-btn--loading) {
+  opacity: 0.88;
+}
+
+.login-submit-btn:active:not(.login-submit-btn--loading) {
+  transform: scale(0.99);
+}
+
 .login-submit-btn--loading {
   background: var(--bg-raised);
   color: var(--text-muted);
+  cursor: not-allowed;
 }
 
 .login-toggle {
@@ -96,4 +106,9 @@
   padding: 0;
   cursor: pointer;
   font-size: 13px;
+  transition: opacity 0.15s;
+}
+
+.toggle-link:hover {
+  opacity: 0.8;
 }

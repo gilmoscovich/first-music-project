@@ -72,6 +72,12 @@
   cursor: pointer;
 }
 
+.verdict-btn--interactive:hover:not(.verdict-btn--active) {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+  border-color: var(--border-bright);
+}
+
 .verdict-btn--readonly {
   cursor: default;
 }

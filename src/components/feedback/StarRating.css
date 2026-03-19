@@ -20,6 +20,15 @@
   cursor: pointer;
 }
 
+.star-btn--interactive:hover {
+  color: var(--accent-amber);
+  transform: scale(1.1);
+}
+
+.star-btn {
+  transition: color 0.1s, transform 0.1s;
+}
+
 .star-btn--readonly {
   cursor: default;
 }

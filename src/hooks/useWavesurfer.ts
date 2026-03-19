@@ -44,7 +44,7 @@ export const useWavesurfer = ({
       id: entry.id,
       start: entry.timestamp,
       end: entry.timestamp + 0.8,
-      color: 'rgba(255, 140, 0, 0.4)',
+      color: 'rgba(255, 140, 0, 0.65)',
       drag: false,
       resize: false,
     });
@@ -136,5 +136,22 @@ export const useWavesurfer = ({
     if (duration > 0) ws.seekTo(seconds / duration);
   };
 
-  return { play, seekTo, wsRef };
+  const flashMarkers = () => {
+    const regions = regionsRef.current?.getRegions();
+    if (!regions) return;
+    regions.forEach(r => {
+      if (!r.element) return;
+      r.element.style.transition = 'background 0.15s';
+      r.element.style.background = 'rgba(255, 140, 0, 0.95)';
+    });
+    setTimeout(() => {
+      regions.forEach(r => {
+        if (!r.element) return;
+        r.element.style.background = 'rgba(255, 140, 0, 0.65)';
+        setTimeout(() => { if (r.element) r.element.style.transition = ''; }, 400);
+      });
+    }, 600);
+  };
+
+  return { play, seekTo, wsRef, flashMarkers };
 };

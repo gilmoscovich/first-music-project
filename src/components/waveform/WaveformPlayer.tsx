@@ -49,7 +49,7 @@ export const WaveformPlayer = forwardRef<WaveformPlayerHandle, WaveformPlayerPro
       });
     }, []);
 
-    const { wsRef, seekTo } = useWavesurfer({
+    const { wsRef, seekTo, flashMarkers } = useWavesurfer({
       containerRef,
       timelineRef,
       audioUrl,
@@ -164,9 +164,9 @@ export const WaveformPlayer = forwardRef<WaveformPlayerHandle, WaveformPlayerPro
           </span>
 
           {feedback.length > 0 && (
-            <span className="waveform-markers-badge" data-help="Number of feedback markers — hover an orange marker on the waveform to preview it">
+            <button className="waveform-markers-badge" onClick={flashMarkers} data-help="Number of feedback markers — click to highlight them on the waveform">
               {feedback.length} marker{feedback.length !== 1 ? 's' : ''}
-            </span>
+            </button>
           )}
         </div>
 
