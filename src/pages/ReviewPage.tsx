@@ -12,6 +12,7 @@ import { WaveformPlayer } from '../components/waveform/WaveformPlayer';
 import type { WaveformPlayerHandle } from '../components/waveform/WaveformPlayer';
 import { FeedbackPopup } from '../components/feedback/FeedbackPopup';
 import { FeedbackCard } from '../components/feedback/FeedbackCard';
+import { WalkthroughModal } from '../components/onboarding/WalkthroughModal';
 import { generateShareUrl } from '../utils/shareLink';
 import { logError } from '../utils/errorHandler';
 import type { FeedbackEntry } from '../types';
@@ -42,10 +43,19 @@ export const ReviewPage = () => {
   const [filter, setFilter] = useState<FilterMode>('all');
   const [sort, setSort] = useState<SortMode>('timestamp');
 
-  // Onboarding pulse (reviewer only, one-time)
+  // Onboarding pulse + walkthrough (reviewer only, one-time)
   const [showPulse, setShowPulse] = useState(
     () => !localStorage.getItem('fs-onboarded')
   );
+  const [showWalkthrough, setShowWalkthrough] = useState(
+    () => !localStorage.getItem('fs-onboarded')
+  );
+
+  const handleWalkthroughDismiss = () => {
+    localStorage.setItem('fs-onboarded', '1');
+    setShowWalkthrough(false);
+    setShowPulse(false);
+  };
 
   const isOwner = !!(user && track && user.uid === track.ownerId);
   const displayTitle = localTitle ?? track?.title ?? '';
@@ -170,6 +180,7 @@ export const ReviewPage = () => {
               <button
                 onClick={copyShareLink}
                 className={`share-btn${copied ? ' share-btn--copied' : ''}`}
+                data-help="Copy the review link to share with collaborators"
               >
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                   <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" />
@@ -177,7 +188,7 @@ export const ReviewPage = () => {
                 </svg>
                 {copied ? 'Copied!' : 'Share Link'}
               </button>
-              <button className="settings-trigger-btn" onClick={openDrawer} title="Track settings">
+              <button className="settings-trigger-btn" onClick={openDrawer} title="Track settings" data-help="Track settings — rename or delete this track">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <circle cx="12" cy="12" r="3" />
                   <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" />
@@ -223,7 +234,7 @@ export const ReviewPage = () => {
             </h2>
 
             <div className="feedback-controls">
-              <div className="filter-tabs">
+              <div className="filter-tabs" data-help="Filter feedback: show All entries or only Unread ones">
                 <button
                   className={`filter-tab${filter === 'all' ? ' filter-tab--active' : ''}`}
                   onClick={() => setFilter('all')}
@@ -238,6 +249,7 @@ export const ReviewPage = () => {
                 className="sort-select"
                 value={sort}
                 onChange={e => setSort(e.target.value as SortMode)}
+                data-help="Sort feedback by timestamp position, star rating, or newest first"
               >
                 <option value="timestamp">By Timestamp</option>
                 <option value="rating">By Rating</option>
@@ -275,6 +287,10 @@ export const ReviewPage = () => {
 
       {submitError && (
         <div className="submit-error">{submitError}</div>
+      )}
+
+      {!isOwner && showWalkthrough && (
+        <WalkthroughModal onDismiss={handleWalkthroughDismiss} />
       )}
 
       {pendingTimestamp !== null && (

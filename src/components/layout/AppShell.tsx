@@ -4,6 +4,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { useTheme } from '../../hooks/useTheme';
 import type { ThemeMode } from '../../hooks/useTheme';
 import { signOut } from '../../firebase/auth';
+import { HelpModal } from '../help/HelpModal';
 import './AppShell.css';
 
 const THEME_OPTIONS: { mode: ThemeMode; label: string; icon: string }[] = [
@@ -18,6 +19,11 @@ export const AppShell = ({ children }: { children: React.ReactNode }) => {
   const navigate = useNavigate();
   const [profileOpen, setProfileOpen] = useState(false);
   const profileRef = useRef<HTMLDivElement>(null);
+  const [helpOpen, setHelpOpen] = useState(false);
+  const [helpModeOn, setHelpModeOn] = useState(false);
+  const [helpText, setHelpText] = useState<string | null>(null);
+  const [showHelpTip, setShowHelpTip] = useState(false);
+  const helpTipTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleSignOut = async () => {
     await signOut();
@@ -34,6 +40,21 @@ export const AppShell = ({ children }: { children: React.ReactNode }) => {
     return () => document.removeEventListener('mousedown', handleClick);
   }, []);
 
+  useEffect(() => {
+    if (!helpModeOn) { setHelpText(null); return; }
+    const onOver = (e: MouseEvent) => {
+      const el = (e.target as Element).closest('[data-help]');
+      setHelpText(el?.getAttribute('data-help') ?? null);
+    };
+    const onOut = () => setHelpText(null);
+    document.addEventListener('mouseover', onOver);
+    document.addEventListener('mouseleave', onOut, true);
+    return () => {
+      document.removeEventListener('mouseover', onOver);
+      document.removeEventListener('mouseleave', onOut, true);
+    };
+  }, [helpModeOn]);
+
   const initial = user?.email?.[0]?.toUpperCase() ?? '?';
 
   return (
@@ -48,6 +69,7 @@ export const AppShell = ({ children }: { children: React.ReactNode }) => {
                   className="profile-avatar"
                   onClick={() => setProfileOpen(o => !o)}
                   title="Profile"
+                  data-help="Profile menu — access My Tracks, change theme, or sign out"
                 >
                   {initial}
                 </button>
@@ -90,15 +112,58 @@ export const AppShell = ({ children }: { children: React.ReactNode }) => {
                 )}
               </div>
 
-              <Link to="/upload" className="header-upload-link">
+              <Link to="/upload" className="header-upload-link" data-help="Upload a new audio track to collect feedback on">
                 + Upload
               </Link>
             </>
           )}
         </div>
 
+        {/* CENTER: help buttons */}
+        <div className="header-center">
+          <button
+            className="help-btn"
+            onClick={() => setHelpOpen(true)}
+            title="Help & Reference"
+            data-help="Open the Help & Reference guide — a quick overview of all features"
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3" />
+              <line x1="12" y1="17" x2="12.01" y2="17" strokeWidth="2.5" strokeLinecap="round" />
+            </svg>
+          </button>
+          <button
+            className={`help-mode-btn${helpModeOn ? ' help-mode-btn--active' : ''}`}
+            onClick={() => {
+              const next = !helpModeOn;
+              setHelpModeOn(next);
+              if (next) {
+                setShowHelpTip(true);
+                if (helpTipTimer.current) clearTimeout(helpTipTimer.current);
+                helpTipTimer.current = setTimeout(() => setShowHelpTip(false), 2500);
+              } else {
+                setShowHelpTip(false);
+              }
+            }}
+            title={helpModeOn ? 'Disable hover hints' : 'Enable hover hints'}
+            data-help="Toggle hover hints — hover any control to see what it does"
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <circle cx="12" cy="12" r="1" />
+              <circle cx="12" cy="12" r="5" />
+              <circle cx="12" cy="12" r="10" strokeDasharray="2 3" />
+            </svg>
+          </button>
+          {showHelpTip && (
+            <div className="help-mode-tip">
+              Hints will appear in the bottom-right corner
+            </div>
+          )}
+        </div>
+
         {/* RIGHT: brand logo */}
-        <Link to="/" className="app-logo">
+        <Link to="/" className="app-logo" data-help="Go to your dashboard — view and manage all your tracks">
           <span className="app-logo-text">Feedback Studio</span>
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent-violet)" strokeWidth="2">
             <path d="M9 18V5l12-2v13" />
@@ -111,6 +176,15 @@ export const AppShell = ({ children }: { children: React.ReactNode }) => {
       <main className="app-main">
         {children}
       </main>
+
+      {helpOpen && <HelpModal onClose={() => setHelpOpen(false)} />}
+
+      {helpModeOn && helpText && (
+        <div className="help-corner-panel">
+          <div className="help-corner-label">Hint</div>
+          {helpText}
+        </div>
+      )}
     </div>
   );
 };

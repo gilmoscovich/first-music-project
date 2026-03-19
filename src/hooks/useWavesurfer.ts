@@ -13,6 +13,8 @@ interface UseWavesurferOptions {
   trackId?: string;
   onTimestampClick: (seconds: number) => void;
   onReady?: () => void;
+  onMarkerHover?: (id: string | null, x: number, y: number) => void;
+  onMarkerClick?: (timestamp: number) => void;
 }
 
 export const useWavesurfer = ({
@@ -23,22 +25,47 @@ export const useWavesurfer = ({
   trackId,
   onTimestampClick,
   onReady,
+  onMarkerHover,
+  onMarkerClick,
 }: UseWavesurferOptions) => {
   const wsRef = useRef<WaveSurfer | null>(null);
   const regionsRef = useRef<RegionsPlugin | null>(null);
   const renderedIdsRef = useRef<Set<string>>(new Set());
   const isReadyRef = useRef(false);
+  const onMarkerHoverRef = useRef(onMarkerHover);
+  onMarkerHoverRef.current = onMarkerHover;
+  const onMarkerClickRef = useRef(onMarkerClick);
+  onMarkerClickRef.current = onMarkerClick;
+  const regionClickedRef = useRef(false);
 
   const addMarker = useCallback((entry: FeedbackEntry) => {
     if (!regionsRef.current || !entry.id) return;
-    regionsRef.current.addRegion({
+    const region = regionsRef.current.addRegion({
       id: entry.id,
       start: entry.timestamp,
-      end: entry.timestamp + 0.5,
-      color: 'rgba(245, 197, 24, 0.9)',
+      end: entry.timestamp + 0.8,
+      color: 'rgba(255, 140, 0, 0.4)',
       drag: false,
       resize: false,
     });
+    const el = region.element;
+    if (el) {
+      el.style.cursor = 'pointer';
+      el.addEventListener('mouseenter', (e: MouseEvent) => {
+        onMarkerHoverRef.current?.(entry.id!, e.clientX, e.clientY);
+      });
+      el.addEventListener('mousemove', (e: MouseEvent) => {
+        onMarkerHoverRef.current?.(entry.id!, e.clientX, e.clientY);
+      });
+      el.addEventListener('mouseleave', () => {
+        onMarkerHoverRef.current?.(null, 0, 0);
+      });
+      el.addEventListener('click', () => {
+        regionClickedRef.current = true;
+        onMarkerClickRef.current?.(entry.timestamp);
+        setTimeout(() => { regionClickedRef.current = false; }, 0);
+      });
+    }
     renderedIdsRef.current.add(entry.id);
   }, []);
 
@@ -47,16 +74,16 @@ export const useWavesurfer = ({
 
     const timeline = TimelinePlugin.create({
       container: timelineRef.current,
-      style: { color: '#6b6b80', fontSize: '11px' },
+      style: { color: '#888888', fontSize: '11px' },
     });
 
     const regions = RegionsPlugin.create();
 
     const ws = WaveSurfer.create({
       container: containerRef.current,
-      waveColor: '#3a3a4a',
-      progressColor: '#7c6af7',
-      cursorColor: '#f5c518',
+      waveColor: '#787878',
+      progressColor: '#FF8C00',
+      cursorColor: '#FF8C00',
       height: 100,
       normalize: true,
       interact: true,
@@ -79,9 +106,9 @@ export const useWavesurfer = ({
     });
 
     ws.on('interaction', (newTime: number) => {
-      // Only fire if not clicking on an existing region
-      onTimestampClick(newTime);
+      if (!regionClickedRef.current) onTimestampClick(newTime);
     });
+
 
     return () => {
       ws.destroy();

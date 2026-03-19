@@ -10,7 +10,7 @@
 
 .dropzone--dragging {
   border-color: var(--accent-violet);
-  background: rgba(124, 106, 247, 0.05);
+  background: rgba(255, 140, 0, 0.08);
 }
 
 .dropzone-icon {

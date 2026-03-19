@@ -125,6 +125,7 @@ export const FeedbackCard = ({
           onClick={() => onTimestampClick?.(entry.timestamp)}
           title={onTimestampClick ? 'Play from this timestamp' : undefined}
           disabled={!onTimestampClick}
+          data-help="Seek to this feedback's timestamp and play from there"
         >
           {onTimestampClick && (
             <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" className="timestamp-play-icon">
@@ -140,12 +141,13 @@ export const FeedbackCard = ({
               className={`mark-read-btn${isRead ? ' mark-read-btn--read' : ''}`}
               onClick={handleMarkRead}
               title={isRead ? 'Mark as unread' : 'Mark as read'}
+              data-help="Toggle read/unread status for this feedback"
             >
               {isRead ? '✓' : '○'}
             </button>
           )}
           {onDelete && entry.id && (
-            <button className="delete-feedback-btn" onClick={handleDelete} title="Delete this feedback">
+            <button className="delete-feedback-btn" onClick={handleDelete} title="Delete this feedback" data-help="Permanently delete this feedback entry">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <polyline points="3 6 5 6 21 6" />
                 <path d="M19 6l-1 14H6L5 6" />
@@ -158,6 +160,7 @@ export const FeedbackCard = ({
             className={`collapse-btn${collapsed ? ' collapse-btn--collapsed' : ''}`}
             onClick={() => setCollapsed(c => !c)}
             title={collapsed ? 'Expand' : 'Collapse'}
+            data-help="Collapse or expand the full feedback details"
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
               <polyline points="6 9 12 15 18 9" />

@@ -136,22 +136,26 @@ export const DashboardPage = () => {
                 </div>
               </div>
 
-              <div className={`feedback-badge${track.feedbackCount > 0 ? ' feedback-badge--active' : ''}`}>
+              <div
+                className={`feedback-badge${track.feedbackCount > 0 ? ' feedback-badge--active' : ''}`}
+                data-help="Total number of feedback markers left on this track"
+              >
                 {track.feedbackCount} comment{track.feedbackCount !== 1 ? 's' : ''}
               </div>
 
               {(track.unreadCount ?? 0) > 0 && (
-                <span className="unread-badge">{track.unreadCount} new</span>
+                <span className="unread-badge" data-help="New feedback received since your last visit">{track.unreadCount} new</span>
               )}
 
               <button
                 onClick={() => copyLink(track.id)}
                 className={`track-copy-btn${copied === track.id ? ' track-copy-btn--copied' : ''}`}
+                data-help="Copy the review link to send to collaborators"
               >
                 {copied === track.id ? '✓ Copied' : 'Copy Link'}
               </button>
 
-              <Link to={`/review/${track.id}`} className="track-view-link">
+              <Link to={`/review/${track.id}`} className="track-view-link" data-help="Open the review page for this track">
                 View →
               </Link>
 
@@ -159,8 +163,12 @@ export const DashboardPage = () => {
                 onClick={() => startEdit(track)}
                 title="Rename"
                 className="track-rename-btn"
+                data-help="Rename this track"
               >
-                ✏️
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                </svg>
               </button>
 
               <button
@@ -168,8 +176,14 @@ export const DashboardPage = () => {
                 disabled={deletingId === track.id}
                 title="Delete track"
                 className="track-delete-btn"
+                data-help="Permanently delete this track and all its feedback"
               >
-                🗑
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="3 6 5 6 21 6" />
+                  <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                  <path d="M10 11v6M14 11v6" />
+                  <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
+                </svg>
               </button>
             </div>
           ))}
