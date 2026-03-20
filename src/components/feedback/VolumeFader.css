@@ -1,5 +1,4 @@
-.volume-fader {
-}
+.volume-fader {}
 
 .volume-header {
   display: flex;
@@ -9,37 +8,36 @@
 }
 
 .volume-label {
-  font-size: 12px;
+  font-size: 10px;
   color: var(--text-muted);
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.1em;
 }
 
 .volume-value {
   font-size: 13px;
   font-weight: 700;
-  font-family: monospace;
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.02em;
 }
 
-.volume-value--positive {
-  color: var(--accent-amber);
-}
-
-.volume-value--negative {
-  color: var(--accent-violet);
-}
-
-.volume-value--zero {
-  color: var(--accent-green);
-}
+.volume-value--positive { color: var(--accent-amber); }
+.volume-value--negative { color: var(--accent-violet); }
+.volume-value--zero     { color: var(--accent-green); }
 
 .volume-track {
   position: relative;
-  height: 8px;
-  background: var(--bg-raised);
-  border-radius: 4px;
+  height: 6px;
+  background: var(--bg-primary);
+  border-radius: 99px;
   border: 1px solid var(--border);
+  box-shadow: inset 0 1px 4px rgba(0,0,0,0.3);
+}
+
+[data-theme="light"] .volume-track {
+  background: var(--bg-elevated);
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
 }
 
 .volume-center-line {
@@ -55,16 +53,17 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  border-radius: 4px;
+  border-radius: 99px;
   transition: all 0.05s;
 }
 
 .volume-fill--positive {
-  background: var(--accent-amber);
+  background: linear-gradient(90deg, rgba(255,140,0,0.4), var(--accent-amber));
+  box-shadow: 0 0 6px rgba(255,140,0,0.25);
 }
 
 .volume-fill--negative {
-  background: var(--accent-violet);
+  background: linear-gradient(90deg, var(--accent-violet-dim), rgba(255,140,0,0.4));
 }
 
 .volume-fill--zero {
@@ -79,11 +78,20 @@
   cursor: pointer;
 }
 
+.volume-readonly-text {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-style: italic;
+  line-height: 1.5;
+}
+
 .volume-scale {
   display: flex;
   justify-content: space-between;
-  margin-top: 4px;
+  margin-top: 5px;
   color: var(--text-muted);
   font-size: 10px;
-  font-family: monospace;
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.02em;
+  opacity: 0.6;
 }

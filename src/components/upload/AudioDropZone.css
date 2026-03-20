@@ -1,49 +1,62 @@
 .dropzone {
   border: 2px dashed var(--border-bright);
-  border-radius: var(--radius-lg);
-  padding: 48px 24px;
+  border-radius: var(--radius-xl);
+  padding: 56px 24px;
   text-align: center;
   cursor: pointer;
   background: var(--bg-surface);
-  transition: all 0.15s;
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
 }
 
-.dropzone:hover:not(.dropzone--dragging) {
-  border-color: var(--accent-violet);
-  background: rgba(255, 140, 0, 0.04);
+[data-theme="light"] .dropzone {
+  border-color: rgba(0,0,0,0.15);
+}
+
+.dropzone:hover {
+  border-color: rgba(255, 140, 0, 0.5);
+  background: rgba(255, 140, 0, 0.02);
+  box-shadow: 0 0 0 4px rgba(255,140,0,0.05);
 }
 
 .dropzone--dragging {
-  border-color: var(--accent-violet);
-  background: rgba(255, 140, 0, 0.08);
+  border-color: var(--accent-amber);
+  border-style: solid;
+  background: rgba(255, 140, 0, 0.05);
+  box-shadow: 0 0 0 4px rgba(255,140,0,0.1);
 }
 
 .dropzone-icon {
-  margin: 0 auto 16px;
+  margin: 0 auto 18px;
   display: block;
   color: var(--text-muted);
+  opacity: 0.5;
+  transition: color 0.2s, opacity 0.2s, transform 0.2s;
 }
 
+.dropzone:hover .dropzone-icon,
 .dropzone--dragging .dropzone-icon {
-  color: var(--accent-violet);
+  color: var(--accent-amber);
+  opacity: 1;
+  transform: scale(1.1);
 }
 
 .dropzone-title {
-  font-weight: 600;
-  margin-bottom: 6px;
+  font-family: 'Manrope', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 8px;
 }
 
 .dropzone-hint {
   color: var(--text-muted);
   font-size: 13px;
+  line-height: 1.6;
 }
 
 .dropzone-error {
   color: var(--accent-red);
   font-size: 13px;
-  margin-top: 8px;
+  margin-top: 10px;
 }
 
-.dropzone-input {
-  display: none;
-}
+.dropzone-input { display: none; }

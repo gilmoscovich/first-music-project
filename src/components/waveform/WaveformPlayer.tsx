@@ -148,20 +148,36 @@ export const WaveformPlayer = forwardRef<WaveformPlayerHandle, WaveformPlayerPro
             data-help="Play or pause the track — you can also press Space"
           >
             {isPlaying ? (
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="white">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" className="play-btn-icon">
                 <rect x="6" y="4" width="4" height="16" />
                 <rect x="14" y="4" width="4" height="16" />
               </svg>
             ) : (
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="white">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" className="play-btn-icon">
                 <polygon points="5,3 19,12 5,21" />
               </svg>
             )}
           </button>
 
-          <span className="waveform-time">
-            {formatTime(currentTime)} / {formatTime(duration)}
-          </span>
+          <div className="waveform-time-group">
+            <span className="waveform-time-current">{formatTime(currentTime)}</span>
+            <span className="waveform-time-duration">/ {formatTime(duration)}</span>
+            <span className="waveform-time-hint">Space to play / pause</span>
+          </div>
+
+          {interactable && isReady && (
+            <button
+              className="pin-feedback-btn"
+              onClick={() => onTimestampClick(currentTime)}
+              data-help="Pin feedback at the current playback position"
+            >
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="12" y1="17" x2="12" y2="22" />
+                <path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4h1v4.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24Z" />
+              </svg>
+              Pin Feedback Here
+            </button>
+          )}
 
           {feedback.length > 0 && (
             <button className="waveform-markers-badge" onClick={flashMarkers} data-help="Number of feedback markers — click to highlight them on the waveform">

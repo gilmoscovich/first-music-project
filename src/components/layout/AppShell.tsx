@@ -64,8 +64,70 @@ export const AppShell = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="app-shell">
       <header className="app-header">
-        {/* LEFT: profile + upload */}
+        {/* LEFT: logo + nav */}
         <div className="header-left">
+          <Link to="/" className="app-logo" data-help="Go to your dashboard — view and manage all your tracks">
+            <div className="app-logo-mark">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <path d="M9 18V5l12-2v13" />
+                <circle cx="6" cy="18" r="3" />
+                <circle cx="18" cy="16" r="3" />
+              </svg>
+            </div>
+            <span className="app-logo-text">Feedback Studio</span>
+          </Link>
+
+          <nav className="header-nav">
+            <Link to="/" className="header-nav-item" data-help="Go to your dashboard — view and manage all your tracks">Projects</Link>
+            <span className="header-nav-item header-nav-item--inactive">Team</span>
+            <span className="header-nav-item header-nav-item--inactive">Settings</span>
+          </nav>
+        </div>
+
+        {/* RIGHT: help, hints, profile, upload */}
+        <div className="header-right">
+          <button
+            className="help-btn"
+            onClick={() => setHelpOpen(true)}
+            title="Help & Reference"
+            data-help="Open the Help & Reference guide — a quick overview of all features"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+              <line x1="12" y1="17" x2="12.01" y2="17" />
+            </svg>
+            Help
+          </button>
+
+          <button
+            className={`help-mode-btn${helpModeOn ? ' help-mode-btn--active' : ''}`}
+            onClick={() => {
+              const next = !helpModeOn;
+              setHelpModeOn(next);
+              if (next) {
+                setShowHelpTip(true);
+                if (helpTipTimer.current) clearTimeout(helpTipTimer.current);
+                helpTipTimer.current = setTimeout(() => setShowHelpTip(false), 2500);
+              } else {
+                setShowHelpTip(false);
+              }
+            }}
+            title={helpModeOn ? 'Disable hover hints' : 'Enable hover hints'}
+            data-help="Toggle hover hints — hover any control to see what it does"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M9 21h6" />
+              <path d="M12 3a6 6 0 016 6c0 2.5-1.5 4.5-3 6H9c-1.5-1.5-3-3.5-3-6a6 6 0 016-6z" />
+            </svg>
+            Hints
+          </button>
+          {showHelpTip && (
+            <div className="help-mode-tip">
+              Hints will appear in the bottom-right corner
+            </div>
+          )}
+
           {user && (
             <>
               <div className="profile-menu" ref={profileRef}>
@@ -116,65 +178,17 @@ export const AppShell = ({ children }: { children: React.ReactNode }) => {
                 )}
               </div>
 
-              <Link to="/upload" className="header-upload-link" data-help="Upload a new audio track to collect feedback on">
-                + Upload
+              <Link to="/upload" className="header-upload-btn" data-help="Upload a new audio track to collect feedback on">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                  <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                  <polyline points="17 8 12 3 7 8" />
+                  <line x1="12" y1="3" x2="12" y2="15" />
+                </svg>
+                Upload New
               </Link>
             </>
           )}
         </div>
-
-        {/* CENTER: help buttons */}
-        <div className="header-center">
-          <button
-            className="help-btn"
-            onClick={() => setHelpOpen(true)}
-            title="Help & Reference"
-            data-help="Open the Help & Reference guide — a quick overview of all features"
-          >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
-              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" />
-            </svg>
-            Help
-          </button>
-          <button
-            className={`help-mode-btn${helpModeOn ? ' help-mode-btn--active' : ''}`}
-            onClick={() => {
-              const next = !helpModeOn;
-              setHelpModeOn(next);
-              if (next) {
-                setShowHelpTip(true);
-                if (helpTipTimer.current) clearTimeout(helpTipTimer.current);
-                helpTipTimer.current = setTimeout(() => setShowHelpTip(false), 2500);
-              } else {
-                setShowHelpTip(false);
-              }
-            }}
-            title={helpModeOn ? 'Disable hover hints' : 'Enable hover hints'}
-            data-help="Toggle hover hints — hover any control to see what it does"
-          >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M9 21h6" />
-              <path d="M12 3a6 6 0 016 6c0 2.5-1.5 4.5-3 6H9c-1.5-1.5-3-3.5-3-6a6 6 0 016-6z" />
-            </svg>
-            Hints
-          </button>
-          {showHelpTip && (
-            <div className="help-mode-tip">
-              Hints will appear in the bottom-right corner
-            </div>
-          )}
-        </div>
-
-        {/* RIGHT: brand logo */}
-        <Link to="/" className="app-logo" data-help="Go to your dashboard — view and manage all your tracks">
-          <span className="app-logo-text">Feedback Studio</span>
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent-violet)" strokeWidth="2">
-            <path d="M9 18V5l12-2v13" />
-            <circle cx="6" cy="18" r="3" />
-            <circle cx="18" cy="16" r="3" />
-          </svg>
-        </Link>
       </header>
 
       <main className="app-main">

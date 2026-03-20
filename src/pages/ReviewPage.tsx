@@ -14,6 +14,7 @@ import { FeedbackPopup } from '../components/feedback/FeedbackPopup';
 import { FeedbackCard } from '../components/feedback/FeedbackCard';
 import { WalkthroughModal } from '../components/onboarding/WalkthroughModal';
 import { generateShareUrl } from '../utils/shareLink';
+import { formatTime } from '../utils/formatTime';
 import { logError } from '../utils/errorHandler';
 import type { FeedbackEntry } from '../types';
 import './ReviewPage.css';
@@ -287,6 +288,29 @@ export const ReviewPage = () => {
 
       {submitError && (
         <div className="submit-error">{submitError}</div>
+      )}
+
+      {!isOwner && (
+        <div className="reviewer-bottom-bar">
+          <button
+            className="reviewer-bottom-input"
+            onClick={() => handleTimestampClick(playbackTime)}
+            data-help="Click to add feedback at the current playback position"
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" y2="16" />
+              <line x1="8" y1="12" x2="16" y2="12" />
+            </svg>
+            Add feedback at {formatTime(playbackTime)}...
+          </button>
+          <button
+            className="reviewer-bottom-submit"
+            onClick={() => handleTimestampClick(playbackTime)}
+          >
+            Submit
+          </button>
+        </div>
       )}
 
       {!isOwner && showWalkthrough && (

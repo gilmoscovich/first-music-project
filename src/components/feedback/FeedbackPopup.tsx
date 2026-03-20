@@ -20,7 +20,6 @@ export const FeedbackPopup = ({ timestamp, onSubmit, onCancel }: FeedbackPopupPr
   const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async () => {
-    if (rating === 0) return;
     setSubmitting(true);
     try {
       await onSubmit({ timestamp, reviewerName: reviewerName || 'Anonymous', comment, rating: 0, volumeDb, bands });

@@ -4,6 +4,22 @@ import { VolumeFader } from './VolumeFader';
 import { formatTime } from '../../utils/formatTime';
 import './FeedbackCard.css';
 
+// Deterministic avatar color from name
+const AVATAR_COLORS = [
+  '#E07B54', '#7C8CF8', '#3DD68C', '#F472B6',
+  '#60C9F8', '#FBBF24', '#A78BFA', '#34D399',
+];
+function avatarColor(name: string): string {
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) hash = (hash * 31 + name.charCodeAt(i)) >>> 0;
+  return AVATAR_COLORS[hash % AVATAR_COLORS.length];
+}
+function avatarInitials(name: string): string {
+  const parts = name.trim().split(/\s+/);
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
 interface FeedbackCardProps {
   entry: FeedbackEntry;
   index: number;
@@ -81,6 +97,14 @@ export const FeedbackCard = ({
   const [collapsed, setCollapsed] = useState(true);
   const [isRead, setIsRead] = useState(!!entry.read);
   const activeBands = entry.bands?.filter(b => b.verdict) ?? [];
+  const reviewerName = entry.reviewerName || 'Anonymous';
+  const initials = avatarInitials(reviewerName);
+  const color = avatarColor(reviewerName);
+
+  // Status: REVIEWED / IN PROGRESS / NEW
+  const sectionsRead = entry.readSections?.volume || entry.readSections?.frequencies;
+  const statusLabel = isRead ? 'REVIEWED' : sectionsRead ? 'IN PROGRESS' : 'NEW';
+  const statusClass = isRead ? 'status-reviewed' : sectionsRead ? 'status-in-progress' : 'status-new';
 
   useEffect(() => { setIsRead(!!entry.read); }, [entry.read]);
 
@@ -109,15 +133,23 @@ export const FeedbackCard = ({
   return (
     <div className={cardClass}>
       <div className="card-header" onClick={() => setCollapsed(c => !c)}>
-        <div className="card-index">{index + 1}</div>
+        <span className="card-index">{String(index + 1).padStart(2, '0')}</span>
+        <span className="card-sep" />
+
+        <div className="card-avatar" style={{ background: color + '22', color }}>
+          {initials}
+        </div>
 
         <div className="card-reviewer">
           <div className="card-reviewer-name">
-            {entry.reviewerName || 'Anonymous'}
-            {isRead && <span className="reviewed-badge">✓ Reviewed</span>}
+            {reviewerName}
+            <span className={`card-status-badge ${statusClass}`}>{statusLabel}</span>
           </div>
-          <div className="card-reviewer-date">
+          <div className="card-reviewer-meta">
             {entry.createdAt?.toDate().toLocaleDateString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+            {entry.comment && (
+              <span className="card-comment-preview"> · "{entry.comment.length > 48 ? entry.comment.slice(0, 48) + '…' : entry.comment}"</span>
+            )}
           </div>
         </div>
 

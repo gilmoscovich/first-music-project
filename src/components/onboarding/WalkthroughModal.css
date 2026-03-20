@@ -24,13 +24,13 @@
   background: var(--bg-surface);
   border: 1px solid var(--border-bright);
   border-top: 3px solid var(--accent-violet);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-xl);
   padding: 36px 32px 24px;
   width: 100%;
   max-width: 380px;
   text-align: center;
   animation: wt-slide 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  box-shadow: var(--shadow-lg);
 }
 
 .walkthrough-icon {
@@ -105,16 +105,18 @@
 
 .walkthrough-next-btn {
   padding: 8px 24px;
-  background: var(--accent-violet);
+  background: linear-gradient(135deg, var(--accent-amber) 0%, var(--accent-violet-dim) 100%);
   color: #fff;
-  border-radius: var(--radius);
+  border-radius: 9999px;
   font-size: 12px;
   font-weight: 700;
-  transition: opacity 0.15s;
+  transition: opacity 0.15s, transform 0.15s;
+  box-shadow: 0 4px 14px rgba(255,140,0,0.25);
 }
 
 .walkthrough-next-btn:hover {
   opacity: 0.9;
+  transform: translateY(-1px);
 }
 
 .walkthrough-skip {

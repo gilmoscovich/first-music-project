@@ -11,6 +11,23 @@ export const VolumeFader = ({ value, onChange, readonly = false }: VolumeFaderPr
   const pct = ((value + 12) / 24) * 100;
   const colorClass = value > 0 ? 'positive' : value < 0 ? 'negative' : 'zero';
 
+  if (readonly) {
+    const description = value === 0
+      ? 'Volume sounds balanced'
+      : value > 0
+        ? `Increase volume by ${value.toFixed(1)} dB`
+        : `Decrease volume by ${Math.abs(value).toFixed(1)} dB`;
+    return (
+      <div className="volume-fader">
+        <div className="volume-header">
+          <span className="volume-label">Volume</span>
+          <span className={`volume-value volume-value--${colorClass}`}>{label}</span>
+        </div>
+        <div className="volume-readonly-text">{description}</div>
+      </div>
+    );
+  }
+
   return (
     <div className="volume-fader">
       <div className="volume-header">
@@ -27,17 +44,15 @@ export const VolumeFader = ({ value, onChange, readonly = false }: VolumeFaderPr
             right: value >= 0 ? `${100 - pct}%` : '50%',
           }}
         />
-        {!readonly && (
-          <input
-            type="range"
-            min={-12}
-            max={12}
-            step={0.5}
-            value={value}
-            onChange={(e) => onChange?.(parseFloat(e.target.value))}
-            className="volume-range-input"
-          />
-        )}
+        <input
+          type="range"
+          min={-12}
+          max={12}
+          step={0.5}
+          value={value}
+          onChange={(e) => onChange?.(parseFloat(e.target.value))}
+          className="volume-range-input"
+        />
       </div>
 
       <div className="volume-scale">

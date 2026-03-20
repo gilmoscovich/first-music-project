@@ -1,94 +1,148 @@
+/* ── Login Page ── */
 .login-page {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   background: var(--bg-primary);
-  padding: 20px;
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Warm background glow */
+.login-page::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(circle, rgba(255,140,0,0.08) 0%, transparent 65%);
+  pointer-events: none;
 }
 
 .login-card {
   width: 100%;
-  max-width: 400px;
+  max-width: 420px;
   background: var(--bg-surface);
   border: 1px solid var(--border);
-  border-top: 2px solid var(--accent-violet);
-  border-radius: var(--radius-lg);
-  padding: 36px 32px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  border-radius: var(--radius-xl);
+  padding: 44px 40px;
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Orange top accent line */
+.login-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-violet-dim), var(--accent-amber), var(--accent-violet-dim));
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+}
+
+[data-theme="light"] .login-card {
+  box-shadow: 0 16px 60px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.05);
+  border-color: rgba(0,0,0,0.06);
 }
 
 .login-header {
   text-align: center;
-  margin-bottom: 32px;
+  margin-bottom: 36px;
 }
 
 .login-logo {
   display: flex;
   justify-content: center;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
+}
+
+.login-logo-mark {
+  width: 52px;
+  height: 52px;
+  background: linear-gradient(135deg, var(--accent-amber) 0%, var(--accent-violet-dim) 100%);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(255,140,0,0.3);
 }
 
 .login-title {
-  font-size: 24px;
-  font-weight: 700;
-  margin-bottom: 6px;
+  font-family: 'Manrope', sans-serif;
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: 8px;
 }
 
 .login-subtitle {
   color: var(--text-muted);
-  font-size: 14px;
+  font-size: 13.5px;
+  line-height: 1.65;
 }
 
 .login-form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 18px;
 }
 
 .form-label {
   display: block;
-  font-size: 12px;
+  font-size: 11px;
   color: var(--text-muted);
-  margin-bottom: 6px;
-  font-weight: 600;
+  margin-bottom: 7px;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.07em;
 }
 
 .error-message {
-  background: rgba(247, 106, 106, 0.1);
-  border: 1px solid rgba(247, 106, 106, 0.3);
+  background: rgba(224, 82, 82, 0.08);
+  border: 1px solid rgba(224, 82, 82, 0.2);
   border-radius: var(--radius);
-  padding: 10px 12px;
+  padding: 10px 14px;
   color: var(--accent-red);
   font-size: 13px;
+  line-height: 1.5;
 }
 
 .login-submit-btn {
-  background: var(--accent-violet);
+  background: linear-gradient(135deg, var(--accent-amber) 0%, var(--accent-violet-dim) 100%);
   color: #fff;
-  padding: 10px;
-  border-radius: var(--radius);
+  padding: 13px;
+  border-radius: var(--radius-xl);
   font-weight: 700;
   font-size: 14px;
-  transition: all 0.15s;
   margin-top: 4px;
   width: 100%;
+  transition: opacity 0.15s, transform 0.15s, box-shadow 0.15s;
+  box-shadow: 0 4px 16px rgba(255,140,0,0.28);
+  border: none;
+  cursor: pointer;
+  letter-spacing: 0.01em;
 }
 
-.login-submit-btn:hover:not(.login-submit-btn--loading) {
-  opacity: 0.88;
+.login-submit-btn:hover {
+  opacity: 0.92;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(255,140,0,0.38);
 }
 
-.login-submit-btn:active:not(.login-submit-btn--loading) {
-  transform: scale(0.99);
-}
+.login-submit-btn:active { transform: translateY(0) scale(0.99); }
 
 .login-submit-btn--loading {
   background: var(--bg-raised);
   color: var(--text-muted);
-  cursor: not-allowed;
+  box-shadow: none;
 }
 
 .login-toggle {
@@ -99,16 +153,15 @@
 }
 
 .toggle-link {
-  color: var(--accent-violet);
-  font-weight: 600;
+  color: var(--accent-amber);
+  font-weight: 700;
   background: none;
   border: none;
   padding: 0;
   cursor: pointer;
   font-size: 13px;
-  transition: opacity 0.15s;
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
-.toggle-link:hover {
-  opacity: 0.8;
-}
+.toggle-link:hover { opacity: 0.8; }

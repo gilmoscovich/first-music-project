@@ -1,32 +1,60 @@
+/* ── Design Tokens ── */
 :root {
-  --bg-primary: #1E1E1E;
-  --bg-surface: #363636;
-  --bg-raised: #424242;
-  --bg-hover: #505050;
-  --accent-amber: #FF8C00;
-  --accent-violet: #FF8C00;
+  /* Surfaces — dark theme (default) */
+  --bg-primary:   #13131A;
+  --bg-surface:   #1C1C26;
+  --bg-raised:    #25252F;
+  --bg-elevated:  #2D2D3A;
+  --bg-hover:     #333342;
+
+  /* Accent */
+  --accent-amber:      #FF8C00;
+  --accent-violet:     #FF8C00;
   --accent-violet-dim: #CC7000;
-  --accent-green: #5AC473;
-  --accent-red: #E05252;
-  --text-primary: #E8E8E8;
-  --text-muted: #9E9E9E;
-  --border: #4A4A4A;
-  --border-bright: #5E5E5E;
-  --radius: 2px;
-  --radius-lg: 2px;
+  --accent-green:      #3DD68C;
+  --accent-red:        #E05252;
+  --accent-blue:       #7C8CF8;
+
+  /* Text */
+  --text-primary:   #EEEEF4;
+  --text-secondary: #9898B0;
+  --text-muted:     #60607A;
+
+  /* Borders */
+  --border:        #24243A;
+  --border-bright: #36364E;
+
+  /* Radius — editorial rounded style */
+  --radius-sm:  8px;
+  --radius:     12px;
+  --radius-lg:  16px;
+  --radius-xl:  24px;
+
+  /* Shadows */
+  --shadow-sm:    0 1px 4px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.18);
+  --shadow-md:    0 4px 16px rgba(0,0,0,0.35), 0 1px 4px rgba(0,0,0,0.22);
+  --shadow-lg:    0 8px 32px rgba(0,0,0,0.45), 0 2px 8px rgba(0,0,0,0.28);
+  --shadow-amber: 0 4px 20px rgba(255,140,0,0.28), 0 1px 4px rgba(255,140,0,0.14);
 }
 
 [data-theme="light"] {
-  --bg-primary: #C8C8C8;
-  --bg-surface: #DCDCDC;
-  --bg-raised: #D2D2D2;
-  --bg-hover: #C4C4C4;
-  --text-primary: #0F0F0F;
-  --text-muted: #3E3E3E;
-  --border: #AAAAAA;
-  --border-bright: #888888;
+  --bg-primary:   #F5F5F7;
+  --bg-surface:   #FFFFFF;
+  --bg-raised:    #F0F0F3;
+  --bg-elevated:  #E8E8EC;
+  --bg-hover:     #E0E0E6;
+  --text-primary:   #111118;
+  --text-secondary: #4A4A62;
+  --text-muted:     #8888A0;
+  --border:        #E4E4EC;
+  --border-bright: #D0D0DC;
+  --shadow-sm:    0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md:    0 4px 20px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.05);
+  --shadow-lg:    0 12px 40px rgba(0,0,0,0.1), 0 3px 10px rgba(0,0,0,0.06);
+  --shadow-amber: 0 4px 20px rgba(255,140,0,0.22), 0 1px 4px rgba(255,140,0,0.12);
 }
 
+/* ── Reset ── */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -40,21 +68,24 @@ html, body, #root {
 body {
   background: var(--bg-primary);
   color: var(--text-primary);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 15px;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 14px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Headlines — Manrope for editorial feel */
+h1, h2, h3, h4, .display {
+  font-family: 'Manrope', system-ui, sans-serif;
 }
 
 a {
   color: var(--accent-violet);
   text-decoration: none;
-  transition: opacity 0.15s;
 }
 
-a:hover {
-  opacity: 0.8;
-}
+a:hover { text-decoration: underline; }
 
 button {
   cursor: pointer;
@@ -65,36 +96,32 @@ button {
 }
 
 input, textarea {
-  font: inherit;
-  color: inherit;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 14px;
+  color: var(--text-primary);
   background: var(--bg-raised);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-bright);
   border-radius: var(--radius);
-  padding: 11px 16px;
+  padding: 10px 14px;
   outline: none;
   width: 100%;
   box-sizing: border-box;
-  transition: border-color 0.15s;
+  transition: border-color 0.15s, box-shadow 0.15s;
 }
 
 input:focus, textarea:focus {
   border-color: var(--accent-violet);
+  box-shadow: 0 0 0 3px rgba(255,140,0,0.12);
 }
 
 textarea {
   resize: vertical;
   min-height: 80px;
+  line-height: 1.6;
 }
 
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--bg-primary);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--border-bright);
-}
+/* ── Scrollbars ── */
+::-webkit-scrollbar        { width: 4px; height: 4px; }
+::-webkit-scrollbar-track  { background: transparent; }
+::-webkit-scrollbar-thumb  { background: var(--border-bright); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }

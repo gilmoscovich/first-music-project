@@ -2,38 +2,46 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Design Improvement Guidelines
+## Always Do First
+- **Invoke the `frontend-design` skill** before writing any frontend code, every session, no exceptions.
 
-When touching any frontend/UI code, apply these principles:
+## Reference Images
+- If a reference image is provided: match layout, spacing, typography, and color exactly. Swap in placeholder content (images via `https://placehold.co/`, generic copy). Do not improve or add to the design.
+- If no reference image: design from scratch with high craft (see guardrails below).
+- Screenshot your output, compare against reference, fix mismatches, re-screenshot. Do at least 2 comparison rounds. Stop only when no visible differences remain or user says so.
 
-### Visual Hierarchy
-- Use clear typographic hierarchy (distinct sizes for headings, subheadings, body)
-- Make the most important element on each page visually dominant
-- Avoid walls of text — break content into digestible sections
+## Local Server
+- **Always serve on localhost** — never screenshot a `file:///` URL.
+- Start the dev server: `npm run dev` (serves at `http://localhost:5173`)
+- If the server is already running, do not start a second instance.
 
-### Spacing & Layout
-- Use generous, consistent spacing (padding/margin) — when in doubt, add more whitespace
-- Align elements to a clear grid
-- Never let content touch the edges of the screen
+## Screenshot Workflow
+- After screenshotting, read the PNG with the Read tool — Claude can see and analyze the image directly.
+- When comparing, be specific: "heading is 32px but reference shows ~24px", "card gap is 16px but should be 24px"
+- Check: spacing/padding, font size/weight/line-height, colors (exact hex), alignment, border-radius, shadows, image sizing
 
-### Color & Contrast
-- Stick to a limited palette (1 primary color, 1 accent, neutral grays)
-- Ensure text has strong contrast against its background
-- Use color purposefully — not decoratively
+## Brand Assets
+- Always check the `brand_assets/` folder before designing. It may contain logos, color guides, style guides, or images.
+- If assets exist there, use them. Do not use placeholders where real assets are available.
+- If a logo is present, use it. If a color palette is defined, use those exact values — do not invent brand colors.
 
-### Components & Polish
-- Add subtle hover states to all interactive elements (buttons, links, cards)
-- Use consistent border-radius across all elements
-- Prefer subtle shadows over hard borders for depth
-- Smooth transitions on interactions (0.2s ease)
+## Anti-Generic Guardrails
+- **Colors:** Never use default Tailwind palette (indigo-500, blue-600, etc.). Pick a custom brand color and derive from it.
+- **Shadows:** Never use flat `shadow-md`. Use layered, color-tinted shadows with low opacity.
+- **Typography:** Never use the same font for headings and body. Pair a display/serif with a clean sans. Apply tight tracking (`-0.03em`) on large headings, generous line-height (`1.7`) on body.
+- **Gradients:** Layer multiple radial gradients. Add grain/texture via SVG noise filter for depth.
+- **Animations:** Only animate `transform` and `opacity`. Never `transition-all`. Use spring-style easing.
+- **Interactive states:** Every clickable element needs hover, focus-visible, and active states. No exceptions.
+- **Images:** Add a gradient overlay (`bg-gradient-to-t from-black/60`) and a color treatment layer with `mix-blend-multiply`.
+- **Spacing:** Use intentional, consistent spacing tokens — not random Tailwind steps.
+- **Depth:** Surfaces should have a layering system (base → elevated → floating), not all sit at the same z-plane.
 
-### Typography
-- Use a clean sans-serif font (Inter, DM Sans, or system-ui as fallback)
-- Limit to 2 font weights max (regular + semibold/bold)
-- Set comfortable line-height (1.5–1.7 for body text)
-
-### General Rule
-Avoid the "default AI-generated" look — aim for something that feels intentional, crafted, and consistent throughout.
+## Hard Rules
+- Do not add sections, features, or content not in the reference
+- Do not "improve" a reference design — match it
+- Do not stop after one screenshot pass
+- Do not use `transition-all`
+- Do not use default Tailwind blue/indigo as primary color
 
 ## Commands
 
