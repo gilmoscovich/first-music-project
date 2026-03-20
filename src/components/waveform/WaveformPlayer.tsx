@@ -1,14 +1,9 @@
 import { useRef, useState, useCallback, useEffect, forwardRef, useImperativeHandle } from 'react';
 import type { FeedbackEntry } from '../../types';
+import { VERDICT_LABEL } from '../../types';
 import { useWavesurfer } from '../../hooks/useWavesurfer';
 import { formatTime } from '../../utils/formatTime';
 import './WaveformPlayer.css';
-
-const VERDICT_LABEL: Record<string, string> = {
-  too_much: 'Too Much',
-  just_right: 'Just Right',
-  too_little: 'Too Little',
-};
 
 interface WaveformPlayerProps {
   audioUrl: string;

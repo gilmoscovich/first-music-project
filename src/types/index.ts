@@ -53,3 +53,9 @@ export interface Track {
 export interface UserDoc {
   storageUsed: number;
 }
+
+export const VERDICT_LABEL: Record<NonNullable<BandVerdict>, string> = {
+  too_much:   'Too Much',
+  just_right: 'Just Right',
+  too_little: 'Too Little',
+};

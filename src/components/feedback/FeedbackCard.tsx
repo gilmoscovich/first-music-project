@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { FeedbackEntry } from '../../types';
+import { VERDICT_LABEL } from '../../types';
 import { VolumeFader } from './VolumeFader';
 import { formatTime } from '../../utils/formatTime';
 import './FeedbackCard.css';
@@ -29,12 +30,6 @@ interface FeedbackCardProps {
   onDelete?: (id: string) => void;
   onTimestampClick?: (seconds: number) => void;
 }
-
-const VERDICT_LABEL: Record<string, string> = {
-  too_much: 'Too Much',
-  just_right: 'Just Right',
-  too_little: 'Too Little',
-};
 
 interface CardSectionProps {
   title?: string;
