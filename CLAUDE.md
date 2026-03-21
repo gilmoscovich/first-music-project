@@ -68,13 +68,14 @@ No test suite exists in this project.
 
 ### Routing (`src/App.tsx`)
 ```
+/                   → LandingPage (public — marketing homepage)
 /login              → LoginPage (public)
-/                   → DashboardPage (ProtectedRoute + AppShell)
+/dashboard          → DashboardPage (ProtectedRoute + AppShell)
 /upload             → UploadPage (ProtectedRoute + AppShell)
 /review/:trackId    → ReviewPage (AppShell, no auth guard — reviewers are anonymous)
 ```
 
-`ProtectedRoute` redirects unauthenticated users to `/login`. `ReviewPage` is intentionally unguarded because reviewers don't have accounts.
+`ProtectedRoute` redirects unauthenticated users to `/login`. After successful login/signup, users are redirected to `/dashboard`. `ReviewPage` is intentionally unguarded because reviewers don't have accounts.
 
 ### Firebase Layer (`src/firebase/`)
 - **`firestore.ts`** — all Firestore reads/writes. Key functions: `getUserTracks`, `getTrack`, `createTrack`, `deleteTrack`, `addFeedback`, `deleteFeedback`, `markFeedbackRead`, `markFeedbackSectionRead`, `subscribeFeedback` (real-time listener), `getUserStorageUsed`, `updateTrackFileSize`.
@@ -107,6 +108,156 @@ UserDoc      { storageUsed }
 
 ### Theming
 CSS variables defined in `src/styles/globals.css`. Theme toggled via `data-theme` attribute on `<html>`. Three modes: `light`, `dark`, `system` (via `useTheme` hook + `prefers-color-scheme` media query).
+
+---
+
+## Design System
+
+**All pages must follow this design system without exception.** The visual language is established by `LandingPage.tsx` and must be applied consistently across `LoginPage`, `DashboardPage`, `UploadPage`, `ReviewPage`, and all shared components (`AppShell`, `FeedbackCard`, `WaveformPlayer`, etc.).
+
+### Brand Identity
+- **Product name:** FeedbackStudio — always rendered as `Feedback` + `<span style="color:#f97316">Studio</span>`
+- **Personality:** dark studio tool meets modern SaaS — precise, professional, warm
+- **Primary accent:** `#f97316` (amber/orange) — the waveform marker color; used for all CTAs, highlights, active states, and brand moments
+- **Never use:** blue, indigo, purple, or default Tailwind palette colors as primary
+
+### Color Tokens
+
+All colors must be defined as CSS variables on `[data-theme]` and consumed via `var(--token)`. Never hardcode hex values in component CSS except for the brand amber `#f97316`.
+
+**Dark theme (`data-theme="dark"`):**
+```css
+--bg-page: #0d0d0f
+--bg-surface: #17171b        /* cards, panels */
+--bg-surface2: #1f1f24       /* elevated surfaces, popups */
+--bg-field: #17171b          /* form inputs */
+--border: #242428
+--border-soft: rgba(255,255,255,0.07)
+--text-primary: #f0f0f0
+--text-secondary: #666
+--text-muted: #3a3a40
+--text-label: #555
+```
+
+**Light theme (`data-theme="light"`):**
+```css
+--bg-page: #fafaf8
+--bg-surface: #fff
+--bg-surface2: #fff
+--bg-field: #fafaf8
+--border: #ebebeb
+--border-soft: #e8e8e4
+--text-primary: #111
+--text-secondary: #888
+--text-muted: #ccc
+--text-label: #aaa
+```
+
+### Typography
+- **Font stack:** `-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, sans-serif` — no external fonts
+- **Headings:** `font-weight: 900`, `letter-spacing: -0.04em` to `-0.05em`, `line-height: 1.03–1.1`
+- **Body:** `font-weight: 400`, `line-height: 1.7`, `color: var(--text-secondary)`
+- **Labels / eyebrows:** `font-size: 11px`, `font-weight: 700`, `letter-spacing: 0.12em`, `text-transform: uppercase`, `color: #f97316`
+- **Never use the same weight for headings and body.** Use 900 for display, 700 for UI labels, 400 for body.
+
+### Spacing
+Use consistent spacing tokens — not arbitrary values:
+- Section padding: `80px 6%` (vertical breathing room)
+- Card padding: `28px`
+- Component internal gaps: `8px`, `12px`, `16px`, `24px`
+- Vertical rhythm: multiples of `8px`
+
+### Components
+
+**Buttons:**
+```css
+/* Primary */
+background: #f97316; color: #fff; font-weight: 700; border-radius: 9px;
+padding: 13px 28px (large), 7px 16px (small);
+hover: opacity 0.82 + translateY(-1px);
+
+/* Ghost */
+background: transparent; border: 1.5px solid var(--btn-ghost-border);
+color: var(--btn-ghost-color);
+hover: border-color #f97316; color #f97316;
+```
+
+**Cards / Surfaces:**
+```css
+background: var(--bg-surface);
+border: 1px solid var(--border-soft);
+border-radius: 14px;
+padding: 28px;
+/* Light mode only: */ box-shadow: 0 4px 24px rgba(0,0,0,.05);
+hover: border-color rgba(249,115,22,.4); translateY(-2px);
+```
+
+**Tag / Badge (amber):**
+```css
+background: rgba(249,115,22,.1);
+border: .5px solid rgba(249,115,22,.25);
+border-radius: 100px;
+color: #f97316 (dark) / #c85c0a (light);
+font-size: 12px; font-weight: 700; letter-spacing: .04em;
+```
+
+**Frequency band pills:**
+- Too much → red tint
+- Just right → green tint
+- Too little → amber tint
+- Unselected → muted/dim
+
+**Form fields:**
+```css
+background: var(--bg-field);
+border: 1px solid var(--border-soft);
+border-radius: 8px;
+padding: 10px 14px;
+color: var(--text-field);
+```
+
+**Section eyebrow pattern:**
+```
+[11px uppercase amber label]
+[Large 900-weight heading]
+[16px body paragraph]
+```
+
+### Waveform Player
+The waveform player in the app (`WaveformPlayer.tsx`) should visually match the landing page mockup:
+- Dark unplayed bars: `#232328` / Light unplayed bars: `#e8e7e2`
+- Played portion: `#f97316`
+- Marker pins: amber triangles (`#f97316`) with timestamp label badges
+- Player card: `border-top: 2px solid #f97316` as a brand accent line
+
+### AppShell / Nav
+The app nav (`AppShell.tsx`) must match the landing page nav style:
+- Logo: `Feedback` + amber `Studio`
+- Background: `var(--bg-page)` with `border-bottom: 1px solid var(--border-soft)`
+- Sticky positioning
+- Same button styles as landing page (ghost Sign out, amber primary action)
+
+### Login Page
+Must feel like part of the same product as the landing page:
+- Dark/light page background using same tokens
+- Card-based form using `var(--bg-surface)` with amber `border-top` accent
+- Logo at top in same wordmark style
+- Amber primary button for submit
+
+### Dashboard Page
+- Track cards: use `var(--bg-surface)` card style with hover border-color amber
+- Empty state: centered, muted, with amber CTA button
+- Storage bar accent: `#f97316`
+
+### Review Page
+- Waveform player: match the landing page player card style (amber border-top, dark surface)
+- Feedback cards below waveform: same style as landing page feedback card
+- Feedback popup: match the landing page popup mockup exactly (amber timestamp, band pills, fader, Pin Feedback amber button)
+
+### Animations
+- Page load: `fuUp` fade-up with staggered delays (`opacity: 0 → 1`, `translateY(22px → 0)`)
+- Hover transitions: `transform` and `opacity` only, `0.15s ease`
+- Never use `transition-all`
 
 ### Help System
 - **Help modal** (`src/components/help/HelpModal.tsx`) — opens on "Help" button click

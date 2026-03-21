@@ -21,7 +21,7 @@ export const LoginPage = () => {
       } else {
         await signUp(email, password);
       }
-      navigate('/');
+      navigate('/dashboard');
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Authentication failed';
       setError(msg.replace('Firebase: ', '').replace(/\(auth\/.*\)\.?/, '').trim());
@@ -36,16 +36,19 @@ export const LoginPage = () => {
         <div className="login-header">
           <div className="login-logo">
             <div className="login-logo-mark">
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
                 <path d="M9 18V5l12-2v13" />
                 <circle cx="6" cy="18" r="3" />
                 <circle cx="18" cy="16" r="3" />
               </svg>
             </div>
+            Feedback<span className="login-logo-accent">Studio</span>
           </div>
-          <h1 className="login-title">Feedback Studio</h1>
+          <h1 className="login-title">
+            {mode === 'signin' ? 'Welcome back' : 'Create your account'}
+          </h1>
           <p className="login-subtitle">
-            {mode === 'signin' ? 'Sign in to your account' : 'Create an account to start uploading'}
+            {mode === 'signin' ? 'Sign in to access your tracks' : 'Start collecting feedback in minutes'}
           </p>
         </div>
 

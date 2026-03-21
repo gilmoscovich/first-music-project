@@ -79,11 +79,12 @@ export const useWavesurfer = ({
 
     const regions = RegionsPlugin.create();
 
+    const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
     const ws = WaveSurfer.create({
       container: containerRef.current,
-      waveColor: '#787878',
-      progressColor: '#FF8C00',
-      cursorColor: '#FF8C00',
+      waveColor: isDark ? '#232328' : '#e8e7e2',
+      progressColor: '#f97316',
+      cursorColor: '#f97316',
       height: 100,
       normalize: true,
       interact: true,

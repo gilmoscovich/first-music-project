@@ -27,7 +27,7 @@ export const AppShell = ({ children }: { children: React.ReactNode }) => {
 
   const handleSignOut = async () => {
     await signOut();
-    navigate('/login');
+    navigate('/');
   };
 
   useEffect(() => {
@@ -66,21 +66,17 @@ export const AppShell = ({ children }: { children: React.ReactNode }) => {
       <header className="app-header">
         {/* LEFT: logo + nav */}
         <div className="header-left">
-          <Link to="/" className="app-logo" data-help="Go to your dashboard — view and manage all your tracks">
-            <div className="app-logo-mark">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                <path d="M9 18V5l12-2v13" />
-                <circle cx="6" cy="18" r="3" />
-                <circle cx="18" cy="16" r="3" />
-              </svg>
-            </div>
-            <span className="app-logo-text">Feedback Studio</span>
+          <Link to="/dashboard" className="app-logo" data-help="Go to your dashboard — view and manage all your tracks">
+            <svg className="app-logo-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+              <path d="M9 18V5l12-2v13" />
+              <circle cx="6" cy="18" r="3" />
+              <circle cx="18" cy="16" r="3" />
+            </svg>
+            <span className="app-logo-text">Feedback<span className="app-logo-accent">Studio</span></span>
           </Link>
 
           <nav className="header-nav">
-            <Link to="/" className="header-nav-item" data-help="Go to your dashboard — view and manage all your tracks">Projects</Link>
-            <span className="header-nav-item header-nav-item--inactive">Team</span>
-            <span className="header-nav-item header-nav-item--inactive">Settings</span>
+            <Link to="/dashboard" className="header-nav-item" data-help="Go to your dashboard — view and manage all your tracks">Projects</Link>
           </nav>
         </div>
 
@@ -145,7 +141,7 @@ export const AppShell = ({ children }: { children: React.ReactNode }) => {
                     <div className="profile-email">{user.email}</div>
                     <div className="profile-divider" />
                     <Link
-                      to="/"
+                      to="/dashboard"
                       className="profile-menu-link"
                       onClick={() => setProfileOpen(false)}
                     >

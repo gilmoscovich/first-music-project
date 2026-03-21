@@ -1,46 +1,57 @@
-/* ── Waveform Player Card ── */
+/* ═══════════════════════════════════════════════
+   WAVEFORM PLAYER
+═══════════════════════════════════════════════ */
 .waveform-player {
   background: var(--bg-surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-xl);
-  padding: 22px 24px 0;
+  border: 1px solid var(--border-soft);
+  border-radius: 14px;
+  padding: 20px 22px 0;
   position: relative;
   box-shadow: var(--shadow-md);
   overflow: hidden;
+  animation: fuUp 0.4s ease 0.05s both;
+}
+
+/* Amber top accent line */
+.waveform-player::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: #f97316;
 }
 
 [data-theme="light"] .waveform-player {
   box-shadow: 0 4px 24px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
-  border-color: rgba(0,0,0,0.07);
 }
 
 .waveform-hint {
-  margin-bottom: 14px;
+  margin-bottom: 12px;
   display: flex;
   align-items: center;
   gap: 8px;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-size: 12px;
 }
 
 /* ── Waveform Container ── */
 .waveform-container {
   position: relative;
-  border-radius: var(--radius-lg);
-  background: var(--bg-primary);
-  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-page);
+  border: 1px solid var(--border-soft);
   overflow: hidden;
   transition: box-shadow 0.3s ease;
 }
 
 [data-theme="light"] .waveform-container {
-  background: var(--bg-raised);
+  background: #f0efeb;
   border-color: rgba(0,0,0,0.06);
 }
 
 @keyframes waveformPulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(255,140,0,0.3); }
-  50%       { box-shadow: 0 0 0 8px rgba(255,140,0,0); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(249,115,22,0.3); }
+  50%       { box-shadow: 0 0 0 6px rgba(249,115,22,0); }
 }
 
 .waveform-container--pulse {
@@ -54,9 +65,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--bg-primary);
-  color: var(--text-muted);
+  background: var(--bg-page);
+  color: var(--text-secondary);
   font-size: 13px;
+}
+
+/* wavesurfer color overrides via CSS vars — set on the container */
+.waveform-container wave {
+  /* Wavesurfer renders bars via canvas; colors are set in useWavesurfer.ts */
+  overflow: hidden !important;
 }
 
 .waveform-timeline { margin-top: 4px; }
@@ -66,39 +83,37 @@
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 20px 0 22px;
+  padding: 18px 0 20px;
 }
 
-/* ── Play button — rounded, gradient, physical ── */
+/* ── Play button ── */
 .play-btn {
-  width: 50px;
-  height: 50px;
+  width: 46px;
+  height: 46px;
   border-radius: 9999px;
-  background: var(--bg-raised);
+  background: var(--bg-surface2);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   transition: transform 0.15s, box-shadow 0.15s;
-  box-shadow: var(--shadow-sm);
-  border: 1px solid var(--border-bright);
+  border: 0.5px solid var(--border-soft);
 }
 
 .play-btn--ready {
-  background: linear-gradient(135deg, var(--accent-amber) 0%, var(--accent-violet-dim) 100%);
+  background: #f97316;
   border: none;
-  box-shadow: 0 4px 20px rgba(255,140,0,0.4);
+  box-shadow: var(--shadow-amber);
   color: #fff;
 }
 
 .play-btn--ready:hover {
-  transform: scale(1.07);
-  box-shadow: 0 6px 28px rgba(255,140,0,0.55);
+  transform: scale(1.06);
+  box-shadow: 0 6px 24px rgba(249,115,22,0.5);
 }
 
 .play-btn--ready:active {
   transform: scale(0.96);
-  box-shadow: 0 2px 10px rgba(255,140,0,0.3);
 }
 
 /* ── Time display ── */
@@ -109,35 +124,35 @@
 }
 
 .waveform-time-current {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 26px;
-  font-weight: 700;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
   color: var(--text-primary);
   line-height: 1;
-  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
 }
 
 .waveform-time-duration {
-  font-family: 'JetBrains Mono', monospace;
   font-size: 12px;
-  color: var(--text-muted);
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
   letter-spacing: 0.01em;
 }
 
 .waveform-time-hint {
   font-size: 10px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--text-muted);
-  opacity: 0.7;
+  color: var(--text-secondary);
+  opacity: 0.6;
 }
 
-/* Legacy */
+/* Legacy compat */
 .waveform-time {
-  font-family: 'JetBrains Mono', monospace;
   font-size: 13px;
-  color: var(--text-muted);
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
 }
 
 /* ── Pin feedback button ── */
@@ -145,51 +160,51 @@
   display: flex;
   align-items: center;
   gap: 7px;
-  padding: 9px 20px;
-  border-radius: 9999px;
-  background: linear-gradient(135deg, var(--accent-amber) 0%, var(--accent-violet-dim) 100%);
+  padding: 8px 18px;
+  border-radius: var(--radius);
+  background: #f97316;
   color: #fff;
-  font-size: 12.5px;
+  font-size: 13px;
   font-weight: 700;
   border: none;
   cursor: pointer;
-  transition: opacity 0.15s, transform 0.15s, box-shadow 0.15s;
-  box-shadow: 0 4px 16px rgba(255,140,0,0.3);
-  letter-spacing: 0.01em;
+  transition: opacity 0.15s, transform 0.15s;
+  box-shadow: var(--shadow-amber);
 }
 
 .pin-feedback-btn:hover {
-  opacity: 0.92;
+  opacity: 0.82;
   transform: translateY(-1px);
-  box-shadow: 0 6px 24px rgba(255,140,0,0.45);
 }
 
 .pin-feedback-btn:active {
-  transform: translateY(0) scale(0.97);
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* ── Markers badge ── */
 .waveform-markers-badge {
   margin-left: auto;
-  background: rgba(255, 140, 0, 0.1);
-  color: var(--accent-amber);
-  padding: 5px 14px;
-  border-radius: 9999px;
+  background: rgba(249,115,22,0.1);
+  color: #f97316;
+  padding: 4px 12px;
+  border-radius: 100px;
   font-size: 12px;
   font-weight: 700;
   cursor: pointer;
-  border: 1px solid rgba(255, 140, 0, 0.2);
-  transition: background 0.12s, transform 0.12s;
+  border: 0.5px solid rgba(249,115,22,0.22);
+  transition: background 0.12s;
 }
 
 .waveform-markers-badge:hover {
-  background: rgba(255, 140, 0, 0.18);
-  transform: translateY(-1px);
+  background: rgba(249,115,22,0.18);
 }
+
+[data-theme="light"] .waveform-markers-badge { color: #c85c0a; }
 
 /* ── Marker tooltip ── */
 @keyframes tooltipIn {
-  from { opacity: 0; transform: translateY(8px) scale(0.96); }
+  from { opacity: 0; transform: translateY(6px) scale(0.97); }
   to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
@@ -198,19 +213,18 @@
   z-index: 50;
   pointer-events: none;
   background: var(--bg-surface);
-  border: 1px solid var(--border-bright);
-  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
   padding: 14px 16px;
-  min-width: 190px;
-  max-width: 270px;
-  border-top: 3px solid var(--accent-amber);
+  min-width: 180px;
+  max-width: 260px;
+  border-top: 2px solid #f97316;
   box-shadow: var(--shadow-lg);
-  animation: tooltipIn 0.18s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: tooltipIn 0.16s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 [data-theme="light"] .marker-tooltip {
-  box-shadow: 0 12px 40px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.06);
-  border-color: rgba(0,0,0,0.08);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.1), 0 4px 12px rgba(0,0,0,0.06);
 }
 
 .tooltip-header {
@@ -231,16 +245,16 @@
 }
 
 .tooltip-time {
-  font-family: 'JetBrains Mono', monospace;
   font-size: 11px;
   font-weight: 700;
-  color: var(--accent-amber);
+  color: #f97316;
   flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
 }
 
 .tooltip-stars {
-  font-size: 13px;
-  color: var(--accent-amber);
+  font-size: 12px;
+  color: #f97316;
   letter-spacing: 1px;
   margin-bottom: 6px;
 }
@@ -255,7 +269,7 @@
 .tooltip-volume {
   font-size: 11px;
   font-weight: 600;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   margin-bottom: 6px;
 }
 
@@ -269,10 +283,10 @@
 .tooltip-pill {
   font-size: 11px;
   font-weight: 700;
-  padding: 2px 9px;
-  border-radius: 9999px;
+  padding: 2px 8px;
+  border-radius: 100px;
 }
 
-.tooltip-pill--too_much  { background: rgba(224,82,82,0.12); color: var(--accent-red); }
-.tooltip-pill--just_right { background: rgba(61,214,140,0.12); color: var(--accent-green); }
-.tooltip-pill--too_little { background: rgba(255,140,0,0.12); color: var(--accent-amber); }
+.tooltip-pill--too_much   { background: rgba(248,113,113,0.1); color: var(--accent-red); }
+.tooltip-pill--just_right { background: rgba(74,222,128,0.1);  color: var(--accent-green); }
+.tooltip-pill--too_little { background: rgba(249,115,22,0.1);  color: #f97316; }

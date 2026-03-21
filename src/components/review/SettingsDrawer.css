@@ -1,10 +1,10 @@
-/* ── Settings drawer ── */
+/* ═══════════════════════════════════════════════
+   SETTINGS DRAWER
+═══════════════════════════════════════════════ */
 .drawer-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.45);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  background: rgba(0,0,0,0.5);
   z-index: 200;
   animation: overlayIn 0.2s ease;
 }
@@ -19,17 +19,25 @@
   top: 0;
   right: 0;
   height: 100vh;
-  width: 320px;
+  width: 300px;
   background: var(--bg-surface);
-  border-left: 1px solid var(--border);
-  border-left-width: 2px;
-  border-left-color: var(--accent-violet);
+  border-left: 1px solid var(--border-soft);
+  border-left-width: 1px;
+  border-left-color: var(--border-soft);
   z-index: 201;
   display: flex;
   flex-direction: column;
   transform: translateX(100%);
-  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: -8px 0 32px rgba(0,0,0,0.25);
+  transition: transform 0.26s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--shadow-lg);
+}
+
+.settings-drawer::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: #f97316;
 }
 
 [data-theme="light"] .settings-drawer {
@@ -42,51 +50,51 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px 22px;
-  border-bottom: 1px solid var(--border);
+  padding: 20px 20px;
+  border-bottom: 1px solid var(--border-soft);
   flex-shrink: 0;
 }
 
 .drawer-title {
-  font-family: 'Manrope', sans-serif;
-  font-size: 16px;
-  font-weight: 700;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
   color: var(--text-primary);
 }
 
 .drawer-close {
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: var(--radius);
-  color: var(--text-muted);
+  color: var(--text-secondary);
   transition: background 0.12s, color 0.12s;
 }
 
 .drawer-close:hover {
-  background: var(--bg-raised);
+  background: var(--bg-surface2);
   color: var(--text-primary);
 }
 
 .drawer-body {
   flex: 1;
-  padding: 22px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 14px;
   overflow-y: auto;
 }
 
 .drawer-section { display: flex; flex-direction: column; gap: 8px; }
 
 .drawer-label {
-  font-size: 10.5px;
+  font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.07em;
-  color: var(--text-muted);
+  letter-spacing: 0.1em;
+  color: var(--text-secondary);
 }
 
 .drawer-title-row {
@@ -109,13 +117,13 @@
 .drawer-edit-btn {
   font-size: 12px;
   font-weight: 700;
-  color: var(--accent-amber);
-  padding: 3px 9px;
+  color: #f97316;
+  padding: 3px 8px;
   border-radius: var(--radius);
   transition: background 0.12s;
 }
 
-.drawer-edit-btn:hover { background: rgba(255, 140, 0, 0.1); }
+.drawer-edit-btn:hover { background: rgba(249,115,22,0.1); }
 
 .drawer-edit-row {
   display: flex;
@@ -130,64 +138,67 @@
 }
 
 .drawer-save-btn {
-  padding: 7px 16px;
+  padding: 7px 14px;
   font-size: 12px;
   font-weight: 700;
-  background: var(--accent-amber);
+  background: #f97316;
   color: #fff;
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius);
   flex-shrink: 0;
 }
 
 .drawer-cancel-btn {
-  padding: 7px 12px;
+  padding: 7px 10px;
   font-size: 12px;
   font-weight: 600;
-  background: var(--bg-raised);
-  color: var(--text-muted);
-  border-radius: var(--radius-lg);
+  background: var(--bg-surface2);
+  color: var(--text-secondary);
+  border-radius: var(--radius);
   flex-shrink: 0;
 }
 
-.drawer-divider { height: 1px; background: var(--border); }
+.drawer-divider {
+  height: 1px;
+  background: var(--border-soft);
+}
 
 .drawer-action-btn {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 12px 16px;
-  background: var(--bg-raised);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
+  padding: 11px 14px;
+  background: var(--bg-surface2);
+  border: 0.5px solid var(--border-soft);
+  border-radius: var(--radius);
   font-size: 13px;
   font-weight: 600;
   color: var(--text-primary);
-  transition: background 0.12s, transform 0.12s;
+  transition: border-color 0.12s;
 }
 
 .drawer-action-btn:hover {
-  background: var(--bg-elevated);
-  transform: translateY(-1px);
+  border-color: rgba(249,115,22,0.4);
+  color: #f97316;
 }
 
 .drawer-action-btn--success {
-  background: rgba(61, 214, 140, 0.08);
+  background: rgba(74,222,128,0.06);
   color: var(--accent-green);
-  border-color: rgba(61, 214, 140, 0.22);
+  border-color: rgba(74,222,128,0.18);
 }
 
 .drawer-delete-btn {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 12px 16px;
-  background: rgba(224, 82, 82, 0.07);
-  border: 1px solid rgba(224, 82, 82, 0.18);
-  border-radius: var(--radius-lg);
+  padding: 11px 14px;
+  background: rgba(248,113,113,0.06);
+  border: 0.5px solid rgba(248,113,113,0.15);
+  border-radius: var(--radius);
   font-size: 13px;
   font-weight: 600;
   color: var(--accent-red);
   transition: background 0.12s;
 }
 
-.drawer-delete-btn:hover { background: rgba(224, 82, 82, 0.14); }
+.drawer-delete-btn:hover { background: rgba(248,113,113,0.12); }

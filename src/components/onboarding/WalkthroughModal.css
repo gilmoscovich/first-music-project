@@ -22,19 +22,32 @@
 
 .walkthrough-modal {
   background: var(--bg-surface);
-  border: 1px solid var(--border-bright);
-  border-top: 3px solid var(--accent-violet);
-  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-soft);
+  border-radius: 14px;
   padding: 36px 32px 24px;
   width: 100%;
   max-width: 380px;
   text-align: center;
   animation: wt-slide 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 24px 64px rgba(0,0,0,0.5);
+  position: relative;
+}
+
+.walkthrough-modal::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: #f97316;
+  border-radius: 14px 14px 0 0;
+}
+
+[data-theme="light"] .walkthrough-modal {
+  box-shadow: 0 20px 60px rgba(0,0,0,0.12), 0 6px 20px rgba(0,0,0,0.07);
 }
 
 .walkthrough-icon {
-  color: var(--accent-violet);
+  color: #f97316;
   margin-bottom: 20px;
   display: flex;
   justify-content: center;
@@ -43,23 +56,24 @@
 .walkthrough-step-label {
   font-size: 10px;
   font-weight: 700;
-  color: var(--accent-violet);
+  color: #f97316;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   margin-bottom: 10px;
 }
 
 .walkthrough-title {
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--text-primary);
   margin-bottom: 10px;
   line-height: 1.35;
+  letter-spacing: -0.02em;
 }
 
 .walkthrough-body {
   font-size: 12px;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   line-height: 1.65;
   margin-bottom: 24px;
 }
@@ -75,12 +89,12 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--border-bright);
+  background: var(--border-soft);
   transition: background 0.2s;
 }
 
 .walkthrough-dot--active {
-  background: var(--accent-violet);
+  background: #f97316;
 }
 
 .walkthrough-actions {
@@ -91,32 +105,42 @@
 
 .walkthrough-back-btn {
   padding: 8px 18px;
-  background: var(--bg-raised);
-  color: var(--text-muted);
+  background: var(--bg-surface2);
+  color: var(--text-secondary);
   border-radius: var(--radius);
   font-size: 12px;
   font-weight: 600;
-  transition: background 0.15s;
+  transition: background 0.15s, color 0.15s;
+  border: none;
+  cursor: pointer;
 }
 
 .walkthrough-back-btn:hover {
-  background: var(--bg-hover);
+  background: var(--bg-elevated);
+  color: var(--text-primary);
 }
 
 .walkthrough-next-btn {
   padding: 8px 24px;
-  background: linear-gradient(135deg, var(--accent-amber) 0%, var(--accent-violet-dim) 100%);
+  background: #f97316;
   color: #fff;
-  border-radius: 9999px;
+  border-radius: var(--radius);
   font-size: 12px;
   font-weight: 700;
   transition: opacity 0.15s, transform 0.15s;
-  box-shadow: 0 4px 14px rgba(255,140,0,0.25);
+  box-shadow: 0 4px 14px rgba(249,115,22,0.3);
+  border: none;
+  cursor: pointer;
 }
 
 .walkthrough-next-btn:hover {
-  opacity: 0.9;
+  opacity: 0.82;
   transform: translateY(-1px);
+}
+
+.walkthrough-next-btn:active {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .walkthrough-skip {
@@ -124,7 +148,7 @@
   width: 100%;
   margin-top: 14px;
   font-size: 11px;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   background: none;
   border: none;
   cursor: pointer;
