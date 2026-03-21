@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import { useTrack } from '../hooks/useTrack';
 import { useFeedback } from '../hooks/useFeedback';
 import { useAuth } from '../hooks/useAuth';
+import { useTheme } from '../hooks/useTheme';
+import type { ThemeMode } from '../hooks/useTheme';
 import { addFeedback, markFeedbackRead, markFeedbackSectionRead, deleteFeedback } from '../firebase/firestore';
 import { WaveformPlayer } from '../components/waveform/WaveformPlayer';
 import type { WaveformPlayerHandle } from '../components/waveform/WaveformPlayer';
@@ -10,6 +12,7 @@ import { FeedbackPopup } from '../components/feedback/FeedbackPopup';
 import { FeedbackCard } from '../components/feedback/FeedbackCard';
 import { WalkthroughModal } from '../components/onboarding/WalkthroughModal';
 import { SettingsDrawer } from '../components/review/SettingsDrawer';
+import { Sidebar } from '../components/layout/Sidebar';
 import { useFeedbackFilter } from '../hooks/useFeedbackFilter';
 import type { SortMode } from '../hooks/useFeedbackFilter';
 import { generateShareUrl } from '../utils/shareLink';
@@ -18,16 +21,24 @@ import { logError } from '../utils/errorHandler';
 import type { FeedbackEntry } from '../types';
 import './ReviewPage.css';
 
+const THEME_OPTIONS: { value: ThemeMode; label: string }[] = [
+  { value: 'dark',   label: '☾ Dark'   },
+  { value: 'light',  label: '☀ Light'  },
+  { value: 'system', label: '⊙ System' },
+];
+
 export const ReviewPage = () => {
   const { trackId } = useParams<{ trackId: string }>();
   const { track, loading: trackLoading } = useTrack(trackId);
   const { feedback, loading: feedbackLoading } = useFeedback(trackId);
   const { user } = useAuth();
+  const { mode, setTheme } = useTheme();
 
   const [pendingTimestamp, setPendingTimestamp] = useState<number | null>(null);
   const [copied, setCopied] = useState(false);
   const [playbackTime, setPlaybackTime] = useState(0);
   const playerRef = useRef<WaveformPlayerHandle>(null);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   // Settings drawer
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -114,20 +125,15 @@ export const ReviewPage = () => {
   // Derived feedback
   const activeFeedbackId = feedback.filter(f => f.timestamp <= playbackTime).at(-1)?.id ?? null;
 
-  if (trackLoading) {
-    return <div className="review-loading">Loading track...</div>;
-  }
-
-  if (!track) {
-    return (
-      <div className="review-not-found">
-        <div className="review-not-found-title">Track not found</div>
-        <div className="review-not-found-desc">This link may be invalid or the track was removed.</div>
-      </div>
-    );
-  }
-
-  return (
+  // Page content based on load state
+  const pageContent = trackLoading ? (
+    <div className="review-loading">Loading track...</div>
+  ) : !track ? (
+    <div className="review-not-found">
+      <div className="review-not-found-title">Track not found</div>
+      <div className="review-not-found-desc">This link may be invalid or the track was removed.</div>
+    </div>
+  ) : (
     <div>
       {/* Track header */}
       <div className="track-header">
@@ -298,6 +304,44 @@ export const ReviewPage = () => {
           onTitleChange={setLocalTitle}
         />
       )}
+    </div>
+  );
+
+  return (
+    <div className="page-root">
+      <Sidebar mobileOpen={mobileOpen} onMobileClose={() => setMobileOpen(false)} />
+
+      <div className="page-body">
+        <div className="page-header">
+          <div className="page-header-left">
+            <button
+              className="page-header-hamburger"
+              onClick={() => setMobileOpen(true)}
+              aria-label="Open navigation"
+            >
+              ☰
+            </button>
+            <span className="page-header-title">Review</span>
+          </div>
+
+          <div className="page-header-theme-pill" role="group" aria-label="Theme">
+            {THEME_OPTIONS.map(opt => (
+              <button
+                key={opt.value}
+                className={`page-header-theme-btn${mode === opt.value ? ' page-header-theme-btn--active' : ''}`}
+                onClick={() => setTheme(opt.value)}
+                aria-pressed={mode === opt.value}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <main className="page-main">
+          {pageContent}
+        </main>
+      </div>
     </div>
   );
 };

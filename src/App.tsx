@@ -39,11 +39,7 @@ const AppRoutes = () => {
 
       <Route
         path="/review/:trackId"
-        element={
-          <AppShell>
-            <ReviewPage />
-          </AppShell>
-        }
+        element={<ReviewPage />}
       />
 
       <Route path="*" element={<Navigate to="/" replace />} />
