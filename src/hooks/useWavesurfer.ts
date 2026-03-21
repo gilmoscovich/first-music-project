@@ -82,10 +82,13 @@ export const useWavesurfer = ({
     const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
     const ws = WaveSurfer.create({
       container: containerRef.current,
-      waveColor: isDark ? '#232328' : '#e8e7e2',
+      waveColor: isDark ? '#232328' : '#b0aeaa',
       progressColor: '#f97316',
       cursorColor: '#f97316',
-      height: 100,
+      height: 120,
+      barWidth: 2,
+      barGap: 1,
+      barRadius: 0,
       normalize: true,
       interact: true,
       plugins: [timeline, regions],

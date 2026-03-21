@@ -37,8 +37,8 @@ export const SettingsDrawer = ({ track, displayTitle, isOpen, onClose, onTitleCh
   const handleDeleteTrack = async () => {
     if (!confirm(`Delete "${displayTitle}"? This will remove all feedback too.`)) return;
     await deleteAudio(track.storagePath);
-    await deleteTrack(track.id);
-    navigate('/');
+    await deleteTrack(track.id, track.ownerId, track.fileSize);
+    navigate('/dashboard');
   };
 
   const copyShareLink = async () => {

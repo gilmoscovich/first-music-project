@@ -38,15 +38,15 @@
 .waveform-container {
   position: relative;
   border-radius: var(--radius);
-  background: var(--bg-page);
-  border: 1px solid var(--border-soft);
+  background: transparent;
+  border: none;
   overflow: hidden;
   transition: box-shadow 0.3s ease;
 }
 
 [data-theme="light"] .waveform-container {
-  background: #f0efeb;
-  border-color: rgba(0,0,0,0.06);
+  background: transparent;
+  border-color: transparent;
 }
 
 @keyframes waveformPulse {
