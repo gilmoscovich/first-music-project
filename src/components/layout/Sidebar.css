@@ -91,6 +91,7 @@
 .sidebar-logo-icon { flex-shrink: 0; }
 
 .sidebar-logo-text {
+  font-family: var(--font-heading);
   font-size: 15px;
   font-weight: 800;
   letter-spacing: -0.03em;
