@@ -173,9 +173,7 @@ export const WaveformPlayer = forwardRef<WaveformPlayerHandle, WaveformPlayerPro
               <span className="tooltip-name">{hoveredEntry.reviewerName}</span>
               <span className="tooltip-time">{formatTime(hoveredEntry.timestamp)}</span>
             </div>
-            <div className="tooltip-stars">
-              {'★'.repeat(hoveredEntry.rating)}{'☆'.repeat(5 - hoveredEntry.rating)}
-            </div>
+
             {hoveredEntry.comment && (
               <div className="tooltip-comment">
                 {hoveredEntry.comment.length > 100

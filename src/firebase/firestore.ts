@@ -112,6 +112,16 @@ export const addFeedback = async (
   return feedbackRef.id;
 };
 
+export const saveOwnerNote = async (
+  trackId: string,
+  feedbackId: string,
+  note: string
+): Promise<void> => {
+  await updateDoc(doc(db, 'tracks', trackId, 'feedback', feedbackId), {
+    ownerNote: note,
+  });
+};
+
 export const deleteFeedback = async (trackId: string, feedbackId: string): Promise<void> => {
   const batch = writeBatch(db);
   batch.delete(doc(db, 'tracks', trackId, 'feedback', feedbackId));

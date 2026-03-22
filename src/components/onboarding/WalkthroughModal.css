@@ -38,7 +38,7 @@
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 2px;
-  background: #f97316;
+  background: #06b6d4;
   border-radius: 14px 14px 0 0;
 }
 
@@ -47,7 +47,7 @@
 }
 
 .walkthrough-icon {
-  color: #f97316;
+  color: #06b6d4;
   margin-bottom: 20px;
   display: flex;
   justify-content: center;
@@ -56,7 +56,7 @@
 .walkthrough-step-label {
   font-size: 10px;
   font-weight: 700;
-  color: #f97316;
+  color: #06b6d4;
   text-transform: uppercase;
   letter-spacing: 0.12em;
   margin-bottom: 10px;
@@ -94,7 +94,7 @@
 }
 
 .walkthrough-dot--active {
-  background: #f97316;
+  background: #06b6d4;
 }
 
 .walkthrough-actions {
@@ -122,13 +122,13 @@
 
 .walkthrough-next-btn {
   padding: 8px 24px;
-  background: #f97316;
+  background: #06b6d4;
   color: #fff;
   border-radius: var(--radius);
   font-size: 12px;
   font-weight: 700;
   transition: opacity 0.15s, transform 0.15s;
-  box-shadow: 0 4px 14px rgba(249,115,22,0.3);
+  box-shadow: 0 4px 14px rgba(6,182,212,0.3);
   border: none;
   cursor: pointer;
 }

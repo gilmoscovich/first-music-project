@@ -5,7 +5,7 @@ import { useFeedback } from '../hooks/useFeedback';
 import { useAuth } from '../hooks/useAuth';
 import { useTheme } from '../hooks/useTheme';
 import type { ThemeMode } from '../hooks/useTheme';
-import { addFeedback, markFeedbackRead, markFeedbackSectionRead, deleteFeedback } from '../firebase/firestore';
+import { addFeedback, markFeedbackRead, markFeedbackSectionRead, deleteFeedback, saveOwnerNote } from '../firebase/firestore';
 import { WaveformPlayer } from '../components/waveform/WaveformPlayer';
 import type { WaveformPlayerHandle } from '../components/waveform/WaveformPlayer';
 import { FeedbackPopup } from '../components/feedback/FeedbackPopup';
@@ -107,6 +107,11 @@ export const ReviewPage = () => {
     deleteFeedback(trackId, feedbackId);
   };
 
+  const handleSaveNote = async (feedbackId: string, note: string) => {
+    if (!trackId) return;
+    await saveOwnerNote(trackId, feedbackId, note);
+  };
+
   const copyShareLink = async () => {
     if (!trackId) return;
     await navigator.clipboard.writeText(generateShareUrl(trackId));
@@ -203,10 +208,9 @@ export const ReviewPage = () => {
                 className="sort-select"
                 value={sort}
                 onChange={e => setSort(e.target.value as SortMode)}
-                data-help="Sort feedback by timestamp position, star rating, or newest first"
+                data-help="Sort feedback by timestamp position or newest first"
               >
                 <option value="timestamp">By Timestamp</option>
-                <option value="rating">By Rating</option>
                 <option value="newest">Newest First</option>
               </select>
             </div>
@@ -222,10 +226,12 @@ export const ReviewPage = () => {
                   entry={entry}
                   index={i}
                   isActive={entry.id === activeFeedbackId && playbackTime > 0}
+                  isOwner={isOwner}
                   onMarkRead={isOwner ? handleMarkRead : undefined}
                   onSectionRead={isOwner ? handleSectionRead : undefined}
                   onDelete={isOwner ? handleDeleteFeedback : undefined}
                   onTimestampClick={(s) => playerRef.current?.seekTo(s)}
+                  onSaveNote={isOwner ? handleSaveNote : undefined}
                 />
               ))
             )}

@@ -145,7 +145,7 @@ export const LandingPage = () => {
                 {MARKERS.map((m, i) => (
                   <div key={i} className="player-marker" style={{ left: `${m.pos * 100}%` }}>
                     <div className="player-marker-pin">
-                      <svg width="10" height="12" viewBox="0 0 10 12" fill="#f97316">
+                      <svg width="10" height="12" viewBox="0 0 10 12" fill="#06b6d4">
                         <path d="M5 0L10 5L5 12L0 5Z" />
                       </svg>
                     </div>

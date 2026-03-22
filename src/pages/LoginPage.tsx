@@ -42,7 +42,7 @@ export const LoginPage = () => {
                 <circle cx="18" cy="16" r="3" />
               </svg>
             </div>
-            Feedback<span className="login-logo-accent">Studio</span>
+            <span>Feedback<span className="login-logo-accent">Studio</span></span>
           </div>
           <h1 className="login-title">
             {mode === 'signin' ? 'Welcome back' : 'Create your account'}

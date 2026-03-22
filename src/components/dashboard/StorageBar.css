@@ -57,7 +57,7 @@
   background: linear-gradient(90deg, rgba(74,222,128,0.6), var(--accent-green));
 }
 .storage-bar-fill--amber {
-  background: linear-gradient(90deg, #c85c0a, #f97316);
+  background: linear-gradient(90deg, #0e7490, #06b6d4);
 }
 .storage-bar-fill--red {
   background: linear-gradient(90deg, #c04040, var(--accent-red));

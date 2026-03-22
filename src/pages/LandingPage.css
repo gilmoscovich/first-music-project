@@ -40,8 +40,8 @@
 }
 .land-logo:hover { text-decoration: none; }
 
-.land-logo-icon { color: #f97316; flex-shrink: 0; }
-.land-logo-accent { color: #f97316; }
+.land-logo-icon { color: #06b6d4; flex-shrink: 0; }
+.land-logo-accent { color: #06b6d4; }
 
 .land-nav-actions {
   display: flex;
@@ -118,7 +118,7 @@
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 2px;
-  background: #f97316;
+  background: #06b6d4;
 }
 
 .player-track-info {
@@ -162,7 +162,7 @@
   transition: background 0.2s;
 }
 
-.wbar--played   { background: #f97316; }
+.wbar--played   { background: #06b6d4; }
 .wbar--unplayed { background: #232328; }
 [data-theme="light"] .wbar--unplayed { background: #e8e7e2; }
 
@@ -172,9 +172,9 @@
   top: 0;
   bottom: 0;
   width: 2px;
-  background: #f97316;
+  background: #06b6d4;
   pointer-events: none;
-  box-shadow: 0 0 8px rgba(249,115,22,0.6);
+  box-shadow: 0 0 8px rgba(6,182,212,0.6);
 }
 
 /* Marker pins */
@@ -190,7 +190,7 @@
 
 .player-marker-pin {
   opacity: 0.9;
-  filter: drop-shadow(0 2px 4px rgba(249,115,22,0.4));
+  filter: drop-shadow(0 2px 4px rgba(6,182,212,0.4));
 }
 
 /* Controls */
@@ -206,7 +206,7 @@
   width: 40px;
   height: 40px;
   border-radius: 9999px;
-  background: #f97316;
+  background: #06b6d4;
   color: #fff;
   display: flex;
   align-items: center;
@@ -231,7 +231,7 @@
   align-items: center;
   gap: 7px;
   padding: 7px 16px;
-  background: #f97316;
+  background: #06b6d4;
   color: #fff;
   font-size: 13px;
   font-weight: 700;
@@ -270,8 +270,8 @@
   width: 28px;
   height: 28px;
   border-radius: 9999px;
-  background: rgba(249,115,22,0.15);
-  color: #f97316;
+  background: rgba(6,182,212,0.15);
+  color: #06b6d4;
   font-size: 12px;
   font-weight: 700;
   display: flex;
@@ -289,9 +289,9 @@
 .mini-card-time {
   font-size: 11px;
   font-weight: 700;
-  color: #f97316;
-  background: rgba(249,115,22,0.1);
-  border: 0.5px solid rgba(249,115,22,0.25);
+  color: #06b6d4;
+  background: rgba(6,182,212,0.1);
+  border: 0.5px solid rgba(6,182,212,0.25);
   border-radius: 100px;
   padding: 2px 9px;
   font-variant-numeric: tabular-nums;
@@ -359,7 +359,7 @@
 }
 
 .step-card:hover {
-  border-color: rgba(249,115,22,.4);
+  border-color: rgba(6,182,212,.4);
   transform: translateY(-2px);
 }
 
@@ -372,7 +372,7 @@
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #f97316;
+  color: #06b6d4;
   margin-bottom: 16px;
 }
 
@@ -419,7 +419,7 @@
 }
 
 .feature-card:hover {
-  border-color: rgba(249,115,22,.4);
+  border-color: rgba(6,182,212,.4);
   transform: translateY(-2px);
 }
 
@@ -428,11 +428,11 @@
 }
 
 .feature-icon {
-  color: #f97316;
+  color: #06b6d4;
   margin-bottom: 16px;
   width: 40px;
   height: 40px;
-  background: rgba(249,115,22,0.1);
+  background: rgba(6,182,212,0.1);
   border-radius: 10px;
   display: flex;
   align-items: center;

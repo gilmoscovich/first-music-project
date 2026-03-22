@@ -39,7 +39,7 @@
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 2px;
-  background: #f97316;
+  background: #06b6d4;
   border-radius: 14px 14px 0 0;
 }
 
@@ -100,7 +100,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: #f97316;
+  color: #06b6d4;
   margin-bottom: 10px;
 }
 

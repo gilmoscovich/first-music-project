@@ -46,7 +46,7 @@
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 2px;
-  background: #f97316;
+  background: #06b6d4;
 }
 
 [data-theme="light"] .popup-modal {
@@ -70,7 +70,7 @@
 }
 
 .popup-time {
-  color: #f97316;
+  color: #06b6d4;
   font-size: 12px;
   font-variant-numeric: tabular-nums;
   margin-top: 3px;
@@ -140,12 +140,12 @@
 .popup-submit-btn {
   padding: 10px 24px;
   border-radius: var(--radius);
-  background: #f97316;
+  background: #06b6d4;
   color: #fff;
   font-weight: 700;
   font-size: 13px;
   transition: opacity 0.15s, transform 0.15s;
-  box-shadow: 0 4px 16px rgba(249,115,22,0.3);
+  box-shadow: 0 4px 16px rgba(6,182,212,0.3);
   letter-spacing: 0.01em;
   border: none;
 }

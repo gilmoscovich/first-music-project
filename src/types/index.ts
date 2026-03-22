@@ -25,7 +25,6 @@ export interface FeedbackEntry {
   timestamp: number;
   reviewerName: string;
   comment: string;
-  rating: number;
   volumeDb: number;
   bands: FrequencyBand[];
   createdAt?: Timestamp;
@@ -34,6 +33,7 @@ export interface FeedbackEntry {
     volume?: boolean;
     frequencies?: boolean;
   };
+  ownerNote?: string;
 }
 
 export interface Track {

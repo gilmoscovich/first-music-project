@@ -42,7 +42,7 @@ export const useWavesurfer = ({
       id: entry.id,
       start: entry.timestamp,
       end: entry.timestamp + 0.8,
-      color: 'rgba(255, 140, 0, 0.65)',
+      color: 'rgba(6, 182, 212, 0.65)',
       drag: false,
       resize: false,
     });
@@ -81,8 +81,8 @@ export const useWavesurfer = ({
     const ws = WaveSurfer.create({
       container: containerRef.current,
       waveColor: isDark ? '#232328' : '#b0aeaa',
-      progressColor: '#f97316',
-      cursorColor: '#f97316',
+      progressColor: '#06b6d4',
+      cursorColor: '#06b6d4',
       height: 120,
       barWidth: 2,
       barGap: 1,
@@ -139,12 +139,12 @@ export const useWavesurfer = ({
     regions.forEach(r => {
       if (!r.element) return;
       r.element.style.transition = 'background 0.15s';
-      r.element.style.background = 'rgba(255, 140, 0, 0.95)';
+      r.element.style.background = 'rgba(6, 182, 212, 0.95)';
     });
     setTimeout(() => {
       regions.forEach(r => {
         if (!r.element) return;
-        r.element.style.background = 'rgba(255, 140, 0, 0.65)';
+        r.element.style.background = 'rgba(6, 182, 212, 0.65)';
         setTimeout(() => { if (r.element) r.element.style.transition = ''; }, 400);
       });
     }, 600);

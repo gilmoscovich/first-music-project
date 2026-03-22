@@ -23,7 +23,7 @@ export const HelpModal = ({ onClose }: HelpModalProps) => (
           <ul className="help-list">
             <li>Press play and listen to the track</li>
             <li>When you want to leave a note, hit the <strong>+</strong> button in the player controls — it pins feedback at your current playback position</li>
-            <li>Fill in a star rating, volume adjustment, and frequency band verdicts</li>
+            <li>Fill in a volume adjustment and frequency band verdicts</li>
             <li>Add a comment in the notes field, then hit <strong>Pin Feedback</strong></li>
             <li>Your feedback is saved instantly and goes directly to the artist</li>
           </ul>
@@ -37,7 +37,7 @@ export const HelpModal = ({ onClose }: HelpModalProps) => (
             <li>Hover over orange waveform markers to preview feedback</li>
             <li>Click a marker to seek to that position and play from there</li>
             <li><strong>Filter:</strong> All / Unread — toggle to show only unread feedback</li>
-            <li><strong>Sort:</strong> by Timestamp position, Star Rating, or Newest first</li>
+            <li><strong>Sort:</strong> by Timestamp position or Newest first</li>
             <li><strong>⚙ Settings</strong> — rename or delete the track</li>
             <li><strong>Share Link</strong> — copy the review URL to send to collaborators</li>
             <li>The unread badge on My Tracks shows new feedback since your last visit</li>

@@ -86,7 +86,7 @@ No test suite exists in this project.
 `Track.fileSize` (bytes) is stored per-track. A centralized `users/{uid}.storageUsed` Firestore counter is atomically incremented on upload/backfill and decremented on delete. `StorageBar` component shows used vs 5 GB free tier limit. Existing tracks without `fileSize` are backfilled via `getFileMetadata()` on Dashboard load.
 
 ### Wavesurfer Integration (`src/hooks/useWavesurfer.ts`)
-The hook owns the WaveSurfer instance (`wsRef`). Feedback entries are rendered as orange RegionsPlugin markers (0.8 s wide, non-draggable). Markers are deduplicated via `renderedIdsRef` — only new entries are added, never re-rendered. Marker hover/click attach native DOM event listeners to the region's `element`. A `regionClickedRef` flag prevents the waveform's own click handler from firing after a region click.
+The hook owns the WaveSurfer instance (`wsRef`). Feedback entries are rendered as cyan RegionsPlugin markers (0.8 s wide, non-draggable). Markers are deduplicated via `renderedIdsRef` — only new entries are added, never re-rendered. Marker hover/click attach native DOM event listeners to the region's `element`. A `regionClickedRef` flag prevents the waveform's own click handler from firing after a region click.
 
 Playback time is tracked via `setInterval` stored in `intervalRef` (cleared on unmount). `seekTo(seconds)` normalizes to `[0,1]` using duration.
 
@@ -116,14 +116,14 @@ CSS variables defined in `src/styles/globals.css`. Theme toggled via `data-theme
 **All pages must follow this design system without exception.** The visual language is established by `LandingPage.tsx` and must be applied consistently across `LoginPage`, `DashboardPage`, `UploadPage`, `ReviewPage`, and all shared components (`AppShell`, `FeedbackCard`, `WaveformPlayer`, etc.).
 
 ### Brand Identity
-- **Product name:** FeedbackStudio — always rendered as `Feedback` + `<span style="color:#f97316">Studio</span>`
+- **Product name:** FeedbackStudio — always rendered as `Feedback` + `<span style="color:#06b6d4">Studio</span>`
 - **Personality:** dark studio tool meets modern SaaS — precise, professional, warm
-- **Primary accent:** `#f97316` (amber/orange) — the waveform marker color; used for all CTAs, highlights, active states, and brand moments
+- **Primary accent:** `#06b6d4` (cyan) — the waveform marker color; used for all CTAs, highlights, active states, and brand moments
 - **Never use:** blue, indigo, purple, or default Tailwind palette colors as primary
 
 ### Color Tokens
 
-All colors must be defined as CSS variables on `[data-theme]` and consumed via `var(--token)`. Never hardcode hex values in component CSS except for the brand amber `#f97316`.
+All colors must be defined as CSS variables on `[data-theme]` and consumed via `var(--token)`. Never hardcode hex values in component CSS except for the brand cyan `#06b6d4`.
 
 **Dark theme (`data-theme="dark"`):**
 ```css
@@ -157,7 +157,7 @@ All colors must be defined as CSS variables on `[data-theme]` and consumed via `
 - **Font stack:** `-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, sans-serif` — no external fonts
 - **Headings:** `font-weight: 900`, `letter-spacing: -0.04em` to `-0.05em`, `line-height: 1.03–1.1`
 - **Body:** `font-weight: 400`, `line-height: 1.7`, `color: var(--text-secondary)`
-- **Labels / eyebrows:** `font-size: 11px`, `font-weight: 700`, `letter-spacing: 0.12em`, `text-transform: uppercase`, `color: #f97316`
+- **Labels / eyebrows:** `font-size: 11px`, `font-weight: 700`, `letter-spacing: 0.12em`, `text-transform: uppercase`, `color: #06b6d4`
 - **Never use the same weight for headings and body.** Use 900 for display, 700 for UI labels, 400 for body.
 
 ### Spacing
@@ -172,14 +172,14 @@ Use consistent spacing tokens — not arbitrary values:
 **Buttons:**
 ```css
 /* Primary */
-background: #f97316; color: #fff; font-weight: 700; border-radius: 9px;
+background: #06b6d4; color: #fff; font-weight: 700; border-radius: 9px;
 padding: 13px 28px (large), 7px 16px (small);
 hover: opacity 0.82 + translateY(-1px);
 
 /* Ghost */
 background: transparent; border: 1.5px solid var(--btn-ghost-border);
 color: var(--btn-ghost-color);
-hover: border-color #f97316; color #f97316;
+hover: border-color #06b6d4; color #06b6d4;
 ```
 
 **Cards / Surfaces:**
@@ -197,14 +197,14 @@ hover: border-color rgba(249,115,22,.4); translateY(-2px);
 background: rgba(249,115,22,.1);
 border: .5px solid rgba(249,115,22,.25);
 border-radius: 100px;
-color: #f97316 (dark) / #c85c0a (light);
+color: #06b6d4 (dark) / #0e7490 (light);
 font-size: 12px; font-weight: 700; letter-spacing: .04em;
 ```
 
 **Frequency band pills:**
 - Too much → red tint
 - Just right → green tint
-- Too little → amber tint
+- Too little → cyan tint
 - Unselected → muted/dim
 
 **Form fields:**
@@ -218,7 +218,7 @@ color: var(--text-field);
 
 **Section eyebrow pattern:**
 ```
-[11px uppercase amber label]
+[11px uppercase cyan label]
 [Large 900-weight heading]
 [16px body paragraph]
 ```
@@ -226,33 +226,33 @@ color: var(--text-field);
 ### Waveform Player
 The waveform player in the app (`WaveformPlayer.tsx`) should visually match the landing page mockup:
 - Dark unplayed bars: `#232328` / Light unplayed bars: `#e8e7e2`
-- Played portion: `#f97316`
-- Marker pins: amber triangles (`#f97316`) with timestamp label badges
-- Player card: `border-top: 2px solid #f97316` as a brand accent line
+- Played portion: `#06b6d4`
+- Marker pins: cyan triangles (`#06b6d4`) with timestamp label badges
+- Player card: `border-top: 2px solid #06b6d4` as a brand accent line
 
 ### AppShell / Nav
 The app nav (`AppShell.tsx`) must match the landing page nav style:
-- Logo: `Feedback` + amber `Studio`
+- Logo: `Feedback` + cyan `Studio`
 - Background: `var(--bg-page)` with `border-bottom: 1px solid var(--border-soft)`
 - Sticky positioning
-- Same button styles as landing page (ghost Sign out, amber primary action)
+- Same button styles as landing page (ghost Sign out, cyan primary action)
 
 ### Login Page
 Must feel like part of the same product as the landing page:
 - Dark/light page background using same tokens
-- Card-based form using `var(--bg-surface)` with amber `border-top` accent
+- Card-based form using `var(--bg-surface)` with cyan `border-top` accent
 - Logo at top in same wordmark style
 - Amber primary button for submit
 
 ### Dashboard Page
-- Track cards: use `var(--bg-surface)` card style with hover border-color amber
-- Empty state: centered, muted, with amber CTA button
-- Storage bar accent: `#f97316`
+- Track cards: use `var(--bg-surface)` card style with hover border-color cyan
+- Empty state: centered, muted, with cyan CTA button
+- Storage bar accent: `#06b6d4`
 
 ### Review Page
-- Waveform player: match the landing page player card style (amber border-top, dark surface)
+- Waveform player: match the landing page player card style (cyan border-top, dark surface)
 - Feedback cards below waveform: same style as landing page feedback card
-- Feedback popup: match the landing page popup mockup exactly (amber timestamp, band pills, fader, Pin Feedback amber button)
+- Feedback popup: match the landing page popup mockup exactly (cyan timestamp, band pills, fader, Pin Feedback cyan button)
 
 ### Animations
 - Page load: `fuUp` fade-up with staggered delays (`opacity: 0 → 1`, `translateY(22px → 0)`)
