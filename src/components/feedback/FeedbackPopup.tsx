@@ -12,20 +12,37 @@ interface FeedbackPopupProps {
   onCancel: () => void;
 }
 
+const STORAGE_KEY = 'fs-reviewer-name';
+
 export const FeedbackPopup = ({ timestamp, onSubmit, onCancel }: FeedbackPopupProps) => {
-  const [reviewerName, setReviewerName] = useState('');
+  const [reviewerName, setReviewerName] = useState(() => localStorage.getItem(STORAGE_KEY) ?? '');
   const [comment, setComment] = useState('');
   const [volumeDb, setVolumeDb] = useState(0);
   const [bands, setBands] = useState<FrequencyBand[]>(DEFAULT_BANDS.map(b => ({ ...b })));
   const [submitting, setSubmitting] = useState(false);
+  const [nameError, setNameError] = useState(false);
+
+  const savedName = localStorage.getItem(STORAGE_KEY) ?? '';
 
   const handleSubmit = async () => {
+    if (!reviewerName.trim()) {
+      setNameError(true);
+      return;
+    }
+    setNameError(false);
     setSubmitting(true);
     try {
-      await onSubmit({ timestamp, reviewerName: reviewerName || 'Anonymous', comment, volumeDb, bands });
+      await onSubmit({ timestamp, reviewerName: reviewerName.trim(), comment, volumeDb, bands });
+      localStorage.setItem(STORAGE_KEY, reviewerName.trim());
     } finally {
       setSubmitting(false);
     }
+  };
+
+  const handleForgetName = () => {
+    localStorage.removeItem(STORAGE_KEY);
+    setReviewerName('');
+    setNameError(false);
   };
 
   const isDisabled = submitting;
@@ -43,14 +60,23 @@ export const FeedbackPopup = ({ timestamp, onSubmit, onCancel }: FeedbackPopupPr
 
         <div className="popup-body">
           <div>
-            <label className="popup-label">Your name (optional)</label>
+            <div className="popup-label-row">
+              <label className="popup-label">Your name</label>
+              {savedName && (
+                <button className="popup-not-you" onClick={handleForgetName} type="button">
+                  Not you?
+                </button>
+              )}
+            </div>
             <input
               type="text"
-              placeholder="Anonymous"
+              placeholder="Enter your name"
               value={reviewerName}
-              onChange={(e) => setReviewerName(e.target.value)}
+              onChange={(e) => { setReviewerName(e.target.value); if (e.target.value.trim()) setNameError(false); }}
               style={{ width: '100%' }}
+              required
             />
+            {nameError && <p className="popup-name-error">Please enter your name</p>}
           </div>
 
           <VolumeFader value={volumeDb} onChange={setVolumeDb} />
