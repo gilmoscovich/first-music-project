@@ -30,6 +30,8 @@ export const WaveformPlayer = forwardRef<WaveformPlayerHandle, WaveformPlayerPro
     const [duration, setDuration] = useState(0);
     const [isReady, setIsReady] = useState(false);
     const [hoveredId, setHoveredId] = useState<string | null>(null);
+    const [hoverTime, setHoverTime] = useState<number | null>(null);
+    const [hoverX, setHoverX] = useState(0);
     const [tooltipPos, setTooltipPos] = useState({ left: 0, top: 0 });
 
     const handleMarkerHover = useCallback((id: string | null, clientX: number, clientY: number) => {
@@ -114,12 +116,34 @@ export const WaveformPlayer = forwardRef<WaveformPlayerHandle, WaveformPlayerPro
 
     return (
       <div className="waveform-player" ref={playerRef}>
-        <div className="waveform-container">
+        <div
+          className="waveform-container"
+          onMouseMove={(e: React.MouseEvent<HTMLDivElement>) => {
+            if (!isReady || duration === 0) return;
+            const rect = e.currentTarget.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const ratio = Math.max(0, Math.min(1, x / rect.width));
+            setHoverTime(ratio * duration);
+            setHoverX(x);
+          }}
+          onMouseLeave={() => setHoverTime(null)}
+        >
           {!isReady && (
             <div className="waveform-loading">Loading waveform...</div>
           )}
           <div ref={containerRef} />
           <div ref={timelineRef} className="waveform-timeline" />
+          {isReady && hoverTime !== null && (
+            <div
+              className="waveform-hover-tooltip"
+              style={{
+                left: Math.max(24, Math.min(hoverX, (containerRef.current?.offsetWidth ?? 9999) - 24)),
+                transform: 'translateX(-50%)',
+              }}
+            >
+              {formatTime(hoverTime)}
+            </div>
+          )}
         </div>
 
         <div className="waveform-controls">
