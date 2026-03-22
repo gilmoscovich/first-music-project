@@ -11,7 +11,6 @@ interface UseWavesurferOptions {
   audioUrl: string | null;
   feedback: FeedbackEntry[];
   trackId?: string;
-  onTimestampClick: (seconds: number) => void;
   onReady?: () => void;
   onMarkerHover?: (id: string | null, x: number, y: number) => void;
   onMarkerClick?: (timestamp: number) => void;
@@ -23,7 +22,6 @@ export const useWavesurfer = ({
   audioUrl,
   feedback,
   trackId,
-  onTimestampClick,
   onReady,
   onMarkerHover,
   onMarkerClick,
@@ -108,11 +106,6 @@ export const useWavesurfer = ({
       }
       onReady?.();
     });
-
-    ws.on('interaction', (newTime: number) => {
-      if (!regionClickedRef.current) onTimestampClick(newTime);
-    });
-
 
     return () => {
       ws.destroy();

@@ -47,10 +47,7 @@ export const ReviewPage = () => {
   // Filter + sort
   const { filter, setFilter, sort, setSort, filtered: displayedFeedback } = useFeedbackFilter(feedback);
 
-  // Onboarding pulse + walkthrough (reviewer only, one-time)
-  const [showPulse, setShowPulse] = useState(
-    () => !localStorage.getItem('fs-onboarded')
-  );
+  // Onboarding walkthrough (reviewer only, one-time)
   const [showWalkthrough, setShowWalkthrough] = useState(
     () => !localStorage.getItem('fs-onboarded')
   );
@@ -58,7 +55,6 @@ export const ReviewPage = () => {
   const handleWalkthroughDismiss = () => {
     localStorage.setItem('fs-onboarded', '1');
     setShowWalkthrough(false);
-    setShowPulse(false);
   };
 
   const isOwner = !!(user && track && user.uid === track.ownerId);
@@ -80,10 +76,6 @@ export const ReviewPage = () => {
 
   const handleTimestampClick = (seconds: number) => {
     setPendingTimestamp(seconds);
-    if (!isOwner && showPulse) {
-      localStorage.setItem('fs-onboarded', '1');
-      setShowPulse(false);
-    }
   };
 
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -179,21 +171,12 @@ export const ReviewPage = () => {
         onTimestampClick={handleTimestampClick}
         onTimeUpdate={setPlaybackTime}
         interactable={!isOwner}
-        showPulse={!isOwner && showPulse}
       />
 
       {/* Spacebar hint */}
       <div className="keyboard-hint">
         <kbd>Space</kbd> to play / pause
       </div>
-
-      {/* Reviewer hint */}
-      {!isOwner && (
-        <div className="reviewer-hint">
-          <strong className="reviewer-hint-strong">You're reviewing this track.</strong>{' '}
-          Click anywhere on the waveform to pin feedback at that timestamp.
-        </div>
-      )}
 
       {/* Feedback list */}
       {!feedbackLoading && feedback.length > 0 && (

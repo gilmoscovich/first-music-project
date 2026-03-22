@@ -6,7 +6,7 @@ import { Sidebar } from './Sidebar';
 import './AppShell.css';
 
 const PAGE_TITLES: Record<string, string> = {
-  '/dashboard': 'Projects',
+  '/dashboard': 'My Tracks',
   '/upload': 'Upload',
 };
 

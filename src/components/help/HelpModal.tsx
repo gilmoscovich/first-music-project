@@ -21,9 +21,10 @@ export const HelpModal = ({ onClose }: HelpModalProps) => (
         <div className="help-section">
           <div className="help-section-title">Leaving Feedback</div>
           <ul className="help-list">
-            <li>Click anywhere on the waveform to drop a pin at that exact timestamp</li>
+            <li>Press play and listen to the track</li>
+            <li>When you want to leave a note, hit the <strong>+</strong> button in the player controls — it pins feedback at your current playback position</li>
             <li>Fill in a star rating, volume adjustment, and frequency band verdicts</li>
-            <li>Add notes in the comment field, then hit <strong>Submit</strong></li>
+            <li>Add a comment in the notes field, then hit <strong>Pin Feedback</strong></li>
             <li>Your feedback is saved instantly and goes directly to the artist</li>
           </ul>
         </div>
@@ -33,12 +34,13 @@ export const HelpModal = ({ onClose }: HelpModalProps) => (
         <div className="help-section">
           <div className="help-section-title">Reviewing &amp; Managing (track owners)</div>
           <ul className="help-list">
-            <li>Hover over orange waveform markers to preview feedback — click to play from that point</li>
+            <li>Hover over orange waveform markers to preview feedback</li>
+            <li>Click a marker to seek to that position and play from there</li>
             <li><strong>Filter:</strong> All / Unread — toggle to show only unread feedback</li>
             <li><strong>Sort:</strong> by Timestamp position, Star Rating, or Newest first</li>
             <li><strong>⚙ Settings</strong> — rename or delete the track</li>
             <li><strong>Share Link</strong> — copy the review URL to send to collaborators</li>
-            <li>Unread badge on the Dashboard shows new feedback since your last visit</li>
+            <li>The unread badge on My Tracks shows new feedback since your last visit</li>
           </ul>
         </div>
 
@@ -47,11 +49,10 @@ export const HelpModal = ({ onClose }: HelpModalProps) => (
         <div className="help-section">
           <div className="help-section-title">General</div>
           <ul className="help-list">
-            <li>Profile avatar → account menu (My Tracks, theme settings, sign out)</li>
-            <li>Theme toggle: Light / Dark / System — inside the profile menu</li>
-            <li><strong>+ Upload</strong> — add a new track from any page</li>
-            <li><kbd>Space</kbd> — play / pause the waveform player at any time</li>
-            <li>The <strong>◎</strong> button in the header enables hover hints — hover any control to learn what it does</li>
+            <li>The <strong>+</strong> button in the player controls pins feedback at the current timestamp</li>
+            <li><kbd>Space</kbd> — play / pause the waveform at any time</li>
+            <li>Theme: Light / Dark / System — toggle in the top-right corner of every page</li>
+            <li>The <strong>Hints</strong> button in the sidebar enables hover hints — hover any control to see what it does</li>
           </ul>
         </div>
       </div>
