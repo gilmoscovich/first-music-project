@@ -19,8 +19,6 @@
 }
 
 .land-nav-inner {
-  max-width: 1120px;
-  margin: 0 auto;
   padding: 0 6%;
   height: 60px;
   display: flex;
@@ -502,29 +500,4 @@
   color: var(--text-muted);
 }
 
-/* ── Theme pill ── */
-.theme-pill {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  z-index: 200;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 9px 16px;
-  background: var(--bg-surface);
-  border: 1px solid var(--border-soft);
-  border-radius: 100px;
-  color: var(--text-secondary);
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  box-shadow: var(--shadow-md);
-  transition: border-color 0.15s, color 0.15s, transform 0.15s;
-}
 
-.theme-pill:hover {
-  border-color: #f97316;
-  color: #f97316;
-  transform: translateY(-1px);
-}
