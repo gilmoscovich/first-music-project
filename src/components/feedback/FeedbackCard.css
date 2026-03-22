@@ -355,29 +355,65 @@
   color: rgba(6,182,212,0.7);
 }
 
-.owner-note-display {
+.owner-note-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
   display: flex;
-  align-items: flex-start;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.owner-note-item {
+  display: flex;
+  align-items: center;
   gap: 8px;
+  padding: 2px 0;
 }
 
-.owner-note-text {
-  flex: 1;
-  font-size: 13px;
-  line-height: 1.6;
-  color: var(--text-secondary);
-  font-style: italic;
-}
+.owner-note-item:hover .owner-note-item-delete { opacity: 1; }
 
-.owner-note-actions {
-  display: flex;
-  gap: 2px;
+.owner-note-checkbox {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  border: 1.5px solid rgba(6,182,212,0.4);
+  background: transparent;
   flex-shrink: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.12s, border-color 0.12s;
+  color: #fff;
+  padding: 0;
 }
 
-.owner-note-btn {
-  width: 24px;
-  height: 24px;
+.owner-note-checkbox:hover {
+  border-color: #06b6d4;
+  background: rgba(6,182,212,0.1);
+}
+
+.owner-note-checkbox--checked {
+  background: #06b6d4;
+  border-color: #06b6d4;
+}
+
+.owner-note-item-text {
+  flex: 1;
+  font-size: 12px;
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+
+.owner-note-item-text--checked {
+  text-decoration: line-through;
+  color: var(--text-secondary);
+}
+
+.owner-note-item-delete {
+  width: 20px;
+  height: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -386,90 +422,58 @@
   border-radius: var(--radius-sm);
   cursor: pointer;
   color: var(--text-secondary);
-  transition: background 0.12s, color 0.12s;
+  opacity: 0;
+  transition: opacity 0.12s, background 0.12s, color 0.12s;
+  flex-shrink: 0;
+  padding: 0;
 }
 
-.owner-note-btn:hover {
-  background: var(--bg-surface2);
-  color: var(--text-primary);
-}
-
-.owner-note-btn--delete:hover {
+.owner-note-item-delete:hover {
   background: rgba(248,113,113,0.1);
   color: var(--accent-red);
 }
 
-.owner-note-add-btn {
-  font-size: 12px;
-  color: rgba(6,182,212,0.6);
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  text-align: left;
-  transition: color 0.12s;
-}
-
-.owner-note-add-btn:hover { color: #06b6d4; }
-
-.owner-note-editor {
+.owner-note-input-row {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
 }
 
-.owner-note-textarea {
-  width: 100%;
-  font-size: 13px;
-  line-height: 1.6;
+.owner-note-input {
+  flex: 1;
+  font-size: 12px;
   background: var(--bg-surface);
-  border: 1px solid rgba(6,182,212,0.3);
+  border: 1px solid rgba(6,182,212,0.2);
   border-radius: var(--radius-sm);
-  padding: 8px 10px;
+  padding: 5px 8px;
   color: var(--text-primary);
-  resize: vertical;
-  min-height: 64px;
   outline: none;
   transition: border-color 0.15s;
 }
 
-.owner-note-textarea:focus {
+.owner-note-input::placeholder { color: var(--text-secondary); }
+
+.owner-note-input:focus {
   border-color: #06b6d4;
-  box-shadow: 0 0 0 3px rgba(6,182,212,0.1);
+  box-shadow: 0 0 0 2px rgba(6,182,212,0.1);
 }
 
-.owner-note-editor-actions {
+.owner-note-input-add {
+  width: 24px;
+  height: 24px;
   display: flex;
-  gap: 6px;
-}
-
-.owner-note-save-btn {
-  font-size: 12px;
-  font-weight: 700;
+  align-items: center;
+  justify-content: center;
   background: #06b6d4;
-  color: #fff;
   border: none;
   border-radius: var(--radius-sm);
-  padding: 4px 12px;
   cursor: pointer;
+  color: #fff;
+  flex-shrink: 0;
   transition: opacity 0.12s;
+  padding: 0;
 }
 
-.owner-note-save-btn:hover { opacity: 0.85; }
-
-.owner-note-cancel-btn {
-  font-size: 12px;
-  font-weight: 600;
-  background: transparent;
-  color: var(--text-secondary);
-  border: 1px solid var(--border-soft);
-  border-radius: var(--radius-sm);
-  padding: 4px 10px;
-  cursor: pointer;
-  transition: color 0.12s, border-color 0.12s;
-}
-
-.owner-note-cancel-btn:hover {
-  color: var(--text-primary);
-  border-color: var(--border);
-}
+.owner-note-input-add:hover { opacity: 0.85; }
+.owner-note-input-add:disabled { opacity: 0.35; cursor: default; }

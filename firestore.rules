@@ -18,7 +18,7 @@ service cloud.firestore {
         allow create: if true;
         allow update: if request.auth != null
           && request.auth.uid == get(/databases/$(database)/documents/tracks/$(trackId)).data.ownerId
-          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['read', 'readSections', 'ownerNote']);
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['read', 'readSections', 'ownerNotes']);
         allow delete: if request.auth != null
           && request.auth.uid == get(/databases/$(database)/documents/tracks/$(trackId)).data.ownerId;
       }

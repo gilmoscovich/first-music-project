@@ -112,13 +112,13 @@ export const addFeedback = async (
   return feedbackRef.id;
 };
 
-export const saveOwnerNote = async (
+export const saveOwnerNotes = async (
   trackId: string,
   feedbackId: string,
-  note: string
+  notes: { id: string; text: string; checked: boolean }[]
 ): Promise<void> => {
   await updateDoc(doc(db, 'tracks', trackId, 'feedback', feedbackId), {
-    ownerNote: note,
+    ownerNotes: notes,
   });
 };
 

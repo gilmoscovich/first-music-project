@@ -5,7 +5,7 @@ import { useFeedback } from '../hooks/useFeedback';
 import { useAuth } from '../hooks/useAuth';
 import { useTheme } from '../hooks/useTheme';
 import type { ThemeMode } from '../hooks/useTheme';
-import { addFeedback, markFeedbackRead, markFeedbackSectionRead, deleteFeedback, saveOwnerNote } from '../firebase/firestore';
+import { addFeedback, markFeedbackRead, markFeedbackSectionRead, deleteFeedback, saveOwnerNotes } from '../firebase/firestore';
 import { WaveformPlayer } from '../components/waveform/WaveformPlayer';
 import type { WaveformPlayerHandle } from '../components/waveform/WaveformPlayer';
 import { FeedbackPopup } from '../components/feedback/FeedbackPopup';
@@ -107,9 +107,9 @@ export const ReviewPage = () => {
     deleteFeedback(trackId, feedbackId);
   };
 
-  const handleSaveNote = async (feedbackId: string, note: string) => {
+  const handleSaveNotes = (feedbackId: string, notes: { id: string; text: string; checked: boolean }[]) => {
     if (!trackId) return;
-    await saveOwnerNote(trackId, feedbackId, note);
+    saveOwnerNotes(trackId, feedbackId, notes);
   };
 
   const copyShareLink = async () => {
@@ -231,7 +231,7 @@ export const ReviewPage = () => {
                   onSectionRead={isOwner ? handleSectionRead : undefined}
                   onDelete={isOwner ? handleDeleteFeedback : undefined}
                   onTimestampClick={(s) => playerRef.current?.seekTo(s)}
-                  onSaveNote={isOwner ? handleSaveNote : undefined}
+                  onSaveNotes={isOwner ? handleSaveNotes : undefined}
                 />
               ))
             )}

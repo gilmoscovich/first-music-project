@@ -30,6 +30,8 @@ export const useWavesurfer = ({
   const regionsRef = useRef<RegionsPlugin | null>(null);
   const renderedIdsRef = useRef<Set<string>>(new Set());
   const isReadyRef = useRef(false);
+  const feedbackRef = useRef(feedback);
+  feedbackRef.current = feedback;
   const onMarkerHoverRef = useRef(onMarkerHover);
   onMarkerHoverRef.current = onMarkerHover;
   const onMarkerClickRef = useRef(onMarkerClick);
@@ -103,6 +105,12 @@ export const useWavesurfer = ({
       isReadyRef.current = true;
       if (trackId) {
         updateTrackDuration(trackId, ws.getDuration()).catch(() => {});
+      }
+      // Add any markers that arrived before the waveform was ready
+      for (const entry of feedbackRef.current) {
+        if (entry.id && !renderedIdsRef.current.has(entry.id)) {
+          addMarker(entry);
+        }
       }
       onReady?.();
     });

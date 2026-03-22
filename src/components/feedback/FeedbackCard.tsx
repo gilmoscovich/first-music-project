@@ -30,7 +30,7 @@ interface FeedbackCardProps {
   onSectionRead?: (id: string, section: 'volume' | 'frequencies', read: boolean) => void;
   onDelete?: (id: string) => void;
   onTimestampClick?: (seconds: number) => void;
-  onSaveNote?: (id: string, note: string) => void;
+  onSaveNotes?: (id: string, notes: { id: string; text: string; checked: boolean }[]) => void;
 }
 
 interface CardSectionProps {
@@ -89,12 +89,12 @@ const CardSection = ({ title, checked, onCheck, children }: CardSectionProps) =>
 
 export const FeedbackCard = ({
   entry, index, isActive, isOwner,
-  onMarkRead, onSectionRead, onDelete, onTimestampClick, onSaveNote,
+  onMarkRead, onSectionRead, onDelete, onTimestampClick, onSaveNotes,
 }: FeedbackCardProps) => {
   const [collapsed, setCollapsed] = useState(true);
   const [isRead, setIsRead] = useState(!!entry.read);
-  const [noteEditing, setNoteEditing] = useState(false);
-  const [noteValue, setNoteValue] = useState(entry.ownerNote ?? '');
+  const [notes, setNotes] = useState(entry.ownerNotes ?? []);
+  const [newNoteText, setNewNoteText] = useState('');
   const activeBands = entry.bands?.filter(b => b.verdict) ?? [];
   const reviewerName = entry.reviewerName || 'Anonymous';
   const initials = avatarInitials(reviewerName);
@@ -106,18 +106,26 @@ export const FeedbackCard = ({
   const statusClass = isRead ? 'status-reviewed' : sectionsRead ? 'status-in-progress' : 'status-new';
 
   useEffect(() => { setIsRead(!!entry.read); }, [entry.read]);
-  useEffect(() => { setNoteValue(entry.ownerNote ?? ''); }, [entry.ownerNote]);
+  useEffect(() => { setNotes(entry.ownerNotes ?? []); }, [entry.ownerNotes]);
 
-  const handleSaveNote = () => {
-    if (!onSaveNote || !entry.id) return;
-    onSaveNote(entry.id, noteValue);
-    setNoteEditing(false);
+  const saveNotes = (updated: typeof notes) => {
+    setNotes(updated);
+    if (onSaveNotes && entry.id) onSaveNotes(entry.id, updated);
   };
 
-  const handleDeleteNote = () => {
-    if (!onSaveNote || !entry.id) return;
-    setNoteValue('');
-    onSaveNote(entry.id, '');
+  const handleAddNote = () => {
+    const text = newNoteText.trim();
+    if (!text) return;
+    saveNotes([...notes, { id: crypto.randomUUID(), text, checked: false }]);
+    setNewNoteText('');
+  };
+
+  const handleToggleNote = (id: string) => {
+    saveNotes(notes.map(n => n.id === id ? { ...n, checked: !n.checked } : n));
+  };
+
+  const handleDeleteNote = (id: string) => {
+    saveNotes(notes.filter(n => n.id !== id));
   };
 
   const handleMarkRead = (e: React.MouseEvent) => {
@@ -262,46 +270,61 @@ export const FeedbackCard = ({
                     <rect x="3" y="11" width="18" height="11" rx="2" />
                     <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                   </svg>
-                  Private note
+                  Private notes
                 </div>
 
-                {entry.ownerNote && !noteEditing ? (
-                  <div className="owner-note-display">
-                    <p className="owner-note-text">{entry.ownerNote}</p>
-                    <div className="owner-note-actions">
-                      <button className="owner-note-btn" onClick={() => { setNoteValue(entry.ownerNote ?? ''); setNoteEditing(true); }} title="Edit note">
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
-                          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-                        </svg>
-                      </button>
-                      <button className="owner-note-btn owner-note-btn--delete" onClick={handleDeleteNote} title="Delete note">
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
-                          <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
-                        </svg>
-                      </button>
-                    </div>
-                  </div>
-                ) : noteEditing ? (
-                  <div className="owner-note-editor">
-                    <textarea
-                      className="owner-note-textarea"
-                      placeholder="Note to self..."
-                      value={noteValue}
-                      onChange={e => setNoteValue(e.target.value)}
-                      rows={3}
-                      autoFocus
-                    />
-                    <div className="owner-note-editor-actions">
-                      <button className="owner-note-save-btn" onClick={handleSaveNote}>Save</button>
-                      <button className="owner-note-cancel-btn" onClick={() => { setNoteValue(entry.ownerNote ?? ''); setNoteEditing(false); }}>Cancel</button>
-                    </div>
-                  </div>
-                ) : (
-                  <button className="owner-note-add-btn" onClick={() => setNoteEditing(true)}>
-                    + Add a private note
-                  </button>
+                {notes.length > 0 && (
+                  <ul className="owner-note-list">
+                    {notes.map(n => (
+                      <li key={n.id} className="owner-note-item">
+                        <button
+                          className={`owner-note-checkbox${n.checked ? ' owner-note-checkbox--checked' : ''}`}
+                          onClick={() => handleToggleNote(n.id)}
+                          title={n.checked ? 'Mark as undone' : 'Mark as done'}
+                        >
+                          {n.checked ? (
+                            <svg width="9" height="9" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                              <polyline points="2,6 5,9 10,3" />
+                            </svg>
+                          ) : null}
+                        </button>
+                        <span className={`owner-note-item-text${n.checked ? ' owner-note-item-text--checked' : ''}`}>
+                          {n.text}
+                        </span>
+                        <button
+                          className="owner-note-item-delete"
+                          onClick={() => handleDeleteNote(n.id)}
+                          title="Delete note"
+                        >
+                          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                            <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+                          </svg>
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
                 )}
+
+                <div className="owner-note-input-row">
+                  <input
+                    className="owner-note-input"
+                    type="text"
+                    placeholder="Add a note…"
+                    value={newNoteText}
+                    onChange={e => setNewNoteText(e.target.value)}
+                    onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); handleAddNote(); } }}
+                  />
+                  <button
+                    className="owner-note-input-add"
+                    onClick={handleAddNote}
+                    disabled={!newNoteText.trim()}
+                    title="Add note"
+                  >
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                      <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                    </svg>
+                  </button>
+                </div>
               </div>
             )}
           </div>

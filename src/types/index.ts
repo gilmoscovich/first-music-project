@@ -33,7 +33,7 @@ export interface FeedbackEntry {
     volume?: boolean;
     frequencies?: boolean;
   };
-  ownerNote?: string;
+  ownerNotes?: { id: string; text: string; checked: boolean }[];
 }
 
 export interface Track {
