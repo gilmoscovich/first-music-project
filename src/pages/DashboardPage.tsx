@@ -71,6 +71,9 @@ export const DashboardPage = () => {
       await deleteTrack(track.id, user?.uid, track.fileSize);
       setTracks((prev) => prev.filter((t) => t.id !== track.id));
       if (track.fileSize) setStorageUsed((prev) => Math.max(0, prev - track.fileSize!));
+    } catch (err) {
+      console.error('Failed to delete track:', err);
+      alert('Failed to delete track. Check the console for details.');
     } finally {
       setDeletingId(null);
     }
