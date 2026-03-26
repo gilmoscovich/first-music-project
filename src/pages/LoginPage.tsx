@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { signIn, signUp } from '../firebase/auth';
+import { signIn, signUp, sendVerificationEmail } from '../firebase/auth';
 import './LoginPage.css';
 
 export const LoginPage = () => {
@@ -18,10 +18,12 @@ export const LoginPage = () => {
     try {
       if (mode === 'signin') {
         await signIn(email, password);
+        navigate('/dashboard');
       } else {
-        await signUp(email, password);
+        const { user } = await signUp(email, password);
+        try { await sendVerificationEmail(user); } catch { /* resend available on next page */ }
+        navigate('/verify-email');
       }
-      navigate('/dashboard');
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Authentication failed';
       setError(msg.replace('Firebase: ', '').replace(/\(auth\/.*\)\.?/, '').trim());

@@ -4,6 +4,7 @@ import { LoginPage } from './pages/LoginPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { UploadPage } from './pages/UploadPage';
 import { ReviewPage } from './pages/ReviewPage';
+import { VerifyEmailPage } from './pages/VerifyEmailPage';
 import { ProtectedRoute } from './components/layout/ProtectedRoute';
 import { AppShell } from './components/layout/AppShell';
 import { useTheme } from './hooks/useTheme';
@@ -36,6 +37,8 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       />
+
+      <Route path="/verify-email" element={<VerifyEmailPage />} />
 
       <Route
         path="/review/:trackId"

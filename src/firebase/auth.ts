@@ -3,6 +3,7 @@ import {
   createUserWithEmailAndPassword,
   signOut as firebaseSignOut,
   onAuthStateChanged,
+  sendEmailVerification,
 } from 'firebase/auth';
 import type { User } from 'firebase/auth';
 import { auth } from './config';
@@ -17,3 +18,6 @@ export const signOut = () => firebaseSignOut(auth);
 
 export const onAuthChange = (callback: (user: User | null) => void) =>
   onAuthStateChanged(auth, callback);
+
+export const sendVerificationEmail = (user: User) =>
+  sendEmailVerification(user);
