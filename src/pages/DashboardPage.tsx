@@ -57,7 +57,21 @@ export const DashboardPage = () => {
   }, [user]);
 
   const copyLink = async (trackId: string) => {
-    await navigator.clipboard.writeText(generateShareUrl(trackId));
+    const url = generateShareUrl(trackId);
+    try {
+      await navigator.clipboard.writeText(url);
+    } catch {
+      // Fallback for non-secure contexts (e.g. local network IP during dev)
+      const el = document.createElement('textarea');
+      el.value = url;
+      el.style.position = 'fixed';
+      el.style.opacity = '0';
+      document.body.appendChild(el);
+      el.focus();
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+    }
     setCopied(trackId);
     if (copyTimerRef.current) clearTimeout(copyTimerRef.current);
     copyTimerRef.current = setTimeout(() => setCopied(null), 2000);

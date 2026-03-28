@@ -43,7 +43,9 @@
     position: fixed;
     top: 0;
     left: 0;
-    height: 100vh;
+    /* Use dvh to account for iOS Safari dynamic toolbar — prevents bottom items from being clipped */
+    height: -webkit-fill-available;
+    height: 100dvh;
     transform: translateX(-100%);
     z-index: 200;
     transition: transform 0.22s ease, width 0.22s ease;

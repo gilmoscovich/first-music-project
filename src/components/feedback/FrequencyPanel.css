@@ -128,3 +128,20 @@
 .band-notes:focus {
   border-color: rgba(6,182,212,0.4);
 }
+
+/* Mobile: stack band info above verdict buttons */
+@media (max-width: 520px) {
+  .freq-band-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .band-info {
+    min-width: unset;
+  }
+
+  .verdict-group {
+    width: 100%;
+  }
+}

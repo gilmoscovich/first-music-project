@@ -120,6 +120,42 @@
   gap: 8px;
 }
 
+/* Mobile: wrap track card to 2 rows */
+@media (max-width: 600px) {
+  .track-item {
+    flex-wrap: wrap;
+    gap: 8px; /* smaller gap fits all row-2 items in one line */
+    align-items: center;
+  }
+
+  /* ::after on flex container = flex item; flex-basis:100% creates a line break */
+  .track-item::after {
+    content: '';
+    flex-basis: 100%;
+    height: 0;
+    order: 2;
+  }
+
+  .track-icon  { order: 0; }
+  .track-info  { order: 1; flex: 1; }
+
+  /* Row 2: all action items */
+  .feedback-badge,
+  .unread-badge,
+  .track-copy-btn,
+  .track-view-link,
+  .track-rename-btn,
+  .track-delete-btn {
+    order: 3;
+  }
+
+  .track-copy-btn  { padding: 6px 10px; }
+  .track-view-link { padding: 6px 10px; }
+
+  /* Rename accessible via double-tap on title */
+  .track-rename-btn { display: none; }
+}
+
 /* Track card */
 .track-item {
   background: var(--bg-surface);
