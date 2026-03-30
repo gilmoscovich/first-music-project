@@ -1,14 +1,19 @@
 import { onDocumentCreated } from 'firebase-functions/v2/firestore';
+import { defineSecret } from 'firebase-functions/params';
 import * as admin from 'firebase-admin';
 import { Resend } from 'resend';
 
 admin.initializeApp();
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resendApiKey = defineSecret('RESEND_API_KEY');
 
 export const onFeedbackCreated = onDocumentCreated(
-  'tracks/{trackId}/feedback/{feedbackId}',
+  {
+    document: 'tracks/{trackId}/feedback/{feedbackId}',
+    secrets: [resendApiKey],
+  },
   async (event) => {
+    const resend = new Resend(resendApiKey.value());
     const { trackId } = event.params;
 
     // 1. Get the track to find the title and owner
@@ -38,7 +43,7 @@ export const onFeedbackCreated = onDocumentCreated(
       from: 'FeedbackStudio <onboarding@resend.dev>',
       to: ownerEmail,
       subject: `New feedback on "${track.title}"`,
-      text: `You got new feedback on your track "${track.title}" on FeedbackStudio.`,
+      text: `You got new feedback on your track "${track.title}" on FeedbackStudio.\n\nView it here: https://feedbackstudio-a1cc5.web.app/review/${trackId}`,
     });
 
     if (error) {
