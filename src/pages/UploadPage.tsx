@@ -4,6 +4,7 @@ import { nanoid } from 'nanoid';
 import { useAuth } from '../hooks/useAuth';
 import { uploadAudio } from '../firebase/storage';
 import { createTrack } from '../firebase/firestore';
+import { extractPeaks } from '../utils/extractPeaks';
 import { AudioDropZone } from '../components/upload/AudioDropZone';
 import { UploadProgress } from '../components/upload/UploadProgress';
 import './UploadPage.css';
@@ -30,12 +31,11 @@ export const UploadPage = () => {
     const trackId = nanoid(12);
 
     try {
-      const { downloadURL, storagePath } = await uploadAudio(
-        user.uid,
-        trackId,
-        file,
-        setProgress
-      );
+      // Run peak extraction in parallel with the upload — no extra wait time
+      const [{ downloadURL, storagePath }, peaks] = await Promise.all([
+        uploadAudio(user.uid, trackId, file, setProgress),
+        extractPeaks(file),
+      ]);
 
       await createTrack(trackId, {
         ownerId: user.uid,
@@ -44,6 +44,7 @@ export const UploadPage = () => {
         storagePath,
         downloadURL,
         fileSize: file.size,
+        ...(peaks ? { peaks } : {}),
       });
 
       navigate(`/review/${trackId}`);
