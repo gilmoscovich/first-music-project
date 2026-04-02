@@ -3,7 +3,7 @@ import WaveSurfer from 'wavesurfer.js';
 import RegionsPlugin from 'wavesurfer.js/dist/plugins/regions.js';
 import TimelinePlugin from 'wavesurfer.js/dist/plugins/timeline.js';
 import type { FeedbackEntry } from '../types';
-import { updateTrackDuration } from '../firebase/firestore';
+import { updateTrackDuration, updateTrackPeaks } from '../firebase/firestore';
 
 interface UseWavesurferOptions {
   containerRef: React.RefObject<HTMLDivElement | null>;
@@ -11,6 +11,8 @@ interface UseWavesurferOptions {
   audioUrl: string | null;
   feedback: FeedbackEntry[];
   trackId?: string;
+  peaks?: number[][];
+  duration?: number;
   onReady?: () => void;
   onMarkerHover?: (id: string | null, x: number, y: number) => void;
   onMarkerClick?: (timestamp: number) => void;
@@ -22,6 +24,8 @@ export const useWavesurfer = ({
   audioUrl,
   feedback,
   trackId,
+  peaks,
+  duration,
   onReady,
   onMarkerHover,
   onMarkerClick,
@@ -99,12 +103,23 @@ export const useWavesurfer = ({
     renderedIdsRef.current = new Set();
     isReadyRef.current = false;
 
-    ws.load(audioUrl);
+    if (peaks && peaks.length > 0) {
+      ws.load(audioUrl, peaks, duration);
+    } else {
+      ws.load(audioUrl);
+    }
 
     ws.on('ready', () => {
       isReadyRef.current = true;
       if (trackId) {
         updateTrackDuration(trackId, ws.getDuration()).catch(() => {});
+        // Lazy migration: if no peaks were provided, export and save them now
+        if (!peaks || peaks.length === 0) {
+          const exported = ws.exportPeaks();
+          if (exported && exported.length > 0) {
+            updateTrackPeaks(trackId, exported).catch(() => {});
+          }
+        }
       }
       // Add any markers that arrived before the waveform was ready
       for (const entry of feedbackRef.current) {
