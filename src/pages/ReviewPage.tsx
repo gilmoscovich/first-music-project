@@ -34,6 +34,7 @@ export const ReviewPage = () => {
   const { user } = useAuth();
   const { mode, setTheme } = useTheme();
 
+
   const [pendingTimestamp, setPendingTimestamp] = useState<number | null>(null);
   const [copied, setCopied] = useState(false);
   const [playbackTime, setPlaybackTime] = useState(0);
@@ -43,6 +44,7 @@ export const ReviewPage = () => {
   // Settings drawer
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [localTitle, setLocalTitle] = useState<string | null>(null);
+
 
   // Filter + sort
   const { filter, setFilter, sort, setSort, filtered: displayedFeedback } = useFeedbackFilter(feedback);
@@ -97,7 +99,7 @@ export const ReviewPage = () => {
     markFeedbackRead(trackId, feedbackId, read);
   };
 
-  const handleSectionRead = (feedbackId: string, section: 'volume' | 'frequencies', read: boolean) => {
+  const handleSectionRead = (feedbackId: string, section: 'instruments' | 'frequencies', read: boolean) => {
     if (!trackId) return;
     markFeedbackSectionRead(trackId, feedbackId, section, read);
   };
@@ -156,6 +158,8 @@ export const ReviewPage = () => {
                 </svg>
                 {copied ? 'Copied!' : 'Share Link'}
               </button>
+
+
               <button className="settings-trigger-btn" onClick={() => setDrawerOpen(true)} title="Track settings" data-help="Track settings — rename or delete this track">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <circle cx="12" cy="12" r="3" />

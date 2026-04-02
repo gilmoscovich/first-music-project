@@ -100,6 +100,11 @@
   gap: 20px;
 }
 
+/* Prevent flex children from shrinking — popup-body must scroll, not compress items */
+.popup-body > * {
+  flex-shrink: 0;
+}
+
 .popup-label {
   font-size: 10px;
   color: var(--text-secondary);
@@ -198,4 +203,93 @@
   opacity: 1;
   transform: none;
   pointer-events: none;
+}
+
+/* ── Instruments ── */
+.instruments-section {}
+
+.instrument-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.instrument-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.instrument-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-primary);
+  min-width: 80px;
+  flex-shrink: 0;
+}
+
+.instrument-input {
+  flex: 1;
+  font-size: 13px;
+  background: var(--bg-field);
+  border: 1px solid var(--border-soft);
+  border-radius: 8px;
+  padding: 7px 12px;
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.instrument-input::placeholder { color: var(--text-secondary); opacity: 0.6; }
+
+.instrument-input:focus {
+  border-color: #06b6d4;
+  box-shadow: 0 0 0 2px rgba(6,182,212,0.1);
+}
+
+/* ── Frequency collapsible ── */
+.freq-collapsible {
+  border: 1px solid var(--border-soft);
+  border-radius: 9px;
+}
+
+.freq-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: var(--bg-surface2);
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  border-radius: 9px;
+  transition: background 0.12s;
+}
+
+.freq-toggle--open {
+  border-radius: 9px 9px 0 0;
+}
+
+.freq-toggle:hover { background: var(--bg-elevated); }
+
+.freq-toggle-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+}
+
+.freq-toggle-chevron {
+  color: var(--text-secondary);
+  flex-shrink: 0;
+  transition: transform 0.22s ease;
+}
+
+.freq-toggle--open .freq-toggle-chevron { transform: rotate(180deg); }
+
+.freq-collapsible-body {
+  border-top: 1px solid var(--border-soft);
+  padding: 12px;
 }

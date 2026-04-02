@@ -20,20 +20,39 @@ export const DEFAULT_BANDS: FrequencyBand[] = [
   { id: 'high', label: 'High', range: '8 kHz+', verdict: null, notes: '' },
 ];
 
+export type InstrumentGroupId = 'kick' | 'bass' | 'percussions' | 'synths' | 'vocals' | 'fx';
+
+export interface InstrumentGroup {
+  id: InstrumentGroupId;
+  label: string;
+  notes: string;
+}
+
+export const DEFAULT_INSTRUMENTS: InstrumentGroup[] = [
+  { id: 'kick',        label: 'Kick',        notes: '' },
+  { id: 'bass',        label: 'Bass',        notes: '' },
+  { id: 'percussions', label: 'Percussions', notes: '' },
+  { id: 'synths',      label: 'Synths',      notes: '' },
+  { id: 'vocals',      label: 'Vocals',      notes: '' },
+  { id: 'fx',          label: 'FX',          notes: '' },
+];
+
 export interface FeedbackEntry {
   id?: string;
   timestamp: number;
   reviewerName: string;
   comment: string;
-  volumeDb: number;
+  instruments: InstrumentGroup[];
   bands: FrequencyBand[];
   createdAt?: Timestamp;
   read?: boolean;
   readSections?: {
-    volume?: boolean;
+    instruments?: boolean;
     frequencies?: boolean;
   };
   ownerNotes?: { id: string; text: string; checked: boolean }[];
+  // Legacy field — kept for reading old entries
+  volumeDb?: number;
 }
 
 export interface Track {

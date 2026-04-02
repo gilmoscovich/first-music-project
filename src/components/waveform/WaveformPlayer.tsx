@@ -203,7 +203,7 @@ export const WaveformPlayer = forwardRef<WaveformPlayerHandle, WaveformPlayerPro
                   : hoveredEntry.comment}
               </div>
             )}
-            {hoveredEntry.volumeDb !== 0 && (
+            {hoveredEntry.volumeDb != null && hoveredEntry.volumeDb !== 0 && (
               <div className="tooltip-volume">
                 Volume: {hoveredEntry.volumeDb > 0 ? '+' : ''}{hoveredEntry.volumeDb} dB
               </div>

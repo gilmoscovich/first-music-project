@@ -31,11 +31,12 @@ const STEPS = [
   {
     icon: (
       <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
       </svg>
     ),
-    title: "Rate, describe, submit",
-    body: "Give a star rating, flag volume or frequency issues, add notes — then hit Submit.",
+    title: "Describe and pin your feedback",
+    body: "Leave notes per instrument (kick, bass, synths…), optionally flag frequency bands, add general notes — then hit Pin Feedback.",
   },
 ];
 

@@ -132,7 +132,7 @@ export const deleteFeedback = async (trackId: string, feedbackId: string): Promi
 export const markFeedbackSectionRead = async (
   trackId: string,
   feedbackId: string,
-  section: 'volume' | 'frequencies',
+  section: 'instruments' | 'frequencies',
   read: boolean
 ): Promise<void> => {
   await updateDoc(doc(db, 'tracks', trackId, 'feedback', feedbackId), {
@@ -170,3 +170,4 @@ export const subscribeFeedback = (
     callback([]);
   });
 };
+

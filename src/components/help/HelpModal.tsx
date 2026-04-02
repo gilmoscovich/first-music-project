@@ -23,8 +23,9 @@ export const HelpModal = ({ onClose }: HelpModalProps) => (
           <ul className="help-list">
             <li>Press play and listen to the track</li>
             <li>When you want to leave a note, hit the <strong>+</strong> button in the player controls — it pins feedback at your current playback position</li>
-            <li>Fill in a volume adjustment and frequency band verdicts</li>
-            <li>Add a comment in the notes field, then hit <strong>Pin Feedback</strong></li>
+            <li>Leave notes per instrument group (Kick, Bass, Percussions, Synths, Vocals, FX) if relevant</li>
+            <li>Optionally expand <strong>Frequency Detail</strong> to flag specific frequency bands (Sub, Low, Mid, etc.)</li>
+            <li>Add a general comment in the notes field, then hit <strong>Pin Feedback</strong></li>
             <li>Your feedback is saved instantly and goes directly to the artist</li>
           </ul>
         </div>
@@ -34,7 +35,7 @@ export const HelpModal = ({ onClose }: HelpModalProps) => (
         <div className="help-section">
           <div className="help-section-title">Reviewing &amp; Managing (track owners)</div>
           <ul className="help-list">
-            <li>Hover over orange waveform markers to preview feedback</li>
+            <li>Hover over cyan waveform markers to preview feedback</li>
             <li>Click a marker to seek to that position and play from there</li>
             <li><strong>Filter:</strong> All / Unread — toggle to show only unread feedback</li>
             <li><strong>Sort:</strong> by Timestamp position or Newest first</li>

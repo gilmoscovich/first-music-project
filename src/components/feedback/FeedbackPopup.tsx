@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { DEFAULT_BANDS } from '../../types';
-import type { FrequencyBand, FeedbackEntry } from '../../types';
-import { VolumeFader } from './VolumeFader';
+import { DEFAULT_BANDS, DEFAULT_INSTRUMENTS } from '../../types';
+import type { FrequencyBand, InstrumentGroup, FeedbackEntry } from '../../types';
 import { FrequencyPanel } from './FrequencyPanel';
 import { formatTime } from '../../utils/formatTime';
 import './FeedbackPopup.css';
@@ -17,8 +16,9 @@ const STORAGE_KEY = 'fs-reviewer-name';
 export const FeedbackPopup = ({ timestamp, onSubmit, onCancel }: FeedbackPopupProps) => {
   const [reviewerName, setReviewerName] = useState(() => localStorage.getItem(STORAGE_KEY) ?? '');
   const [comment, setComment] = useState('');
-  const [volumeDb, setVolumeDb] = useState(0);
+  const [instruments, setInstruments] = useState<InstrumentGroup[]>(DEFAULT_INSTRUMENTS.map(g => ({ ...g })));
   const [bands, setBands] = useState<FrequencyBand[]>(DEFAULT_BANDS.map(b => ({ ...b })));
+  const [freqExpanded, setFreqExpanded] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [nameError, setNameError] = useState(false);
 
@@ -32,7 +32,7 @@ export const FeedbackPopup = ({ timestamp, onSubmit, onCancel }: FeedbackPopupPr
     setNameError(false);
     setSubmitting(true);
     try {
-      await onSubmit({ timestamp, reviewerName: reviewerName.trim(), comment, volumeDb, bands });
+      await onSubmit({ timestamp, reviewerName: reviewerName.trim(), comment, instruments, bands });
       localStorage.setItem(STORAGE_KEY, reviewerName.trim());
     } finally {
       setSubmitting(false);
@@ -45,7 +45,9 @@ export const FeedbackPopup = ({ timestamp, onSubmit, onCancel }: FeedbackPopupPr
     setNameError(false);
   };
 
-  const isDisabled = submitting;
+  const updateInstrument = (id: string, notes: string) => {
+    setInstruments(prev => prev.map(g => g.id === id ? { ...g, notes } : g));
+  };
 
   return (
     <div className="popup-overlay">
@@ -79,9 +81,41 @@ export const FeedbackPopup = ({ timestamp, onSubmit, onCancel }: FeedbackPopupPr
             {nameError && <p className="popup-name-error">Please enter your name</p>}
           </div>
 
-          <VolumeFader value={volumeDb} onChange={setVolumeDb} />
+          <div className="instruments-section">
+            <label className="popup-label">Instruments</label>
+            <div className="instrument-rows">
+              {instruments.map(group => (
+                <div key={group.id} className="instrument-row">
+                  <span className="instrument-label">{group.label}</span>
+                  <input
+                    type="text"
+                    className="instrument-input"
+                    placeholder="Notes…"
+                    value={group.notes}
+                    onChange={(e) => updateInstrument(group.id, e.target.value)}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
 
-          <FrequencyPanel bands={bands} onChange={setBands} />
+          <div className="freq-collapsible">
+            <button
+              className={`freq-toggle${freqExpanded ? ' freq-toggle--open' : ''}`}
+              onClick={() => setFreqExpanded(v => !v)}
+              type="button"
+            >
+              <span className="freq-toggle-label">Frequency Detail</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="freq-toggle-chevron">
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </button>
+            {freqExpanded && (
+              <div className="freq-collapsible-body">
+                <FrequencyPanel bands={bands} onChange={setBands} />
+              </div>
+            )}
+          </div>
 
           <div>
             <label className="popup-label">General notes</label>
@@ -98,8 +132,8 @@ export const FeedbackPopup = ({ timestamp, onSubmit, onCancel }: FeedbackPopupPr
           <button onClick={onCancel} className="popup-cancel-btn">Cancel</button>
           <button
             onClick={handleSubmit}
-            disabled={isDisabled}
-            className={`popup-submit-btn${isDisabled ? ' popup-submit-btn--disabled' : ''}`}
+            disabled={submitting}
+            className={`popup-submit-btn${submitting ? ' popup-submit-btn--disabled' : ''}`}
           >
             {submitting ? 'Saving...' : 'Pin Feedback'}
           </button>

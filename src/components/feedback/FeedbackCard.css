@@ -294,6 +294,29 @@
 .section-body     { min-height: 0; overflow: hidden; }
 .section-body-inner { padding: 10px; }
 
+/* ── Instruments compact ── */
+.instruments-compact { display: flex; flex-direction: column; gap: 6px; }
+
+.instruments-compact-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.instruments-compact-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-primary);
+  min-width: 80px;
+  flex-shrink: 0;
+}
+
+.instruments-compact-notes {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
 /* ── Frequency compact ── */
 .freq-compact { display: flex; flex-direction: column; gap: 6px; }
 

@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { FeedbackEntry } from '../../types';
 import { VERDICT_LABEL } from '../../types';
-import { VolumeFader } from './VolumeFader';
 import { formatTime } from '../../utils/formatTime';
 import './FeedbackCard.css';
 
@@ -27,7 +26,7 @@ interface FeedbackCardProps {
   isActive?: boolean;
   isOwner?: boolean;
   onMarkRead?: (id: string, read: boolean) => void;
-  onSectionRead?: (id: string, section: 'volume' | 'frequencies', read: boolean) => void;
+  onSectionRead?: (id: string, section: 'instruments' | 'frequencies', read: boolean) => void;
   onDelete?: (id: string) => void;
   onTimestampClick?: (seconds: number) => void;
   onSaveNotes?: (id: string, notes: { id: string; text: string; checked: boolean }[]) => void;
@@ -101,7 +100,7 @@ export const FeedbackCard = ({
   const color = avatarColor(reviewerName);
 
   // Status: REVIEWED / IN PROGRESS / NEW
-  const sectionsRead = entry.readSections?.volume || entry.readSections?.frequencies;
+  const sectionsRead = entry.readSections?.instruments || entry.readSections?.frequencies;
   const statusLabel = isRead ? 'REVIEWED' : sectionsRead ? 'IN PROGRESS' : 'NEW';
   const statusClass = isRead ? 'status-reviewed' : sectionsRead ? 'status-in-progress' : 'status-new';
 
@@ -229,15 +228,22 @@ export const FeedbackCard = ({
               <div className="card-comment">{entry.comment}</div>
             )}
 
-            {entry.volumeDb !== 0 && (
+            {entry.instruments?.some(g => g.notes) && (
               <CardSection
-                title="Volume"
-                checked={entry.readSections?.volume}
+                title="Instruments"
+                checked={entry.readSections?.instruments}
                 onCheck={onSectionRead && entry.id
-                  ? (v) => onSectionRead(entry.id!, 'volume', v)
+                  ? (v) => onSectionRead(entry.id!, 'instruments', v)
                   : undefined}
               >
-                <VolumeFader value={entry.volumeDb} readonly />
+                <div className="instruments-compact">
+                  {entry.instruments.filter(g => g.notes).map(group => (
+                    <div key={group.id} className="instruments-compact-row">
+                      <span className="instruments-compact-label">{group.label}</span>
+                      <span className="instruments-compact-notes">{group.notes}</span>
+                    </div>
+                  ))}
+                </div>
               </CardSection>
             )}
 
