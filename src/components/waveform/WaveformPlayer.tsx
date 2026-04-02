@@ -9,6 +9,8 @@ interface WaveformPlayerProps {
   audioUrl: string;
   feedback: FeedbackEntry[];
   trackId?: string;
+  peaks?: number[][];
+  trackDuration?: number;
   onTimestampClick: (seconds: number) => void;
   onTimeUpdate?: (seconds: number) => void;
   interactable?: boolean;
@@ -20,7 +22,7 @@ export interface WaveformPlayerHandle {
 }
 
 export const WaveformPlayer = forwardRef<WaveformPlayerHandle, WaveformPlayerProps>(
-  ({ audioUrl, feedback, trackId, onTimestampClick, onTimeUpdate, interactable = true }, ref) => {
+  ({ audioUrl, feedback, trackId, peaks, trackDuration, onTimestampClick, onTimeUpdate, interactable = true }, ref) => {
     const containerRef = useRef<HTMLDivElement | null>(null);
     const timelineRef = useRef<HTMLDivElement | null>(null);
     const playerRef = useRef<HTMLDivElement | null>(null);
@@ -50,6 +52,8 @@ export const WaveformPlayer = forwardRef<WaveformPlayerHandle, WaveformPlayerPro
       audioUrl,
       feedback,
       trackId,
+      peaks,
+      duration: trackDuration,
       onReady: () => {
         setIsReady(true);
         setDuration(wsRef.current?.getDuration() ?? 0);

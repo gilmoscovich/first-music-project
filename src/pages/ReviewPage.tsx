@@ -177,6 +177,8 @@ export const ReviewPage = () => {
         audioUrl={track.downloadURL}
         feedback={feedback}
         trackId={track.id}
+        peaks={track.peaks}
+        trackDuration={track.duration}
         onTimestampClick={handleTimestampClick}
         onTimeUpdate={setPlaybackTime}
         interactable={!isOwner}
