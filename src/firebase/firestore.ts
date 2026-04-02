@@ -41,6 +41,10 @@ export const updateTrackDuration = async (trackId: string, duration: number): Pr
   await updateDoc(doc(db, 'tracks', trackId), { duration });
 };
 
+export const updateTrackPeaks = async (trackId: string, peaks: number[][]): Promise<void> => {
+  await updateDoc(doc(db, 'tracks', trackId), { peaks });
+};
+
 export const updateTrackTitle = async (trackId: string, title: string): Promise<void> => {
   await updateDoc(doc(db, 'tracks', trackId), { title });
 };
