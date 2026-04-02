@@ -64,6 +64,7 @@ export interface Track {
   downloadURL: string;
   duration?: number;
   fileSize?: number;
+  peaks?: number[][];
   feedbackCount: number;
   unreadCount?: number;
   createdAt: Timestamp;
