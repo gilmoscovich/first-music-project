@@ -11,7 +11,7 @@ interface UseWavesurferOptions {
   audioUrl: string | null;
   feedback: FeedbackEntry[];
   trackId?: string;
-  peaks?: number[][];
+  peaks?: number[];
   duration?: number;
   onReady?: () => void;
   onMarkerHover?: (id: string | null, x: number, y: number) => void;
@@ -104,7 +104,7 @@ export const useWavesurfer = ({
     isReadyRef.current = false;
 
     if (peaks && peaks.length > 0) {
-      ws.load(audioUrl, peaks, duration);
+      ws.load(audioUrl, [peaks], duration);
     } else {
       ws.load(audioUrl);
     }
@@ -117,7 +117,9 @@ export const useWavesurfer = ({
         if (!peaks || peaks.length === 0) {
           const exported = ws.exportPeaks();
           if (exported && exported.length > 0) {
-            updateTrackPeaks(trackId, exported).catch(() => {});
+            // exportPeaks() returns number[][], flatten to number[] for Firestore
+            const flat = exported[0];
+            updateTrackPeaks(trackId, flat).catch(() => {});
           }
         }
       }

@@ -9,7 +9,7 @@ interface WaveformPlayerProps {
   audioUrl: string;
   feedback: FeedbackEntry[];
   trackId?: string;
-  peaks?: number[][];
+  peaks?: number[];
   trackDuration?: number;
   onTimestampClick: (seconds: number) => void;
   onTimeUpdate?: (seconds: number) => void;
