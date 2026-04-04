@@ -23,6 +23,7 @@ service cloud.firestore {
         allow delete: if request.auth != null
           && request.auth.uid == get(/databases/$(database)/documents/tracks/$(trackId)).data.ownerId;
       }
+
     }
   }
 }

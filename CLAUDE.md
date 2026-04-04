@@ -2,13 +2,11 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Priority Rules
+- **Start coding immediately.** Do not write spec docs, plans, or lengthy analysis unless explicitly asked. Bias toward making code changes first, then explaining after.
+
 ## Always Do First
 - **Invoke the `frontend-design` skill** before writing any frontend code, every session, no exceptions.
-
-## Reference Images
-- If a reference image is provided: match layout, spacing, typography, and color exactly. Swap in placeholder content (images via `https://placehold.co/`, generic copy). Do not improve or add to the design.
-- If no reference image: design from scratch with high craft (see guardrails below).
-- Screenshot your output, compare against reference, fix mismatches, re-screenshot. Do at least 2 comparison rounds. Stop only when no visible differences remain or user says so.
 
 ## Local Server
 - **Always serve on localhost** — never screenshot a `file:///` URL.
@@ -19,11 +17,6 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - After screenshotting, read the PNG with the Read tool — Claude can see and analyze the image directly.
 - When comparing, be specific: "heading is 32px but reference shows ~24px", "card gap is 16px but should be 24px"
 - Check: spacing/padding, font size/weight/line-height, colors (exact hex), alignment, border-radius, shadows, image sizing
-
-## Brand Assets
-- Always check the `brand_assets/` folder before designing. It may contain logos, color guides, style guides, or images.
-- If assets exist there, use them. Do not use placeholders where real assets are available.
-- If a logo is present, use it. If a color palette is defined, use those exact values — do not invent brand colors.
 
 ## Anti-Generic Guardrails
 - **Colors:** Never use default Tailwind palette (indigo-500, blue-600, etc.). Pick a custom brand color and derive from it.
@@ -36,6 +29,22 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **Spacing:** Use intentional, consistent spacing tokens — not random Tailwind steps.
 - **Depth:** Surfaces should have a layering system (base → elevated → floating), not all sit at the same z-plane.
 
+## UI Guidelines
+- **Icon size:** Minimum 24px. Never use subtle/small icons that require the user to ask for bigger.
+- **Touch targets:** Minimum 44px for any interactive element on mobile.
+- **Contrast:** Use high contrast by default. Do not make UI elements subtle unless specifically requested.
+- **Sizing philosophy:** When in doubt, go larger and bolder — not smaller and more discreet.
+
+## Implementation Guidelines
+- **Scope precisely.** Implement only what the user described. If they say "new signups only", do NOT apply the change to existing users. Ask for clarification before broadening scope.
+
+## Workflow
+- After making changes, run `npm run build` to verify zero TypeScript errors before committing or reporting completion.
+
+## Tech Stack & Debugging
+- Stack: TypeScript, React, Firebase (Firestore + Storage + Hosting + Auth), CSS.
+- When debugging Firebase issues, check Security Rules early — they are a common root cause, especially Storage rules where `request.resource` is `null` on deletes.
+
 ## Hard Rules
 - Do not add sections, features, or content not in the reference
 - Do not "improve" a reference design — match it
@@ -43,13 +52,6 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Do not use `transition-all`
 - Do not use default Tailwind blue/indigo as primary color
 
-## Commands
-
-```bash
-npm run dev       # start dev server (Vite)
-npm run build     # tsc -b && vite build
-npm run lint      # eslint
-npm run preview   # preview production build
 
 # Deploy Firestore rules (required after editing firestore.rules)
 npx firebase deploy --only firestore:rules
@@ -258,8 +260,3 @@ Must feel like part of the same product as the landing page:
 - Page load: `fuUp` fade-up with staggered delays (`opacity: 0 → 1`, `translateY(22px → 0)`)
 - Hover transitions: `transform` and `opacity` only, `0.15s ease`
 - Never use `transition-all`
-
-### Help System
-- **Help modal** (`src/components/help/HelpModal.tsx`) — opens on "Help" button click
-- **Hints mode** (`AppShell.tsx`) — global `mouseover` listener reads `data-help` attribute from hovered elements, displays text in a fixed corner panel. Add `data-help="..."` to any element to annotate it.
-- **Walkthrough** (`src/components/onboarding/WalkthroughModal.tsx`) — 3-step modal for first-time reviewers, gated by `localStorage` key `fs-onboarded`.
