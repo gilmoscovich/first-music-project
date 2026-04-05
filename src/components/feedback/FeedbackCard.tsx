@@ -167,7 +167,7 @@ export const FeedbackCard = ({
           <div className="card-reviewer-meta">
             {entry.createdAt?.toDate().toLocaleDateString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
             {entry.comment && (
-              <span className="card-comment-preview"> · "{entry.comment.length > 48 ? entry.comment.slice(0, 48) + '…' : entry.comment}"</span>
+              <span className="card-comment-preview" dir="auto"> · "{entry.comment.length > 48 ? entry.comment.slice(0, 48) + '…' : entry.comment}"</span>
             )}
           </div>
         </div>
@@ -225,7 +225,7 @@ export const FeedbackCard = ({
         <div className="card-body">
           <div className="card-body-content">
             {entry.comment && (
-              <div className="card-comment">{entry.comment}</div>
+              <div className="card-comment" dir="auto">{entry.comment}</div>
             )}
 
             {entry.instruments?.some(g => g.notes) && (
